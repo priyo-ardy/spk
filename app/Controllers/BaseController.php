@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\Auth\AuthModel;
 
 /**
  * Class BaseController
@@ -46,10 +47,31 @@ abstract class BaseController extends Controller
     /**
      * @return void
      */
+
+    protected $NIK;
+    protected $tanggal;
+    protected $app_ver;
+    protected $app_name;
+    protected $user_level;
+    protected $levelModel;
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
+
+        $this->NIK = session()->get('user_name');
+        $this->tanggal = date("Y-m-d H:i:s");
+        $this->app_ver = "1.0.0.dev";
+        $this->app_name = "SPK Application";
+
+        $this->levelModel = new AuthModel();
+        $get_user = $this->levelModel->where('user_name', $this->NIK)->first();
+        if (!$get_user) {
+
+            $this->user_level = '4';
+        } else {
+            $this->user_level =  $get_user->user_level;
+        }
 
         // Preload any models, libraries, etc, here.
 
