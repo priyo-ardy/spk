@@ -34,6 +34,7 @@
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
                 <div class="invalid-feedback">Password is required</div>
             </div>
+            <div class="mb-3 text-danger text-center col-12" id="pesanLogin"></div>
 
             <div class="forgot-password">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
