@@ -15,7 +15,7 @@
     <!-- Ubuntu Font -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
     <!-- Auth CSS -->
-    <link href="<?= base_url() . 'css/Auth/auth.css' ?>" rel="stylesheet">
+    <link href="<?= base_url() . 'css/auth/auth.css' ?>" rel="stylesheet">
 </head>
 
 <body>
@@ -36,9 +36,9 @@
             </div>
             <div class="mb-3 text-danger text-center col-12" id="pesanLogin"></div>
 
-            <div class="forgot-password">
+            <!-- <div class="forgot-password">
                 <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
-            </div>
+            </div> -->
 
             <button type="button" id="btnAuth" class="btn btn-login"><i class="bi bi-box-arrow-in-right"></i>&ensp;Log in</button>
         </form>

@@ -20,4 +20,9 @@ class AuthModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
+
+    public function getUser($username)
+    {
+        return $this->where('user_name', $username, true)->first();
+    }
 }
