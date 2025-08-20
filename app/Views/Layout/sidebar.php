@@ -23,6 +23,34 @@
                 <li class="nav-header">TRANSACTION</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-folder2-open"></i>
+                        <p>
+                            SPK
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('spk_general') ?>" class="nav-link" onclick="loading()">
+                                <i class="nav-icon bi bi-folder2-open"></i>
+                                <p>
+                                    SPK Equipment
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('spk') ?>" class="nav-link" onclick="loading()">
+                                <i class="nav-icon bi bi-folder2-open"></i>
+                                <p>
+                                    SPK Mold
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header">MASTER DATA</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-box-seam"></i>
                         <p>
                             Material Management
@@ -62,6 +90,22 @@
                                 <i class="bi bi-arrow-right-circle"></i>
                                 <p>
                                     Workshop
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('tonnage') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Tonnage
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('machine') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Machine
                                 </p>
                             </a>
                         </li>

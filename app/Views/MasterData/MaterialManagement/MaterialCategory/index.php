@@ -31,7 +31,7 @@
                                 <h3 class="card-title"><i class="bi bi-pencil-square"></i>&ensp;Form Data</h3>
                             </div>
                             <div class="card-body">
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-3" style="display: none;">
                                     <input type="text" name="data_token" id="data_token" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Token">
                                     <div class="invalid-feedback">This field is required</div>
                                 </div>

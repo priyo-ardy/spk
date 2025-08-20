@@ -4,9 +4,9 @@ namespace App\Controllers\MasterData\MaterialManagement\MaterialCategory;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\MasterData\MaterialManagement\MaterialCategory\MaterialCategoryModel;
 use App\Models\Master\MasterModel;
 use App\Models\DataTable\DataTableModel;
-use App\Models\MasterData\MaterialManagement\MaterialCategory\MaterialCategoryModel;
 use Config\Services;
 
 class MaterialCategory extends BaseController
@@ -102,12 +102,11 @@ class MaterialCategory extends BaseController
 
             $rules = [
                 'data_name' => [
-                    'rules' => 'required|min_length[1]|max_length[150]|alpha_numeric',
+                    'rules' => 'required|min_length[1]|max_length[150]',
                     'errors' => [
                         'required' => "Material category name is required",
                         'min_length' => "The minimum character of material category name is {param}",
                         'max_length' => "The maximum character of material category name is {param}",
-                        'alpha_numeric' => "Only numbers and letters can be accepted for material category name"
                     ]
                 ]
             ];
@@ -158,9 +157,192 @@ class MaterialCategory extends BaseController
         }
     }
 
-    function getData() {}
+    function getData() {
+        $aksi = "Get";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, 'error', current_url(), "Request method not allowed");
 
-    function updateData() {}
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
 
-    function deleteData() {}
+        try{
+            $json_data = $this->request->getJSON(true);
+
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['token'])){
+                log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
+            }
+
+            $id_category = dekripsi($json_data['token']);
+
+            $get_data = $this->categoryModel->getDataById($id_category);
+            if(!$get_data){
+                log_action($this->module, $aksi, "error", current_url(), "Material category data not found");
+
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Material category data not found");
+            }
+
+            $data = [
+                'token' => enkripsi($get_data->id),
+                'code' => $get_data->code,
+                'name' => $get_data->name,
+                'remark' => $get_data->remark
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Material category data found", $data);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, 'error', current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function updateData() {
+        $aksi = "update";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        try{
+            $token = trim($this->request->getPost('data_token'));
+            $category_id = dekripsi($token);
+            $code = trim($this->request->getPost('data_code'));
+            $name = ucwords(trim($this->request->getPost('data_name')));
+            $remark = trim($this->request->getPost('data_remark'));
+
+            $rules = [
+                'data_token' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Material category token is required"
+                    ]
+                ],
+                'data_code' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Material category code is required"
+                    ]
+                ],
+                'data_name' => [
+                    'rules' => 'required|min_length[1]|max_length[150]',
+                    'errors' => [
+                        'required' => "Material category name is required",
+                        'min_length' => "The minimum character of material category name is {param}",
+                        'max_length' => "The maximum character of material category name is {param}",
+                    ]
+                ]
+            ];
+
+            $this->validasi->setRules($rules);
+
+            if (!$this->validasi->withRequest($this->request)->run()) {
+                $error_message = implode('<br>', $this->validasi->getErrors());
+
+                log_action($this->module, $aksi, "error", current_url(), "Validation failed", '', json_encode([
+                    'data' => $this->validasi->getErrors()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed " . $error_message);
+            }
+
+            $data = [
+                'name' => $name,
+                'remark' => $remark,
+                'updated_by' => $this->NIK
+            ];
+
+            $update = $this->categoryModel->update($category_id, $data);
+            if(!$update){
+                log_action($this->module, $aksi, "error", current_url(), "Update failed, there was an error during processing your request", '', json_encode([
+                    'data' => $this->categoryModel->errors()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Update failed, there was an error during processing your request");
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Update success", '', json_encode([
+                'data' => $data,
+                'where' => $category_id
+            ]));
+
+            return pesan(ResponseInterface::HTTP_OK, "Update success");
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, 'error', current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function deleteData() {
+        $aksi = "delete";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        try{
+            $json_data = $this->request->getJSON(true);
+
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['token'])){
+                log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
+            }
+
+            $id_category = dekripsi($json_data['token']);
+
+            $check_data = $this->categoryModel->getDataById($id_category);
+            if(!$check_data){
+                log_action($this->module, $aksi, "error", current_url(), "Material category data not found");
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Material category data not found");
+            }
+
+            $delete = $this->categoryModel->delete($id_category);
+            if(!$delete){
+                log_action($this->module, $aksi, "error", current_url(), "Delete failed", '', json_encode([
+                    'data' => $this->categoryModel->errors()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Delete failed, there was an error during processing your request");
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Delete success", '', json_encode([
+                'data' => $id_category
+            ]));
+            return pesan(ResponseInterface::HTTP_OK, "Delete success");
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, 'error', current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
 }

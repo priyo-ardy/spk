@@ -97,9 +97,80 @@ buttons.save.addEventListener("click", (e) => {
 });
 
 function getData(token) {
-  alert(token);
+  try {
+    loading();
+    fetchData(baseurl + '/material_category/get', 'POST', JSON.stringify({ token: token }))
+      .then(result => {
+        dataForm.token.value = result.data.token;
+        dataForm.code.value = result.data.code;
+        dataForm.name.value = result.data.name;
+        dataForm.remark.value = result.data.remark;
+        buttons.save.setAttribute('hidden', true);
+        buttons.update.removeAttribute('hidden');
+
+        hideLoading();
+      })
+      .catch(err => {
+        pesanError(err.message);
+        hideLoading();
+      })
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
 }
 
+function validasiUpdate() {
+  let isValid = true;
+
+  if (dataForm.token.value.trim() === '') {
+    pesanWarning("Material category token is required");
+    isValid = false;
+  }
+
+  if (dataForm.code.value === '') {
+    dataForm.code.classList.add('is-invalid');
+    isValid = false;
+  } else {
+    dataForm.code.classList.remove('is-invalid');
+  }
+
+  if (dataForm.name.value.trim() === '') {
+    dataForm.name.classList.add('is-invalid');
+    isValid = false;
+  } else {
+    dataForm.name.classList.remove('is-invalid');
+  }
+
+  return isValid;
+}
+
+buttons.update.addEventListener('click', (e) => {
+  if (validasiUpdate()) {
+    try {
+      loading();
+      fetchData(baseurl + '/material_category/update', 'POST', new FormData(formData))
+        .then(result => {
+          pesanSukses(result.message);
+          resetForm();
+          refreshTable();
+          hideLoading();
+        })
+        .catch(err => {
+          pesanError(err.message);
+          hideLoading();
+        })
+    } catch (e) {
+      pesanError(e.message);
+      hideLoading();
+    }
+  }
+})
+
 function deleteData(token) {
-  alert(token);
+  try {
+    hapusData('/material_category/delete', token);
+  } catch (e) {
+    pesanError(e.message);
+  }
 }

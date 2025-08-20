@@ -20,4 +20,8 @@ class MaterialCategoryModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
+
+    public function getDataById($category_id){
+        return $this->where('id', $category_id, true)->first();
+    }
 }

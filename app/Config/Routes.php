@@ -15,11 +15,46 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Dashboard\Dashboard::index');
     });
 
+    // Transaction -> SPK -> General
+    $routes->group('/spk_general', static function ($routes){
+        $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
+        $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
+        $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
+    });
+
     // Master Data -> Material Management -> Material Category
     $routes->group('/material_category', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::index');
         $routes->post('table', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::loadTable');
         $routes->post('save', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::saveData');
         $routes->post('get', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::getData');
+        $routes->post('update', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::updateData');
+        $routes->post('delete', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::deleteData');
+    });
+
+    // Master Data -> Common Data -> Workshop
+    $routes->group('/workshop', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Workshop\Workshop::index');
+        $routes->post('table', 'MasterData\CommonData\Workshop\Workshop::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Workshop\Workshop::saveData');
+        $routes->post('get', 'MasterData\CommonData\Workshop\Workshop::getData');
+        $routes->post('update', 'MasterData\CommonData\Workshop\Workshop::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Workshop\Workshop::deleteData');
+    });
+
+    // Master Data -> Common Data -> Tonnage
+    $routes->group('/tonnage', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Tonnage\Tonnage::index');
+        $routes->post('table', 'MasterData\CommonData\Tonnage\Tonnage::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Tonnage\Tonnage::saveData');
+        $routes->post('get', 'MasterData\CommonData\Tonnage\Tonnage::getData');
+        $routes->post('update', 'MasterData\CommonData\Tonnage\Tonnage::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Tonnage\Tonnage::deleteData');
+    });
+
+    // Master Data -> Common Data -> Machine
+    $routes->group('/machine', static function($routes){
+        $routes->get('', 'MasterData\CommonData\Machine\Machine::index');
+        $routes->post('machine_data', 'MasterData\CommonData\Machine\Machine::getDataById');
     });
 });
