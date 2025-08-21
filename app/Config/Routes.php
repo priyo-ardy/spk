@@ -20,6 +20,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
         $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
         $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
+        $routes->post('table', 'Transaction\SPK\General\GeneralSpk::loadTable');
+        $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
+        $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
     });
 
     // Master Data -> Material Management -> Material Category

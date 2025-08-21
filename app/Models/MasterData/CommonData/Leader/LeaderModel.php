@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Transaction\SPK\General;
+namespace App\Models\MasterData\CommonData\Leader;
 
 use CodeIgniter\Model;
 
-class GeneralSpkModel extends Model
+class LeaderModel extends Model
 {
-    protected $table            = 't_spk_equipment';
+    protected $table            = 'm_leader';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'object';
@@ -21,7 +21,7 @@ class GeneralSpkModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function getDataById($id){
-        return $this->where('id', $id)->first();
+    public function generateList(){
+        return $this->orderBy('NIK', 'ASC')->findAll();
     }
 }

@@ -54,31 +54,19 @@
                                         <label class="form-label" for="data_workshop">Reporting Dept/Workshop</label>
                                         <select name="data_workshop" id="data_workshop" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <option value="1">1. Injection</option>
-                                            <option value="2">2. Assembly</option>
-                                            <option value="3">3. Final Inspection</option>
-                                            <option value="4">4. R&D</option>
-                                            <option value="5">5. Quality</option>
+                                            <?php foreach($dept as $d): ?>
+                                                <option value="<?= $d->id ?>"><?= $d->name ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
-                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3">
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3">
                                         <label class="form-label" for="data_staff">Reporting Staff <strong class="text-danger">*</strong></label>
                                         <select name="data_staff" id="data_staff" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <option value="0014">0014 - EDI SALURIYANTO</option>
-                                            <option value="0065">0065 - SUPRIYANTO</option>
-                                            <option value="0145">0145 - SUKRON AZIZ</option>
-                                            <option value="0205">0205 - RAMADHAN SAPTA WIYUDA</option>
-                                            <option value="0275">0275 - TEGUH SUSILO</option>
-                                            <option value="0009">0009 - JOKO PRASETYO UTOMO</option>
-                                            <option value="0346">0346 - MUHAMAD SHOLIKUL HADI</option>
-                                            <option value="0355">0355 - MARIMAN</option>
-                                            <option value="0357">0357 - LUKMAN DWI PRAMANA</option>
-                                            <option value="0363">0363 - AFALULLOH</option>
-                                            <option value="0368">0368 - AGUS UTAMA</option>
-                                            <option value="0440">0440 - AHMAT NUR SAHLY</option>
-                                            <option value="0013">0013 - AGUS SETIANTO</option>
+                                            <?php foreach($karyawan as $k) : ?>
+                                                <option value="<?= $k->id ?>"><?= "$k->NIK - $k->nama" ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
@@ -87,7 +75,7 @@
                                         <input type="date" name="data_tanggal" id="data_tanggal" class="form-control rounded-0" value="<?= date("Y-m-d") ?>" required>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
-                                    <div class="form-group col-xl-4 col-lg-4 col-md-6 col-sm-12 clearfix mb-3">
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_mamterial">Equipment Name <strong class="text-danger">*</strong></label>
                                         <select name="data_material" id="data_material" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
@@ -108,11 +96,9 @@
                                         <label class="form-label" for="data_tipe">Equipment Type</label>
                                         <select name="data_tipe" id="data_tipe" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <option value="1">1. Machine Equipment</option>
-                                            <option value="2">2. Transportation Equipment</option>
-                                            <option value="3">3. Laboratorium Equipment</option>
-                                            <option value="4">4. Electronic Equipment</option>
-                                            <option value="5">5. Other Equipment</option>
+                                            <?php foreach($equipment_type as $et): ?>
+                                                <option value="<?= $et->id ?>"><?= $et->name ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
@@ -120,9 +106,9 @@
                                         <label class="form-label" for="data_spv">Team Leader/Supervisor</label>
                                         <select name="data_spv" id="data_spv" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <option value="0009">0009 - Joko Prasetyo Utomo</option>
-                                            <option value="0013">0013 - Agus Setianto</option>
-                                            <option value="0014">0014 - Edi Saluriyanto</option>
+                                            <?php foreach($leader as $l): ?>
+                                                <option value="<?= $l->id ?>"><?= $l->nama ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>

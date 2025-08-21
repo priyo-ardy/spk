@@ -45,8 +45,27 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card rounded-0">
-                        <div class="card-body">Start creating your amazing application!</div>
-                        <div class="card-footer">Footer</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" id="dataTable">
+                                    <thead class="text-center">
+                                        <th class="align-middle bg-body-secondary">SPK No.</th>
+                                        <th class="align-middle bg-body-secondary">Date</th>
+                                        <th class="align-middle bg-body-secondary">Requested Dept.</th>
+                                        <th class="align-middle bg-body-secondary">Reported By</th>
+                                        <th class="align-middle bg-body-secondary">Equipment Name</th>
+                                        <th class="align-middle bg-body-secondary">Equipment No.</th>
+                                        <th class="align-middle bg-body-secondary">Equipment Model</th>
+                                        <th class="align-middle bg-body-secondary">Equipment Type</th>
+                                        <th class="align-middle bg-body-secondary">Problem Description</th>
+                                        <th class="align-middle bg-body-secondary">Problem Image</th>
+                                        <th class="align-middle bg-body-secondary">Team Leader</th>
+                                        <th class="align-middle bg-body-secondary">Status</th>
+                                        <th class="align-middle bg-body-secondary">#</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -26,6 +26,8 @@ buttons.back.addEventListener('click', (e) => {
 function resetForm() {
     formData.reset();
     $(dataForm.workshop).trigger('change');
+    $(dataForm.staff).trigger('change');
+    $(dataForm.material).trigger('change');
     $(dataForm.tipe).trigger('change');
     $(dataForm.spv).trigger('change');
 
