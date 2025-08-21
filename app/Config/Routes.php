@@ -26,6 +26,16 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
     });
 
+    $routes->group('/spk_mold', static function ($routes){
+        $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
+        $routes->get('add', 'Transaction\SPK\Mold\MoldSpk::add');
+        $routes->post('save', 'Transaction\SPK\Mold\MoldSpk::saveData');
+        $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
+        $routes->get('show/(:any)', 'Transaction\SPK\Mold\MoldSpk::showData/$1');
+        $routes->post('update', 'Transaction\SPK\Mold\MoldSpk::updateData');
+        $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
+    });
+
     // Master Data -> Material Management -> Material Category
     $routes->group('/material_category', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::index');
@@ -60,5 +70,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->group('/machine', static function($routes){
         $routes->get('', 'MasterData\CommonData\Machine\Machine::index');
         $routes->post('machine_data', 'MasterData\CommonData\Machine\Machine::getDataById');
+    });
+
+    // Master Data -> Material Management -> Material
+    $routes->group('/material', static function($routes){
+        $routes->get('', 'MasterData\MaterialManagement\Material\Material::index');
+        $routes->post('get_material', 'MasterData\MaterialManagement\Material\Material::getMaterialData');
     });
 });

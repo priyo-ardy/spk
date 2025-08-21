@@ -39,7 +39,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('spk') ?>" class="nav-link" onclick="loading()">
+                            <a href="<?= base_url('spk_mold') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-folder2-open"></i>
                                 <p>
                                     SPK Mold
