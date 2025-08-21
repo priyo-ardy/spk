@@ -23,6 +23,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('table', 'Transaction\SPK\General\GeneralSpk::loadTable');
         $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
         $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
+        $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
     });
 
     // Master Data -> Material Management -> Material Category

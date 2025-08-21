@@ -41,6 +41,42 @@ function loadTable() {
     });
 }
 
-function showImage(token) {
-    alert(token);
+function refreshTable() {
+    $('#dataTable').DataTable().ajax.reload(null, false);
 }
+
+function showImage(token) {
+    try {
+        loading();
+        fetchData(baseurl + '/spk_general/image', 'POST', JSON.stringify({ token: token }))
+            .then((result) => {
+                document.getElementById('modalTitle').textContent = result.data.title;
+                const bodyImage = document.getElementById('imageData');
+                const img = document.createElement('img');
+                img.classList.add("img-fluid", "img-thumbnail");
+                img.src = result.data.image;
+
+                bodyImage.appendChild(img);
+                console.log(result.data);
+                $('#modalImage').modal('show');
+                hideLoading();
+            }).catch((err) => {
+                pesanError(err.message);
+                hideLoading();
+            });
+    } catch (e) {
+        pesanError(e.message);
+        hideLoading();
+    }
+}
+
+function clearModal() {
+    const bodyImage = document.getElementById('imageData');
+    bodyImage.textContent = '';
+    document.getElementById('modalTitle').textContent = '';
+    $('#modalImage').modal('hide');
+}
+
+buttons.refresh.addEventListener('click', (e) => {
+    refreshTable();
+})

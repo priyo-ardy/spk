@@ -72,4 +72,5 @@
         </div>
     </div>
 </main>
+<?= $this->include('Transaction/SPK/General/modal') ?>
 <?= $this->endSection(); ?>
