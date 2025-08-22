@@ -9,3 +9,40 @@ buttons.add.addEventListener('click', (e) => {
     loading();
     window.location.replace(baseurl + '/spk_mold/add');
 })
+
+loadTable();
+
+function loadTable() {
+    $('#dataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        responsive: false,
+        bDestroy: true,
+        autoWidth: false,
+        scrollX: true,
+        search: {
+            return: true,
+        },
+        order: [],
+        ajax: {
+            url: baseurl + "/spk_mold/table",
+            type: "POST",
+            data: "raw",
+            action: "calls",
+        },
+        error: function (xhr, error, thrown) {
+            pesanError(error.message);
+        },
+        deferRender: true,
+        columnsDefs: [
+            {
+                targets: 0,
+                orderable: false,
+            },
+        ],
+    });
+}
+
+function refreshTable() {
+    $('#dataTable').DataTable().ajax.reload(null, false);
+}

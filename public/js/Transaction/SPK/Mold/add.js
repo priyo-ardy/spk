@@ -29,6 +29,13 @@ function resetForm() {
     $(dataForm.staff).trigger('change');
     $(dataForm.part_no).trigger('change');
     $(dataForm.reason).trigger('change');
+
+    const invalidElement = document.querySelectorAll(".is-valid");
+    if (invalidElement.length > 0) {
+        invalidElement.forEach(element => {
+            element.classList.remove('is-invalid');
+        })
+    }
 }
 
 buttons.cancel.addEventListener('click', (e) => {
@@ -60,3 +67,40 @@ dataForm.part_no.onchange = () => {
         hideloading();
     }
 }
+
+function validasi() {
+    let isValid = true;
+    const requiredElement = document.querySelectorAll("[required]");
+    if (requiredElement.length > 0) {
+        requiredElement.forEach(element => {
+            if (element.value.trim() === '') {
+                isValid = false;
+                element.classList.add('is-invalid');
+            } else {
+                element.classList.remove('is-invalid');
+            }
+        })
+    }
+
+    return isValid;
+}
+
+buttons.save.addEventListener('click', (e) => {
+    if (validasi()) {
+        try {
+            loading();
+            fetchData(baseurl + '/spk_mold/save', 'POST', new FormData(formData))
+                .then(result => {
+                    pesanSukses(result.message);
+                    resetForm();
+                    hideLoading();
+                })
+                .catch(err => {
+                    pesanError(err.message);
+                    hideLoading();
+                })
+        } catch (e) {
+            pesanError(e.message);
+        }
+    }
+});

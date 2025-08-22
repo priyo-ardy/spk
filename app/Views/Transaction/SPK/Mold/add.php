@@ -25,7 +25,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <form id="formData">
+            <form id="formData" enctype="multipart/form-data">
                 <div class="row mb-3">
                     <div class="col-12">
                         <div class="btn-group" role="group" aria-label="toolbar">
@@ -108,7 +108,7 @@
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
-                                        <input type="file" class="custom-file-input form-control rounded-0" id="fupload" required name="fupload" accept="image/jpeg, image/png, image/gif, image/webp">
+                                        <input type="file" multiple class="custom-file-input form-control rounded-0" id="fupload" required name="fupload[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 clearfix mb-3">
