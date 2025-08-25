@@ -46,9 +46,17 @@
     <link
         rel="stylesheet"
         href="<?= base_url() . 'dist/css/adminlte.css'; ?>" />
-    <!-- Fontawesome -->
-    <link rel="stylesheet" href="<?php echo base_url() ?>plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url() . 'css/loading.css' ?>">
+        <!-- Fontawesome -->
+    <link 
+        rel="stylesheet" 
+        href="<?php echo base_url() ?>plugins/fontawesome-free/css/all.min.css">
+    <link 
+        rel="stylesheet" 
+        href="<?= base_url() . 'css/loading.css' ?>">
+    <!-- Fancy box styling -->
+    <link
+        rel="stylesheet"
+        href="<?= base_url(). 'lightbox/src/css/lightbox.css' ?>" />
 
     <style>
         .form-label {
@@ -166,22 +174,25 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
     <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script 
+        src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- SweetAlert Plugins -->
     <script
         src="<?= base_url() . 'SweetAlert/sweetalert2.min.js'; ?>"></script>
     <!-- Datatable -->
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script 
+        src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <!-- AdminLTE JS -->
     <script
         src="<?= base_url() . 'dist/js/adminlte.js'; ?>"></script>
-    <!-- Toastify -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Toastify/1.12.0/Toastify.min.js"></script>
-
+    <!-- Fancybox for image preview -->
+    <script 
+        src="<?= base_url().'lightbox/src/js/lightbox.js' ?>"></script>
+    
     <!-- My App Custom JS -->
     <script src="<?= base_url() . 'js/App/app.js' ?>"></script>
     <script src="<?= base_url() . 'js/App/fetching.js' ?>"></script>
-
+    
     <!-- Module JS -->
     <?php foreach ($footer as $ft): ?>
         <?= $ft . PHP_EOL; ?>

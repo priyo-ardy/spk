@@ -341,7 +341,7 @@ class MoldSpk extends BaseController
             'title' => "View Mold SPK Details",
             'token' => enkripsi($get_data->id),
             'data' => $get_data,
-            'details' => $this->detailModel->where('id_spk', $id_spk)->findAll(),
+            'details' => $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'asc')->findAll(),
             'dept' => $this->deptModel->generateList(),
             'karyawan' => $this->karyawanModel->generateList(),
             'material' => $this->materialModel->generateList(),
@@ -352,5 +352,369 @@ class MoldSpk extends BaseController
         ];
 
         return view('Transaction/SPK/Mold/edit', $data);
+    }
+
+    function updateData(){
+        $aksi = "update";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+
+        try{
+            $token = trim($this->request->getPost('data_token'));
+            $id_spk = dekripsi($token);
+            $code = trim($this->request->getPost('data_code'));
+            $workshop = trim($this->request->getPost('data_workshop'));
+            $staff = trim($this->request->getPost('data_staff'));
+            $tanggal = trim($this->request->getPost('data_tanggal'));
+            $part_no = trim($this->request->getPost('data_material'));
+            $part_name = trim($this->request->getPost('data_name'));
+            $part_model = trim($this->request->getPost('data_model'));
+            $mold_no = trim($this->request->getPost('data_mold'));
+            $repair_reason = trim($this->request->getPost('data_repair'));
+            $description = trim($this->request->getPost('data_keterangan'));
+            $photos = $this->request->getFileMultiple('fupload');
+
+            $rules = [
+                'data_workshop' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Reported department/workshop is required"
+                    ]
+                ],
+                'data_staff' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Reported staff is required"
+                    ]
+                ],
+                'data_tanggal' => [
+                    'rules' => 'required|valid_date',
+                    'errors' => [
+                        'required' => "Reported date is required",
+                        'valid_date' => "Reported date must have a valid date format"
+                    ]
+                ],
+                'data_material' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Part No. is required"
+                    ]
+                ],
+                'data_repair' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Reason for repair is required"
+                    ]
+                ],
+                'data_keterangan' => [
+                    'rules' => 'required|min_length[10]',
+                    'errors' => [
+                        'required' => "Problem description is required",
+                        'min_length' => "The minimum character of problem description is {param}"
+                    ]
+                ]
+            ];
+
+            if(count($photos) > 1){
+                $rules = array_merge([
+                    'fupload' => [
+                        'label' => 'Foto Karyawan',
+                        'rules' => 'uploaded[fupload]|max_size[fupload,5120]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
+                        'errors' => [
+                            'uploaded' => 'Problem position photo is required',
+                            'max_size' => 'Problem position photo maximum size is 5MB',
+                            'is_image' => 'Problem position photo must image file type (JPG/JPEG/PNG)',
+                            'mime_in' => 'Problem position photo file format must JPG, JPEG atau PNG',
+                            'ext_in' => 'Problem position photo file extension mus .jpg, .jpeg atau .png'
+                        ]
+                    ],
+                ]);
+            }
+
+            $this->validasi->setRules($rules);
+            if (!$this->validasi->withRequest($this->request)->run()) {
+                $error_message = implode("<br>", $this->validasi->getErrors());
+                log_action($this->module, $aksi, "error", current_url(), "Save failed, failed to make validation");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Save failed, failed to make a validation : " . $error_message);
+            }
+
+            // Update header
+            $data_header = [
+                'dept' => $workshop,
+                'report_by' => $staff,
+                'report_date' => $tanggal,
+                'part_no' => $part_no,
+                'part_name' => $part_name,
+                'part_model' => $part_model,
+                'mold_no' => $mold_no,
+                'repair_reason' => $repair_reason,
+                'description' => $description,
+                'updated_by' => $this->NIK,
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data_header);
+            if(!$update){
+                log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Update failed, there was an error during processing you request, please try again later or contact your administrator");
+            }
+
+            $get_max_row = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'desc')->limit(1)->first();
+            if($get_max_row){
+                $baris = $get_max_row->urut + 1;
+            }else{
+                $baris = 1;
+            }
+
+            // Update details
+            if(count($photos) > 1){                
+                $success_count = 0;
+                $error_messages = [];
+                $uploadPath = FCPATH . 'uploads/mold_spk';
+                    
+                if(!is_dir($uploadPath)){
+                    mkdir($uploadPath, 0777, true);
+                    chmod($uploadPath, 0777);
+                }
+
+                foreach($photos as $photo){
+                    if($photo->isValid() && !$photo->hasMoved()){
+                        $fileName = "$code-$baris." . $photo->getExtension();
+                        $photo->move($uploadPath, $fileName, true);
+                        $data_details = [
+                            'id' => generate_uuid(),
+                            'id_spk' => $id_spk,
+                            'urut' => $baris,
+                            'file_name' => $fileName,
+                            'file_size' => $photo->getSize(),
+                            'file_path' => $uploadPath,
+                            'created_by' => $this->NIK,
+                        ];
+
+                        $insert_details = $this->detailModel->insert($data_details, true);
+                        if(!$insert_details){
+                            // Rollback transaction jika gagal insert detail
+                            $error_messages[] = "Failed to save image data for file: " . $photo->getName();
+                            // Hapus file yang sudah diupload
+                            if (file_exists($uploadPath . $fileName)) {
+                                unlink($uploadPath . $fileName);
+                            }
+                            else {
+                                $success_count++;
+                                $baris++;
+                            }
+                        }
+                    }else {
+                        $error_messages[] = "Invalid file: " . $photo->getName();
+                    }
+
+                    $baris ++;
+                }
+
+                $this->db->transComplete();
+                if($this->db->transStatus() === false){
+                    $this->db->transRollback();
+                    log_action($this->module, $aksi, "error", current_url(), "Save failed", '', json_encode([
+                        'data' => $this->db->error()
+                    ]));
+
+                    return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Save failed due to database transaction error");
+                }
+
+                if(!empty($error_messages)){
+                    log_action($this->module, $aksi, "warning", current_url(), "Save completed with some errors", implode(", ", $error_messages));
+                    return pesan(ResponseInterface::HTTP_OK, "Data saved successfully, but there were some issues with file uploads: " . implode(", ", $error_messages));
+                }
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Data updated successfully");
+            return pesan(ResponseInterface::HTTP_OK, "Data udpated successfully");
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function prevData(){
+        $aksi = "Prev Data";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not found");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['code'])){
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+            $get_prev_data = $this->spkModel->prevData($code);
+            if(!$get_prev_data){
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the fist data");
+            }
+
+            $this->db->transComplete();
+            if($this->db->transStatus() === false){
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Getting prevoius data failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to getting previous data due to database transaction error");
+            }
+
+            $data = [
+                'token' => enkripsi($get_prev_data->id)
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function nextData(){
+        $aksi = "Next Data";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not found");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['code'])){
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+            $get_prev_data = $this->spkModel->nextData($code);
+            if(!$get_prev_data){
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the last data");
+            }
+
+            $this->db->transComplete();
+            if($this->db->transStatus() === false){
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Getting next data failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to getting next data due to database transaction error");
+            }
+
+            $data = [
+                'token' => enkripsi($get_prev_data->id)
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function deleteImage(){
+        $aksi = "Delete SPK Image";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not found");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['token'])){
+                log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
+            }
+
+            $id_detail = dekripsi($json_data['token']);
+
+            $get = $this->detailModel->where('id', $id_detail)->first();
+            if(!$get){
+                log_action($this->module, $aksi, "error", current_url(), "Image not found");
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Image data not found");
+            }
+
+            $uploadPath = FCPATH . 'uploads/mold_spk/';
+            $fileName = $get->file_name;
+
+            if(!unlink($uploadPath . $fileName)){
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to delete image");
+            }
+
+            $delete = $this->detailModel->delete($id_detail, true);
+            if(!$delete){
+                log_action($this->module, $aksi, "error", current_url(), "Failed to delete the image");
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to delete the image file");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Image deleted");
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occurred", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+
+        $this->db->transComplete();
     }
 }

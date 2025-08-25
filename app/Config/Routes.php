@@ -34,6 +34,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('show/(:any)', 'Transaction\SPK\Mold\MoldSpk::showData/$1');
         $routes->post('update', 'Transaction\SPK\Mold\MoldSpk::updateData');
         $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
+        $routes->post('prev', 'Transaction\SPK\Mold\MoldSpk::prevData');
+        $routes->post('next', 'Transaction\SPK\Mold\MoldSpk::nextData');
+        $routes->post('delete_image', 'Transaction\SPK\Mold\MoldSpk::DeleteImage');
     });
 
     // Master Data -> Material Management -> Material Category
