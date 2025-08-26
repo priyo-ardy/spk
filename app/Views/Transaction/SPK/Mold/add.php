@@ -96,6 +96,31 @@
                                         <label class="form-label" for="data_mold">Part Model</label>
                                         <input type="text" name="data_mold" id="data_mold" class="form-control rounded-0 bg-body-secondary" readonly maxlength="150" placeholder="Mold No." autocomplete="off">
                                     </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
+                                        <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
+                                        <select name="data_sub_defect" id="data_sub_defect" class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_berulang">Repeat Problem <strong class="text-danger">*</strong></label>
+                                        <select name="data_berulang" id="data_berulang" class="form-control select2 select2bs5" required>
+                                            <option value="0">No</option>
+                                            <option value="0">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
+                                        <select name="data_posisi" id="data_posisi" class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                        </select>
+                                    </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_repair">Repair Reason</label>
                                         <select name="data_repair" id="data_repair" class="form-control select2 select2bs5" required>
@@ -113,7 +138,7 @@
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_keterangan">Problem Description <strong class="text-danger">*</strong></label>
-                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control rounded-0" required placeholder="Describe the problem here" rows="5"></textarea>
+                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control rounded-0 summernote" required placeholder="Describe the problem here" rows="5"></textarea>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                 </div>

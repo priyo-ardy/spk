@@ -60,8 +60,11 @@
                                         <th class="align-middle bg-body-secondary">Repair Reason</th>
                                         <th class="align-middle bg-body-secondary">Problem Description</th>
                                         <th class="align-middle bg-body-secondary">Problem Image</th>
+                                        <th class="align-middle bg-body-secondary">Defect</th>
+                                        <th class="align-middle bg-body-secondary">Sub Defect</th>
+                                        <th class="align-middle bg-body-secondary">Position</th>
+                                        <th class="align-middle bg-body-secondary">Repeat Problem</th>
                                         <th class="align-middle bg-body-secondary">Status</th>
-                                        <th class="align-middle bg-body-secondary">#</th>
                                     </thead>
                                 </table>
                             </div>

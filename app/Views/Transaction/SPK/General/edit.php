@@ -1,6 +1,23 @@
 <?= $this->extend('Layout/template'); ?>
 
 <?= $this->section('content'); ?>
+<style>
+    .image-container {
+            position: relative;
+            /* display: inline-block; */
+            /* margin: 10px; */
+        }
+    .action-buttons {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+    .image-container:hover .action-buttons{
+        opacity: 1;
+    }
+</style>
 
 <main class="app-main">
     <div class="app-content-header">
@@ -42,14 +59,13 @@
                             <button type="button" id="btnCancel" hidden class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancel">
                                 <i class="bi bi-arrow-counterclockwise"></i>&ensp;Cancel
                             </button>
-                            <button type="button" class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle" data-bs-toggle="dropdown" title="Action"aria-expanded="false">
-                                Action
+                            <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Previous">
+                                <i class="bi bi-chevron-double-left"></i>&ensp;Prev
                             </button>
-                            <ul class="dropdown-menu rounded-0 fade">
-                                <li><a href="#" class="dropdown-item" title="Approve">Approve</a></li>
-                                <li><a href="#" class="dropdown-item" title="De-Approve">De-Approve</a></li>
-                                <li><a href="#" class="dropdown-item" title="Print">Print</a></li>
-                            </ul>
+                            <button type="button" id="btnNext" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Next">
+                                Next&ensp;<i class="bi bi-chevron-double-right"></i>
+                            </button>
+                            
                         </div>
                     </div>
                 </div>
@@ -131,7 +147,7 @@
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
-                                        <input type="file" class="custom-file-input form-control rounded-0" id="fupload" disabled name="fupload" accept="image/jpeg, image/png, image/gif, image/webp">
+                                        <input type="file" class="custom-file-input form-control rounded-0" id="fupload" disabled name="fupload[]" multiple accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
@@ -141,7 +157,20 @@
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="image-preview">Problem Location</label>
-                                        <img src="<?= base_url() . 'uploads/equipment_spk/'.$data->photo ?>" alt="problem-image" class="img-fluid img-thumbnail">
+                                        <div class="row g-2">
+                                            <?php foreach($details as $item): ?>
+                                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 clearfix image-container">
+                                                    <a href="<?= base_url() . 'uploads/equipment_spk/'.$item->file_name ?>?#" class="link-underline-opacity-0" data-lightbox="preview" data-title="<?= $item->file_name ?>">
+                                                        <img src="<?= base_url() . 'uploads/equipment_spk/'.$item->file_name ?>" class="img-thumbnail img-fluid" alt="<?= $item->file_name ?>">
+                                                    </a>
+                                                    <div class="action-buttons">
+                                                        <button type="button" class="btn btn-sm rounded-0 btn-danger btn-delete" data-id="1" onclick="deleteImage('<?= enkripsi(($item->id)) ?>')">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

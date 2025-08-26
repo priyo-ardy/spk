@@ -53,12 +53,29 @@ class MoldSPK extends Migration
                 'constraint' => 50,
                 'null' => false
             ],
-            'photo' => [
+            'description' => [
                 'type' => "TEXT",
                 'null' => false
             ],
-            'description' => [
-                'type' => "TEXT",
+            'defect' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
+                'null' => false
+            ],
+            'sub_defect' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
+                'null' => false
+            ],
+            'berulang' => [
+                'type' => "VARCHAR",
+                'constraint' => 1,
+                'null' => false,
+                'default' => '0'
+            ],
+            'position' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
                 'null' => false
             ],
             'status' => [

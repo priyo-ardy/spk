@@ -20,6 +20,13 @@ const dataForm = {
     keterangan: document.getElementById('data_keterangan')
 }
 
+lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true,
+    'showImageNumberLabel': true,
+    'alwaysShowNavOnTouchDevices': true
+});
+
 function bukaForm() {
     buttons.back.setAttribute('hidden', true);
     buttons.edit.setAttribute('hidden', true);
@@ -128,3 +135,11 @@ buttons.update.addEventListener('click', (e) => {
         }
     }
 })
+
+function deleteImage(token) {
+    try {
+        hapusData('/spk_general/delete_image', token);
+    } catch (e) {
+        pesanError(e.message);
+    }
+}

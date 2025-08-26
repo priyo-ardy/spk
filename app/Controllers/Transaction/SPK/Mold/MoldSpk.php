@@ -48,8 +48,8 @@ class MoldSpk extends BaseController
         $this->db = Database::connect();
 
         $table = 'vw_mold_spk';
-        $column_order = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status'];
-        $column_search = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status'];
+        $column_order = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang'];
+        $column_search = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang'];
         $order = array('code' => 'desc');
 
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
@@ -82,8 +82,11 @@ class MoldSpk extends BaseController
                 $row[] = '
                         <button type="button" class="btn rounded-0 btn-primary btn-sm" onclick="showImage(`'.enkripsi($item->id).'`)">Show Image</button>
                     ';
+                $row[] = $item->nama_defect;
+                $row[] = $item->nama_sub_defect; 
+                $row[] = $item->nama_posisi_defect; 
+                $row[] = $item->nama_berulang;
                 $row[] = $item->status;
-                $row[] = '';
 
                 $data[] = $row;
             }
@@ -202,10 +205,10 @@ class MoldSpk extends BaseController
                 ],
                 'fupload' => [
                     'label' => 'Foto Karyawan',
-                    'rules' => 'uploaded[fupload]|max_size[fupload,5120]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
+                    'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
                     'errors' => [
                         'uploaded' => 'Problem position photo is required',
-                        'max_size' => 'Problem position photo maximum size is 5MB',
+                        'max_size' => 'Problem position photo maximum size is 50MB',
                         'is_image' => 'Problem position photo must image file type (JPG/JPEG/PNG)',
                         'mime_in' => 'Problem position photo file format must JPG, JPEG atau PNG',
                         'ext_in' => 'Problem position photo file extension mus .jpg, .jpeg atau .png'
@@ -423,10 +426,10 @@ class MoldSpk extends BaseController
                 $rules = array_merge([
                     'fupload' => [
                         'label' => 'Foto Karyawan',
-                        'rules' => 'uploaded[fupload]|max_size[fupload,5120]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
+                        'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
                         'errors' => [
                             'uploaded' => 'Problem position photo is required',
-                            'max_size' => 'Problem position photo maximum size is 5MB',
+                            'max_size' => 'Problem position photo maximum size is 50MB',
                             'is_image' => 'Problem position photo must image file type (JPG/JPEG/PNG)',
                             'mime_in' => 'Problem position photo file format must JPG, JPEG atau PNG',
                             'ext_in' => 'Problem position photo file extension mus .jpg, .jpeg atau .png'
@@ -779,10 +782,10 @@ class MoldSpk extends BaseController
 
     function exportData(){
         $filename = "oem_list_". date("Ymd_his") . '.xlsx';
-        $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Problem Description'];
+        $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Defect', 'Sub Defect', 'Problem Position', 'Repeat Problem', 'Problem Description'];
         
         $dataCallback = function ($offset, $limit){
-            $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, description';
+            $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, nama_defect, nama_sub_defect, nama_posisi_defect, nama_berulang, description';
             return $this->masterModel->getChunkedData('vw_mold_spk', $offset, $limit, 'code', $column);
         };
 

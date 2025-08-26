@@ -24,6 +24,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
         $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
         $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
+        $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
+        $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
     });
 
     $routes->group('/spk_mold', static function ($routes){

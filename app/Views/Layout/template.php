@@ -57,6 +57,10 @@
     <link
         rel="stylesheet"
         href="<?= base_url(). 'lightbox/src/css/lightbox.css' ?>" />
+    <!-- Summernote -->
+    <link
+        rel="stylesheet"
+        href="<?= base_url().'plugins/summernote/summernote.min.css' ?>" />
 
     <style>
         .form-label {
@@ -80,6 +84,7 @@
             -moz-appearance: textfield;
         }
     </style>
+    
     <?= csrf_meta() . PHP_EOL ?>
 </head>
 
@@ -188,6 +193,9 @@
     <!-- Fancybox for image preview -->
     <script 
         src="<?= base_url().'lightbox/src/js/lightbox.js' ?>"></script>
+    <!-- Summernote -->
+     <script
+     src="<?= base_url(). '/plugins/summernote/summernote.min.js' ?>"></script>
     
     <!-- My App Custom JS -->
     <script src="<?= base_url() . 'js/App/app.js' ?>"></script>

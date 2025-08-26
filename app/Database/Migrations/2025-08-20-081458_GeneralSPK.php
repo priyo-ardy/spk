@@ -58,10 +58,6 @@ class GeneralSPK extends Migration
                 'constraint' => 50,
                 'null' => false
             ],
-            'photo' => [
-                'type' => "TEXT",
-                'null' => false
-            ],
             'description' => [
                 'type' => "TEXT",
                 'null' => false

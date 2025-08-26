@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModal()"></button>
             </div>
             <div class="modal-body">
-                <div id="imageData"></div>
+                <div class="row g-2" id="imageData"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary rounded-0" id="btnSaveMember" onclick="clearModal()">
