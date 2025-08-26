@@ -27,4 +27,14 @@ class MasterModel extends Model
 
         return $generated_code;
     }
+
+    public function getChunkedData($table, $offset, $limit, $order, $field)
+    {
+        return $this->db->table($table)
+            ->select($field)
+            ->limit($limit, $offset)
+            ->orderBy($order, 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }

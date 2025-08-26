@@ -23,6 +23,11 @@ const dataForm = {
     description: document.getElementById('data_keterangan')
 }
 
+buttons.back.addEventListener('click', (e) => {
+    loading();
+    window.location.replace(baseurl + '/spk_mold');
+})
+
 // Inisialisasi Lightbox
 lightbox.option({
     'resizeDuration': 200,

@@ -692,9 +692,7 @@ class MoldSpk extends BaseController
             $uploadPath = FCPATH . 'uploads/mold_spk/';
             $fileName = $get->file_name;
 
-            if(!unlink($uploadPath . $fileName)){
-                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to delete image");
-            }
+            unlink($uploadPath . $fileName);
 
             $delete = $this->detailModel->delete($id_detail, true);
             if(!$delete){
@@ -703,6 +701,7 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to delete the image file");
             }
 
+            $this->db->transComplete();
             return pesan(ResponseInterface::HTTP_OK, "Image deleted");
         } catch(\Exception $e){
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occurred", '', json_encode([
@@ -714,7 +713,79 @@ class MoldSpk extends BaseController
 
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
         }
+    }
 
-        $this->db->transComplete();
+    function showImage(){
+        $aksi = "Show Image";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['token'])){
+                log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
+            }
+
+            $id_spk = dekripsi($json_data['token']);
+            $get_header = $this->spkModel->where('id', $id_spk)->first();
+            $get_data = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'asc')->findAll();
+            if(!$get_data){
+                log_action($this->module, $aksi, "error", current_url(), "Mold SPK image not available");
+
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Mold SPK image not available");
+            }
+
+            $data = [];
+            $header = [
+                'title' => $get_header->code
+            ];
+
+            foreach($get_data as $item){
+                $data[] = [
+                    'file_name' => base_url().'uploads/mold_spk/' . $item->file_name,
+                    'image_file' => $item->file_name
+                ];
+            }
+
+            return $this->response
+                ->setStatusCode(ResponseInterface::HTTP_OK)
+                ->setJSON([
+                    'header' => $header,
+                    'data' => $data
+                ]);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occurred", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function exportData(){
+        $filename = "oem_list_". date("Ymd_his") . '.xlsx';
+        $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Problem Description'];
+        
+        $dataCallback = function ($offset, $limit){
+            $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, description';
+            return $this->masterModel->getChunkedData('vw_mold_spk', $offset, $limit, 'code', $column);
+        };
+
+        return export_to_excel($filename, $headers, $dataCallback);
     }
 }
