@@ -538,9 +538,6 @@ class MoldSpk extends BaseController
                 'updated_by' => $this->NIK,
             ];
 
-            log_message('debug', 'Data to update: ' . print_r($data_header, true));
-            log_message('debug', 'ID SPK: ' . $id_spk);
-
             $update = $this->spkModel->update($id_spk, $data_header);
             if(!$update){
                 log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
