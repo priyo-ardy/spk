@@ -130,6 +130,44 @@
                                         <label class="form-label" for="data_mold">Mold No.</label>
                                         <input type="text" name="data_mold" id="data_mold" class="form-control rounded-0 bg-body-secondary" readonly maxlength="150" placeholder="Mold No." autocomplete="off" value="<?= $data->mold_no ?>">
                                     </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
+                                        <select name="data_defect" id="data_defect" disabled class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach($defects as $defect): ?>
+                                                <option <?= ($data->defect == $defect->id) ? 'selected' : ''; ?> value="<?= $defect->id ?>"><?= $defect->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
+                                        <select name="data_sub_defect" id="data_sub_defect" disabled class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach($sub_defect as $sd): ?>
+                                                <option <?= ($data->sub_defect == $sd->id) ? 'selected' : '' ?> value="<?= $sd->id ?>"><?= $sd->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_berulang">Repeat Problem <strong class="text-danger">*</strong></label>
+                                        <select name="data_berulang" id="data_berulang" disabled class="form-control select2 select2bs5" required>
+                                            <option <?= ($data->berulang == '0') ? 'selected' : ''; ?> value="0">No</option>
+                                            <option <?= ($data->berulang == '1') ? 'selected' : ''; ?> value="1">Yes</option>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
+                                        <select name="data_posisi" id="data_posisi" disabled class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach($posisi as $pos): ?>
+                                                <option <?= ($data->position == $pos->id) ? 'selected' : '' ?> value="<?= $pos->id ?>"><?= $pos->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_repair">Repair Reason</label>
                                         <select name="data_repair" id="data_repair" class="form-control select2 select2bs5" required disabled>
@@ -147,7 +185,7 @@
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_keterangan">Problem Description <strong class="text-danger">*</strong></label>
-                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control rounded-0" disabled required placeholder="Describe the problem here" rows="5"><?= $data->description ?></textarea>
+                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control summernote rounded-0" required placeholder="Describe the problem here" rows="5"><?= $data->description ?></textarea>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">

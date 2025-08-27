@@ -82,7 +82,8 @@
                                             <?php foreach($material as $m): ?>
                                                     <option value="<?= $m->id ?>"><?= "$m->code - $m->name" ?></option>
                                             <?php endforeach; ?>
-                                        </select> 
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_name">Part Name</label>
@@ -100,26 +101,36 @@
                                         <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
+                                            <?php foreach($defects as $defect): ?>
+                                                <option value="<?= $defect->id ?>"><?= $defect->name ?></option>
+                                            <?php endforeach; ?>
                                         </select>
+                                        <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
-                                        <select name="data_sub_defect" id="data_sub_defect" class="form-control select2 select2bs5" required>
+                                        <select name="data_sub_defect" id="data_sub_defect" disabled class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
                                         </select>
+                                        <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_berulang">Repeat Problem <strong class="text-danger">*</strong></label>
                                         <select name="data_berulang" id="data_berulang" class="form-control select2 select2bs5" required>
                                             <option value="0">No</option>
-                                            <option value="0">Yes</option>
+                                            <option value="1">Yes</option>
                                         </select>
+                                        <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
                                         <select name="data_posisi" id="data_posisi" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
+                                            <?php foreach($posisi as $pos): ?>
+                                                <option value="<?= $pos->id ?>"><?= $pos->name ?></option>
+                                            <?php endforeach; ?>
                                         </select>
+                                        <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_repair">Repair Reason</label>

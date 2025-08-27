@@ -4,6 +4,15 @@ const buttons = {
     save: document.getElementById('btnSave'),
     cancel: document.getElementById('btnCancel'),
 }
+
+window.onload = () => {
+    $('.summernote').summernote({
+        height: 300, // set editor height
+        minHeight: null, // set minimum height of editor
+        maxHeight: null, // set maximum height of editor
+    });
+}
+
 const dataForm = {
     code: document.getElementById('data_code'),
     workshop: document.getElementById('data_workshop'),
@@ -15,7 +24,9 @@ const dataForm = {
     mold_no: document.getElementById('data_mold'),
     reason: document.getElementById('data_repair'),
     fupload: document.getElementById('fupload'),
-    description: document.getElementById('data_keterangan')
+    description: document.getElementById('data_keterangan'),
+    defect: document.getElementById('data_defect'),
+    sub_defect: document.getElementById('data_sub_defect')
 }
 
 buttons.back.addEventListener('click', (e) => {
@@ -29,6 +40,7 @@ function resetForm() {
     $(dataForm.staff).trigger('change');
     $(dataForm.part_no).trigger('change');
     $(dataForm.reason).trigger('change');
+    $('.summernote').summernote('code', '');
 
     const invalidElement = document.querySelectorAll(".is-valid");
     if (invalidElement.length > 0) {
@@ -65,6 +77,35 @@ dataForm.part_no.onchange = () => {
     } catch (e) {
         pesanError(e.message);
         hideloading();
+    }
+}
+
+dataForm.defect.onchange = (e) => {
+    if (dataForm.defect.value == '') {
+        dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+        dataForm.sub_defect.setAttribute('disabled', true);
+    } else {
+        try {
+            fetchData(baseurl + '/sub_defect/get_list', 'POST', JSON.stringify({ token: dataForm.defect.value }))
+                .then(result => {
+                    dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+                    if (result.data.length > 0) {
+                        dataForm.sub_defect.removeAttribute('disabled');
+                        result.data.forEach(item => {
+                            const dataList = `
+                                <option value="${item.token}">${item.name}</option>
+                            `;
+
+                            dataForm.sub_defect.insertAdjacentHTML('beforeend', dataList);
+                        })
+                    }
+                })
+                .catch(err => {
+                    dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+                })
+        } catch (e) {
+            pesanError(e.message);
+        }
     }
 }
 

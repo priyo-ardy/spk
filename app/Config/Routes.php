@@ -26,6 +26,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
         $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
         $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
+        $routes->post('prev', 'Transaction\SPK\General\GeneralSpk::prevData');
+        $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
     });
 
     $routes->group('/spk_mold', static function ($routes){
@@ -61,6 +63,16 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('get', 'MasterData\CommonData\Workshop\Workshop::getData');
         $routes->post('update', 'MasterData\CommonData\Workshop\Workshop::updateData');
         $routes->post('delete', 'MasterData\CommonData\Workshop\Workshop::deleteData');
+    });
+
+    // Master Data -> Common Data -> Defect
+    $routes->group('/defect', static function($routes){
+
+    });
+
+    // Master Data -> Common Data -> Sub Defect
+    $routes->group('/sub_defect', static function($routes){
+        $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
     });
 
     // Master Data -> Common Data -> Tonnage

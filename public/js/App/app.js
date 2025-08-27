@@ -11,7 +11,6 @@ const Default = {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  $('.summernote').summernote();
   const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
   if (
     sidebarWrapper &&
