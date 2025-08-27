@@ -26,6 +26,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
         $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
         $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
+        $routes->post('prev', 'Transaction\SPK\General\GeneralSpk::prevData');
+        $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
     });
 
     $routes->group('/spk_mold', static function ($routes){

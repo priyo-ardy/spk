@@ -698,4 +698,116 @@ class GeneralSpk extends BaseController
 
         return export_to_excel($filename, $headers, $dataCallback);
     }
+
+    function prevData(){
+        $aksi = "Prev Data";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not found");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['code'])){
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+            $get_prev_data = $this->generalModel->prevData($code);
+            if(!$get_prev_data){
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the fist data");
+            }
+
+            $this->db->transComplete();
+            if($this->db->transStatus() === false){
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Getting prevoius data failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to getting previous data due to database transaction error");
+            }
+
+            $data = [
+                'token' => enkripsi($get_prev_data->id)
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
+
+    function nextData(){
+        $aksi = "Next Data";
+        if($this->request->getMethod() !== 'POST'){
+            log_action($this->module, $aksi, "error", current_url(), "Request method not found");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+        }
+
+        $this->db->transStart();
+
+        try{
+            $json_data = $this->request->getJSON(true);
+            if(!is_array($json_data)){
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if(!isset($json_data['code'])){
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("Job data ID is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+            $get_prev_data = $this->generalModel->nextData($code);
+            if(!$get_prev_data){
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the last data");
+            }
+
+            $this->db->transComplete();
+            if($this->db->transStatus() === false){
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Getting next data failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to getting next data due to database transaction error");
+            }
+
+            $data = [
+                'token' => enkripsi($get_prev_data->id)
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
+        } catch(\Exception $e){
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+        }
+    }
 }

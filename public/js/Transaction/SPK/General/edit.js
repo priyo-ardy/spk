@@ -1,9 +1,21 @@
+window.onload = () => {
+    $('.summernote').summernote({
+        height: 300, // set editor height
+        minHeight: null, // set minimum height of editor
+        maxHeight: null, // set maximum height of editor
+    });
+
+    $('.summernote').summernote('disable');
+}
+
 const formData = document.getElementById('formData');
 const buttons = {
     back: document.getElementById('btnBack'),
     edit: document.getElementById('btnEdit'),
     update: document.getElementById('btnUpdate'),
-    cancel: document.getElementById('btnCancel')
+    cancel: document.getElementById('btnCancel'),
+    prev: document.getElementById('btnPrev'),
+    next: document.getElementById('btnNext')
 }
 const dataForm = {
     token: document.getElementById('data_token'),
@@ -43,7 +55,7 @@ function bukaForm() {
     dataForm.fupload.removeAttribute('disabled');
     dataForm.keterangan.removeAttribute('readonly');
     dataForm.keterangan.classList.remove('bg-body-secondary');
-
+    $('.summernote').summernote('enable');
     dataForm.workshop.focus();
 }
 
@@ -143,3 +155,37 @@ function deleteImage(token) {
         pesanError(e.message);
     }
 }
+
+buttons.prev.addEventListener('click', (e) => {
+    try {
+        loading();
+        fetchData(baseurl + '/spk_general/prev', 'POST', JSON.stringify({ code: dataForm.code.value }))
+            .then(result => {
+                window.location.replace(baseurl + '/spk_general/show/' + result.data.token);
+            })
+            .catch(err => {
+                pesanWarning(err.message);
+                hideLoading();
+            })
+    } catch (e) {
+        pesanError(e.message);
+        hideLoading();
+    }
+})
+
+buttons.next.addEventListener('click', (e) => {
+    try {
+        loading();
+        fetchData(baseurl + '/spk_general/next', 'POST', JSON.stringify({ code: dataForm.code.value }))
+            .then(result => {
+                window.location.replace(baseurl + '/spk_general/show/' + result.data.token);
+            })
+            .catch(err => {
+                pesanWarning(err.message);
+                hideLoading();
+            })
+    } catch (e) {
+        pesanError(e.message);
+        hideLoading();
+    }
+})

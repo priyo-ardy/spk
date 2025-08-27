@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_keterangan">Problem Description <strong class="text-danger">*</strong></label>
-                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control rounded-0 bg-body-secondary" readonly required placeholder="Describe the problem here" rows="5"><?= $data->description ?></textarea>
+                                        <textarea name="data_keterangan" id="data_keterangan" class="form-control summernote rounded-0 bg-body-secondary" readonly required placeholder="Describe the problem here" rows="5"><?= $data->description ?></textarea>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
