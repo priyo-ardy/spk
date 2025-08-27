@@ -11,8 +11,11 @@ use App\Models\MasterData\CommonData\Dept\DeptModel;
 use App\Models\MasterData\CommonData\Employee\EmployeeModel;
 use App\Models\MasterData\CommonData\Leader\LeaderModel;
 use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
+use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use App\Models\DataTable\DataTableModel;
 use App\Models\Master\MasterModel;
+use App\Models\MasterData\CommonData\Defect\DefectModel;
+use App\Models\MasterData\CommonData\SubDefect\SubDefectModel;
 use Config\Services;
 use Config\Database;
 
@@ -29,6 +32,9 @@ class MoldSpk extends BaseController
     protected $masterModel;
     protected $repairModel;
     protected $dataTable;
+    protected $defectModel;
+    protected $positionModel;
+    protected $subDefectModel;
     protected $validasi;
     protected $enkripsi;
 
@@ -43,6 +49,9 @@ class MoldSpk extends BaseController
         $this->leaderModel = new LeaderModel();
         $this->masterModel = new MasterModel();
         $this->repairModel = new RepairReasonModel();
+        $this->defectModel = new DefectModel();
+        $this->positionModel = new ProblemPositionModel();
+        $this->subDefectModel = new SubDefectModel();
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
         $this->db = Database::connect();
@@ -139,6 +148,8 @@ class MoldSpk extends BaseController
             'karyawan' => $this->karyawanModel->generateList(),
             'material' => $this->materialModel->generateList(),
             'repair' => $this->repairModel->generateList(),
+            'defects' => $this->defectModel->generateList(),
+            'posisi' => $this->positionModel->generateList(),
             'footer' => [
                 '<script src="' . base_url().'js/Transaction/SPK/Mold/add.js' . '"></script>'
             ]
@@ -167,6 +178,10 @@ class MoldSpk extends BaseController
             $mold_no = trim($this->request->getPost('data_mold'));
             $repair_reason = trim($this->request->getPost('data_repair'));
             $description = trim($this->request->getPost('data_keterangan'));
+            $defect = trim($this->request->getPost('data_defect'));
+            $sub_defect = trim($this->request->getPost('data_sub_defect'));
+            $berulang = trim($this->request->getPost('data_berulang'));
+            $posisi_defect = trim($this->request->getPost('data_posisi'));
             $prefix_date = date("Ymd");
             $prefix = "SLMMJ-$prefix_date-$mold_no-";
             $code = $this->masterModel->generateCode('t_spk_mold', 'code', $prefix, 6) ;
@@ -195,6 +210,30 @@ class MoldSpk extends BaseController
                     'rules' => 'required',
                     'errors' => [
                         'required' => "Part No. is required"
+                    ]
+                ],
+                'data_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem defect is required'
+                    ]
+                ],
+                'data_sub_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem sub defect is required'
+                    ]
+                ],
+                'data_berulang' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem repeat is required'
+                    ]
+                ],
+                'data_posisi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem position is required'
                     ]
                 ],
                 'data_repair' => [
@@ -241,8 +280,12 @@ class MoldSpk extends BaseController
                 'part_name' => $part_name,
                 'part_model' => $part_model,
                 'mold_no' => $mold_no,
+                'defect' => $defect,
+                'sub_defect' => $sub_defect,
+                'berulang' => $berulang,
+                'position' => $posisi_defect,
                 'repair_reason' => $repair_reason,
-                'description' => $description,
+                'description' => strip_tags($description),
                 'created_by' => $this->NIK,
             ];
 
@@ -339,6 +382,7 @@ class MoldSpk extends BaseController
         $id_spk = dekripsi($token);
         
         $get_data = $this->spkModel->getDataById($id_spk);
+        $get_sub_defect = $this->subDefectModel->getListByDefect($get_data->defect);
 
         $data = [
             'title' => "View Mold SPK Details",
@@ -349,6 +393,9 @@ class MoldSpk extends BaseController
             'karyawan' => $this->karyawanModel->generateList(),
             'material' => $this->materialModel->generateList(),
             'repair' => $this->repairModel->generateList(),
+            'defects' => $this->defectModel->generateList(),
+            'sub_defect' => $get_sub_defect,
+            'posisi' => $this->positionModel->generateList(),
             'footer' => [
                 '<script src="' . base_url().'js/Transaction/SPK/Mold/edit.js' . '"></script>'
             ]
@@ -380,6 +427,10 @@ class MoldSpk extends BaseController
             $repair_reason = trim($this->request->getPost('data_repair'));
             $description = trim($this->request->getPost('data_keterangan'));
             $photos = $this->request->getFileMultiple('fupload');
+            $defect = trim($this->request->getPost('data_defect'));
+            $sub_defect = trim($this->request->getPost('data_sub_defect'));
+            $berulang = trim($this->request->getPost('data_berulang'));
+            $posisi_defect = trim($this->request->getPost('data_posisi'));
 
             $rules = [
                 'data_workshop' => [
@@ -407,6 +458,30 @@ class MoldSpk extends BaseController
                         'required' => "Part No. is required"
                     ]
                 ],
+                'data_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem defect is required'
+                    ]
+                ],
+                'data_sub_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem sub defect is required'
+                    ]
+                ],
+                'data_berulang' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem repeat is required'
+                    ]
+                ],
+                'data_posisi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem position is required'
+                    ]
+                ],
                 'data_repair' => [
                     'rules' => 'required',
                     'errors' => [
@@ -423,7 +498,7 @@ class MoldSpk extends BaseController
             ];
 
             if(count($photos) > 1){
-                $rules = array_merge([
+                $rules = array_merge($rules,[
                     'fupload' => [
                         'label' => 'Foto Karyawan',
                         'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
@@ -454,10 +529,17 @@ class MoldSpk extends BaseController
                 'part_name' => $part_name,
                 'part_model' => $part_model,
                 'mold_no' => $mold_no,
+                'defect' => $defect,
+                'sub_defect' => $sub_defect,
+                'berulang' => $berulang,
+                'position' => $posisi_defect,
                 'repair_reason' => $repair_reason,
-                'description' => $description,
+                'description' => strip_tags($description),
                 'updated_by' => $this->NIK,
             ];
+
+            log_message('debug', 'Data to update: ' . print_r($data_header, true));
+            log_message('debug', 'ID SPK: ' . $id_spk);
 
             $update = $this->spkModel->update($id_spk, $data_header);
             if(!$update){
@@ -476,7 +558,7 @@ class MoldSpk extends BaseController
             }
 
             // Update details
-            if(count($photos) > 1){                
+            if(count($photos) >= 1){                
                 $success_count = 0;
                 $error_messages = [];
                 $uploadPath = FCPATH . 'uploads/mold_spk';
@@ -513,31 +595,28 @@ class MoldSpk extends BaseController
                                 $baris++;
                             }
                         }
-                    }else {
-                        $error_messages[] = "Invalid file: " . $photo->getName();
                     }
 
                     $baris ++;
-                }
-
-                $this->db->transComplete();
-                if($this->db->transStatus() === false){
-                    $this->db->transRollback();
-                    log_action($this->module, $aksi, "error", current_url(), "Save failed", '', json_encode([
-                        'data' => $this->db->error()
-                    ]));
-
-                    return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Save failed due to database transaction error");
-                }
-
-                if(!empty($error_messages)){
-                    log_action($this->module, $aksi, "warning", current_url(), "Save completed with some errors", implode(", ", $error_messages));
-                    return pesan(ResponseInterface::HTTP_OK, "Data saved successfully, but there were some issues with file uploads: " . implode(", ", $error_messages));
+                    $success_count++;
                 }
             }
 
-            log_action($this->module, $aksi, "success", current_url(), "Data updated successfully");
-            return pesan(ResponseInterface::HTTP_OK, "Data udpated successfully");
+            $this->db->transComplete();
+            if($this->db->transStatus() === false){
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Update failed due to database transaction error");
+            }
+
+            if(!empty($error_messages)){
+                log_action($this->module, $aksi, "warning", current_url(), "Update completed with some errors", implode(", ", $error_messages));
+                return pesan(ResponseInterface::HTTP_OK, "Data updated successfully, but there were some issues with file uploads: " . implode(", ", $error_messages));
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Update success with $success_count new image file");
         } catch(\Exception $e){
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
@@ -569,7 +648,7 @@ class MoldSpk extends BaseController
 
             if(!isset($json_data['code'])){
                 log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
-                throw new \Exception("Job data ID is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
             }
 

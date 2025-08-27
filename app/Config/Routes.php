@@ -63,6 +63,16 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('delete', 'MasterData\CommonData\Workshop\Workshop::deleteData');
     });
 
+    // Master Data -> Common Data -> Defect
+    $routes->group('/defect', static function($routes){
+
+    });
+
+    // Master Data -> Common Data -> Sub Defect
+    $routes->group('/sub_defect', static function($routes){
+        $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
+    });
+
     // Master Data -> Common Data -> Tonnage
     $routes->group('/tonnage', static function ($routes) {
         $routes->get('', 'MasterData\CommonData\Tonnage\Tonnage::index');

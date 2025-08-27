@@ -58,9 +58,10 @@
         rel="stylesheet"
         href="<?= base_url(). 'lightbox/src/css/lightbox.css' ?>" />
     <!-- Summernote -->
-    <link
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <!-- <link
         rel="stylesheet"
-        href="<?= base_url().'plugins/summernote/summernote.min.css' ?>" />
+        href="<?= base_url().'plugins/summernote/summernote.min.css' ?>" /> -->
 
     <style>
         .form-label {
@@ -194,8 +195,9 @@
     <script 
         src="<?= base_url().'lightbox/src/js/lightbox.js' ?>"></script>
     <!-- Summernote -->
-     <script
-     src="<?= base_url(). '/plugins/summernote/summernote.min.js' ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+    <!-- <script
+        src="<?= base_url(). '/plugins/summernote/summernote.min.js' ?>"></script> -->
     
     <!-- My App Custom JS -->
     <script src="<?= base_url() . 'js/App/app.js' ?>"></script>
