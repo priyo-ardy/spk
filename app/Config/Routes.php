@@ -16,7 +16,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     });
 
     // Transaction -> SPK -> General
-    $routes->group('/spk_general', static function ($routes){
+    $routes->group('/spk_general', static function ($routes) {
         $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
         $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
         $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
@@ -30,7 +30,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
     });
 
-    $routes->group('/spk_mold', static function ($routes){
+    $routes->group('/spk_mold', static function ($routes) {
         $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
         $routes->get('add', 'Transaction\SPK\Mold\MoldSpk::add');
         $routes->post('save', 'Transaction\SPK\Mold\MoldSpk::saveData');
@@ -66,12 +66,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     });
 
     // Master Data -> Common Data -> Defect
-    $routes->group('/defect', static function($routes){
-
-    });
+    $routes->group('/defect', static function ($routes) {});
 
     // Master Data -> Common Data -> Sub Defect
-    $routes->group('/sub_defect', static function($routes){
+    $routes->group('/sub_defect', static function ($routes) {
         $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
     });
 
@@ -86,13 +84,13 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     });
 
     // Master Data -> Common Data -> Machine
-    $routes->group('/machine', static function($routes){
+    $routes->group('/machine', static function ($routes) {
         $routes->get('', 'MasterData\CommonData\Machine\Machine::index');
         $routes->post('machine_data', 'MasterData\CommonData\Machine\Machine::getDataById');
     });
 
     // Master Data -> Material Management -> Material
-    $routes->group('/material', static function($routes){
+    $routes->group('/material', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\Material\Material::index');
         $routes->post('get_material', 'MasterData\MaterialManagement\Material\Material::getMaterialData');
     });

@@ -26,8 +26,4 @@ class Defect extends BaseController
     {
         //
     }
-
-    function getSubDefect(){
-        
-    }
 }
