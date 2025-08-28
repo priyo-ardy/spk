@@ -57,8 +57,8 @@ class MoldSpk extends BaseController
         $this->db = Database::connect();
 
         $table = 'vw_mold_spk';
-        $column_order = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang'];
-        $column_search = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang'];
+        $column_order = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang', 'nama_leader', 'nama_status'];
+        $column_search = ['code', 'report_date', 'nama_dept', 'nama_karyawan', 'kode_part', 'part_name', 'part_model', 'mold_no', 'nama_alasan_repair', 'description', 'status', 'nama_defect', 'nama_sub_defect', 'nama_posisi_defect', 'nama_berulang', 'nama_leader', 'nama_status'];
         $order = array('code' => 'desc');
 
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
@@ -94,9 +94,10 @@ class MoldSpk extends BaseController
                     ';
                 $row[] = $item->nama_defect;
                 $row[] = $item->nama_sub_defect;
-                $row[] = $item->nama_posisi_defect;
                 $row[] = $item->nama_berulang;
-                $row[] = $item->status;
+                $row[] = $item->nama_posisi_defect;
+                $row[] = $item->nama_leader;
+                $row[] = $item->nama_status;
 
                 $data[] = $row;
             }
@@ -883,10 +884,10 @@ class MoldSpk extends BaseController
     function exportData()
     {
         $filename = "oem_list_" . date("Ymd_his") . '.xlsx';
-        $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Defect', 'Sub Defect', 'Problem Position', 'Repeat Problem', 'Problem Description'];
+        $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Defect', 'Sub Defect', 'Problem Position', 'Repeat Problem', 'Problem Description', 'Team Leader', 'Status'];
 
         $dataCallback = function ($offset, $limit) {
-            $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, nama_defect, nama_sub_defect, nama_posisi_defect, nama_berulang, description';
+            $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, nama_defect, nama_sub_defect, nama_posisi_defect, nama_berulang, description, nama_leader, nama_status';
             return $this->masterModel->getChunkedData('vw_mold_spk', $offset, $limit, 'code', $column);
         };
 
