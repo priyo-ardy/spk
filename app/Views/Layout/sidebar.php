@@ -66,7 +66,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url() . 'identifikasi_equipment' ?>" class="nav-link" onclick="loading()">
+                            <a href="<?= base_url() . 'identifikasi_mold' ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Mold

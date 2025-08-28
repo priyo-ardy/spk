@@ -4,18 +4,20 @@
 
 <style>
     .image-container {
-            position: relative;
-            /* display: inline-block; */
-            /* margin: 10px; */
-        }
+        position: relative;
+        /* display: inline-block; */
+        /* margin: 10px; */
+    }
+
     .action-buttons {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-    .image-container:hover .action-buttons{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .image-container:hover .action-buttons {
         opacity: 1;
     }
 </style>
@@ -88,7 +90,7 @@
                                         <label class="form-label" for="data_workshop">Reporting Dept/Workshop</label>
                                         <select name="data_workshop" id="data_workshop" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($dept as $d): ?>
+                                            <?php foreach ($dept as $d): ?>
                                                 <option <?= ($data->dept == $d->id) ? 'selected' : '' ?> value="<?= $d->id ?>"><?= $d->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -98,7 +100,7 @@
                                         <label class="form-label" for="data_staff">Reporting Staff <strong class="text-danger">*</strong></label>
                                         <select name="data_staff" id="data_staff" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($karyawan as $k) : ?>
+                                            <?php foreach ($karyawan as $k) : ?>
                                                 <option <?= ($data->report_by == $k->id) ? 'selected' : '' ?> value="<?= $k->id ?>"><?= "$k->NIK - $k->nama" ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -113,10 +115,10 @@
                                         <label class="form-label" for="data_mamterial">Part No. <strong class="text-danger">*</strong></label>
                                         <select name="data_material" id="data_material" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($material as $m): ?>
-                                                    <option <?= ($data->part_no == $m->id) ? 'selected' : '' ?> value="<?= $m->id ?>"><?= "$m->code - $m->name" ?></option>
+                                            <?php foreach ($material as $m): ?>
+                                                <option <?= ($data->part_no == $m->id) ? 'selected' : '' ?> value="<?= $m->id ?>"><?= "$m->code - $m->name" ?></option>
                                             <?php endforeach; ?>
-                                        </select> 
+                                        </select>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="data_name">Part Name</label>
@@ -134,7 +136,7 @@
                                         <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" disabled class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($defects as $defect): ?>
+                                            <?php foreach ($defects as $defect): ?>
                                                 <option <?= ($data->defect == $defect->id) ? 'selected' : ''; ?> value="<?= $defect->id ?>"><?= $defect->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -144,7 +146,7 @@
                                         <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_sub_defect" id="data_sub_defect" disabled class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($sub_defect as $sd): ?>
+                                            <?php foreach ($sub_defect as $sd): ?>
                                                 <option <?= ($data->sub_defect == $sd->id) ? 'selected' : '' ?> value="<?= $sd->id ?>"><?= $sd->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -162,7 +164,7 @@
                                         <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
                                         <select name="data_posisi" id="data_posisi" disabled class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($posisi as $pos): ?>
+                                            <?php foreach ($posisi as $pos): ?>
                                                 <option <?= ($data->position == $pos->id) ? 'selected' : '' ?> value="<?= $pos->id ?>"><?= $pos->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -172,13 +174,23 @@
                                         <label class="form-label" for="data_repair">Repair Reason</label>
                                         <select name="data_repair" id="data_repair" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($repair as $r): ?>
+                                            <?php foreach ($repair as $r): ?>
                                                 <option <?= ($data->repair_reason == $r->id) ? 'selected' : '' ?> value="<?= $r->id ?>"><?= $r->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
-                                    <div class="form-group col-xl-5 col-lg-5 col-md-6 col-sm-12 clearfix mb-3">
+                                    <div class="form-group col-xl-3 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_leader">Team Leader</label>
+                                        <select name="data_leader" id="data_leader" required class="form-control select2 select2bs5" disabled>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach ($leader as $lead): ?>
+                                                <option <?= ($data->leader == $lead->id) ? 'selected' : '' ?> value="<?= $lead->id ?>"><?= "$lead->NIK - $lead->nama" ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
+                                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
                                         <input type="file" multiple class="custom-file-input form-control rounded-0" disabled id="fupload" name="fupload[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>
@@ -191,11 +203,11 @@
                                     <div class="form-group col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix mb-3">
                                         <label class="form-label">Problem Image</label>
                                         <div class="row mb-3 g-2">
-                                            <?php foreach($details as $item): ?>
+                                            <?php foreach ($details as $item): ?>
                                                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 clearfix image-container">
-                                                    <a href="<?= base_url() . 'uploads/mold_spk/'.$item->file_name ?>?#" class="link-underline-opacity-0" data-lightbox="preview" data-title="<?= $item->file_name ?>">
-                                                    <!-- <a href="#" class="link-underline-opacity-0" data-lightbox="preview" data-title="<?= $item->file_name ?>"> -->
-                                                        <img src="<?= base_url() . 'uploads/mold_spk/'.$item->file_name ?>" class="img-thumbnail img-fluid" alt="<?= $item->file_name ?>">
+                                                    <a href="<?= base_url() . 'uploads/mold_spk/' . $item->file_name ?>?#" class="link-underline-opacity-0" data-lightbox="preview" data-title="<?= $item->file_name ?>">
+                                                        <!-- <a href="#" class="link-underline-opacity-0" data-lightbox="preview" data-title="<?= $item->file_name ?>"> -->
+                                                        <img src="<?= base_url() . 'uploads/mold_spk/' . $item->file_name ?>" class="img-thumbnail img-fluid" alt="<?= $item->file_name ?>">
                                                     </a>
                                                     <div class="action-buttons">
                                                         <button type="button" class="btn btn-sm rounded-0 btn-danger btn-delete" data-id="1" onclick="deleteImage('<?= enkripsi(($item->id)) ?>')">

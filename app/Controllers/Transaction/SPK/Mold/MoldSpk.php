@@ -64,20 +64,21 @@ class MoldSpk extends BaseController
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
     }
 
-    function loadTable(){
+    function loadTable()
+    {
         log_action($this->module, "table", 'info', current_url(), "Generating list of mold SPK");
 
-        try{
+        try {
             $lists = $this->dataTable->get_datatables();
             $start = isset($_POST['start']) ? intval($_POST['start']) : 0;
             $no = $start + 1;
             $data = [];
 
-            foreach($lists as $item){
+            foreach ($lists as $item) {
                 $row = [];
 
                 $row[] = '
-                            <a href="'. base_url().'spk_mold/show/'. enkripsi($item->id) .'" onclick="loading()" class="text-primary fw-bolder  link-underline-opacity-0 link-underline-opacity-100-hover">'.$item->code.'</a>
+                            <a href="' . base_url() . 'spk_mold/show/' . enkripsi($item->id) . '" onclick="loading()" class="text-primary fw-bolder  link-underline-opacity-0 link-underline-opacity-100-hover">' . $item->code . '</a>
                         ';
                 $row[] = $item->report_date;
                 $row[] = $item->nama_dept;
@@ -89,11 +90,11 @@ class MoldSpk extends BaseController
                 $row[] = $item->nama_alasan_repair;
                 $row[] = character_limiter($item->description, 20);
                 $row[] = '
-                        <button type="button" class="btn rounded-0 btn-primary btn-sm" onclick="showImage(`'.enkripsi($item->id).'`)">Show Image</button>
+                        <button type="button" class="btn rounded-0 btn-primary btn-sm" onclick="showImage(`' . enkripsi($item->id) . '`)">Show Image</button>
                     ';
                 $row[] = $item->nama_defect;
-                $row[] = $item->nama_sub_defect; 
-                $row[] = $item->nama_posisi_defect; 
+                $row[] = $item->nama_sub_defect;
+                $row[] = $item->nama_posisi_defect;
                 $row[] = $item->nama_berulang;
                 $row[] = $item->status;
 
@@ -110,7 +111,7 @@ class MoldSpk extends BaseController
             return $this->response
                 ->setStatusCode(ResponseInterface::HTTP_OK, "Generate successfully")
                 ->setJSON($output);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, 'table', 'error', current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -130,7 +131,7 @@ class MoldSpk extends BaseController
         $data = [
             'title' => "List of Mold SPK",
             'footer' => [
-                '<script src="' . base_url().'js/Transaction/SPK/Mold/mold.js' . '"></script>'
+                '<script src="' . base_url() . 'js/Transaction/SPK/Mold/mold.js' . '"></script>'
             ]
         ];
 
@@ -150,24 +151,26 @@ class MoldSpk extends BaseController
             'repair' => $this->repairModel->generateList(),
             'defects' => $this->defectModel->generateList(),
             'posisi' => $this->positionModel->generateList(),
+            'leader' => $this->leaderModel->generateList(),
             'footer' => [
-                '<script src="' . base_url().'js/Transaction/SPK/Mold/add.js' . '"></script>'
+                '<script src="' . base_url() . 'js/Transaction/SPK/Mold/add.js' . '"></script>'
             ]
         ];
 
         return view('Transaction/SPK/Mold/add', $data);
     }
 
-    function saveData(){
+    function saveData()
+    {
         $aksi = "save";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
-        
+
         $this->db->transStart();
 
-        try{
+        try {
             $id_header = generate_uuid();
             $workshop = trim($this->request->getPost('data_workshop'));
             $staff = trim($this->request->getPost('data_staff'));
@@ -182,9 +185,10 @@ class MoldSpk extends BaseController
             $sub_defect = trim($this->request->getPost('data_sub_defect'));
             $berulang = trim($this->request->getPost('data_berulang'));
             $posisi_defect = trim($this->request->getPost('data_posisi'));
+            $leader = trim($this->request->getPost('data_leader'));
             $prefix_date = date("Ymd");
             $prefix = "SLMMJ-$prefix_date-$mold_no-";
-            $code = $this->masterModel->generateCode('t_spk_mold', 'code', $prefix, 6) ;
+            $code = $this->masterModel->generateCode('t_spk_mold', 'code', $prefix, 6);
 
             $rules = [
                 'data_workshop' => [
@@ -240,6 +244,12 @@ class MoldSpk extends BaseController
                     'rules' => 'required',
                     'errors' => [
                         'required' => "Reason for repair is required"
+                    ]
+                ],
+                'data_leader' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Team leader is required"
                     ]
                 ],
                 'fupload' => [
@@ -285,12 +295,13 @@ class MoldSpk extends BaseController
                 'berulang' => $berulang,
                 'position' => $posisi_defect,
                 'repair_reason' => $repair_reason,
+                'leader' => $leader,
                 'description' => strip_tags($description),
                 'created_by' => $this->NIK,
             ];
 
             $insert_header = $this->spkModel->insert($data_header);
-            if(!$insert_header){
+            if (!$insert_header) {
                 log_action($this->module, $aksi, "error", current_url(), "Save failed", '', json_encode([
                     'data' => $this->spkModel->errors()
                 ]));
@@ -304,17 +315,17 @@ class MoldSpk extends BaseController
             $error_messages = [];
             $uploadPath = FCPATH . 'uploads/mold_spk';
             $baris = 1;
-                
-            if(!is_dir($uploadPath)){
+
+            if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
                 chmod($uploadPath, 0777);
             }
 
             $data_details = [];
 
-            if($photos) {
-                foreach($photos as $photo) {
-                    if($photo->isValid() && !$photo->hasMoved()) {
+            if ($photos) {
+                foreach ($photos as $photo) {
+                    if ($photo->isValid() && !$photo->hasMoved()) {
                         $fileName = "$code-$baris." . $photo->getExtension();
                         $photo->move($uploadPath, $fileName, true);
                         $data_details = [
@@ -328,14 +339,13 @@ class MoldSpk extends BaseController
                         ];
 
                         $insert_details = $this->detailModel->insert($data_details, true);
-                        if(!$insert_details){
+                        if (!$insert_details) {
                             // Rollback transaction jika gagal insert detail
                             $error_messages[] = "Failed to save image data for file: " . $photo->getName();
                             // Hapus file yang sudah diupload
                             if (file_exists($uploadPath . $fileName)) {
                                 unlink($uploadPath . $fileName);
-                            }
-                            else {
+                            } else {
                                 $success_count++;
                                 $baris++;
                             }
@@ -348,7 +358,7 @@ class MoldSpk extends BaseController
             }
 
             $this->db->transComplete();
-            if($this->db->transStatus() === false){
+            if ($this->db->transStatus() === false) {
                 $this->db->transRollback();
                 log_action($this->module, $aksi, "error", current_url(), "Save failed", '', json_encode([
                     'data' => $this->db->error()
@@ -357,14 +367,14 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Save failed due to database transaction error");
             }
 
-            if(!empty($error_messages)){
+            if (!empty($error_messages)) {
                 log_action($this->module, $aksi, "warning", current_url(), "Save completed with some errors", implode(", ", $error_messages));
                 return pesan(ResponseInterface::HTTP_OK, "Data saved successfully, but there were some issues with file uploads: " . implode(", ", $error_messages));
             }
 
             log_action($this->module, $aksi, "success", current_url(), "Data saved successfully with $baris images");
             return pesan(ResponseInterface::HTTP_OK, "Data saved successfully with $baris images");
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -376,11 +386,12 @@ class MoldSpk extends BaseController
         }
     }
 
-    function showData($token){
+    function showData($token)
+    {
         $aksi = "show";
         log_action($this->module, $aksi, "open", current_url(), "Opening mold SPK details page");
         $id_spk = dekripsi($token);
-        
+
         $get_data = $this->spkModel->getDataById($id_spk);
         $get_sub_defect = $this->subDefectModel->getListByDefect($get_data->defect);
 
@@ -396,24 +407,26 @@ class MoldSpk extends BaseController
             'defects' => $this->defectModel->generateList(),
             'sub_defect' => $get_sub_defect,
             'posisi' => $this->positionModel->generateList(),
+            'leader' => $this->leaderModel->generateList(),
             'footer' => [
-                '<script src="' . base_url().'js/Transaction/SPK/Mold/edit.js' . '"></script>'
+                '<script src="' . base_url() . 'js/Transaction/SPK/Mold/edit.js' . '"></script>'
             ]
         ];
 
         return view('Transaction/SPK/Mold/edit', $data);
     }
 
-    function updateData(){
+    function updateData()
+    {
         $aksi = "update";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
 
         $this->db->transStart();
 
-        try{
+        try {
             $token = trim($this->request->getPost('data_token'));
             $id_spk = dekripsi($token);
             $code = trim($this->request->getPost('data_code'));
@@ -430,6 +443,7 @@ class MoldSpk extends BaseController
             $defect = trim($this->request->getPost('data_defect'));
             $sub_defect = trim($this->request->getPost('data_sub_defect'));
             $berulang = trim($this->request->getPost('data_berulang'));
+            $leader = trim($this->request->getPost('data_leader'));
             $posisi_defect = trim($this->request->getPost('data_posisi'));
 
             $rules = [
@@ -488,6 +502,12 @@ class MoldSpk extends BaseController
                         'required' => "Reason for repair is required"
                     ]
                 ],
+                'data_leader' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Team leader is required"
+                    ]
+                ],
                 'data_keterangan' => [
                     'rules' => 'required|min_length[10]',
                     'errors' => [
@@ -497,8 +517,8 @@ class MoldSpk extends BaseController
                 ]
             ];
 
-            if(count($photos) > 1){
-                $rules = array_merge($rules,[
+            if (count($photos) > 1) {
+                $rules = array_merge($rules, [
                     'fupload' => [
                         'label' => 'Foto Karyawan',
                         'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
@@ -534,12 +554,13 @@ class MoldSpk extends BaseController
                 'berulang' => $berulang,
                 'position' => $posisi_defect,
                 'repair_reason' => $repair_reason,
+                'leader' => $leader,
                 'description' => strip_tags($description),
                 'updated_by' => $this->NIK,
             ];
 
             $update = $this->spkModel->update($id_spk, $data_header);
-            if(!$update){
+            if (!$update) {
                 log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
                     'data' => $this->spkModel->errors()
                 ]));
@@ -548,25 +569,25 @@ class MoldSpk extends BaseController
             }
 
             $get_max_row = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'desc')->limit(1)->first();
-            if($get_max_row){
+            if ($get_max_row) {
                 $baris = $get_max_row->urut + 1;
-            }else{
+            } else {
                 $baris = 1;
             }
 
             // Update details
-            if(count($photos) >= 1){                
+            if (count($photos) >= 1) {
                 $success_count = 0;
                 $error_messages = [];
                 $uploadPath = FCPATH . 'uploads/mold_spk';
-                    
-                if(!is_dir($uploadPath)){
+
+                if (!is_dir($uploadPath)) {
                     mkdir($uploadPath, 0777, true);
                     chmod($uploadPath, 0777);
                 }
 
-                foreach($photos as $photo){
-                    if($photo->isValid() && !$photo->hasMoved()){
+                foreach ($photos as $photo) {
+                    if ($photo->isValid() && !$photo->hasMoved()) {
                         $fileName = "$code-$baris." . $photo->getExtension();
                         $photo->move($uploadPath, $fileName, true);
                         $data_details = [
@@ -580,27 +601,26 @@ class MoldSpk extends BaseController
                         ];
 
                         $insert_details = $this->detailModel->insert($data_details, true);
-                        if(!$insert_details){
+                        if (!$insert_details) {
                             // Rollback transaction jika gagal insert detail
                             $error_messages[] = "Failed to save image data for file: " . $photo->getName();
                             // Hapus file yang sudah diupload
                             if (file_exists($uploadPath . $fileName)) {
                                 unlink($uploadPath . $fileName);
-                            }
-                            else {
+                            } else {
                                 $success_count++;
                                 $baris++;
                             }
                         }
                     }
 
-                    $baris ++;
+                    $baris++;
                     $success_count++;
                 }
             }
 
             $this->db->transComplete();
-            if($this->db->transStatus() === false){
+            if ($this->db->transStatus() === false) {
                 $this->db->transRollback();
                 log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
                     'data' => $this->db->error()
@@ -608,13 +628,13 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Update failed due to database transaction error");
             }
 
-            if(!empty($error_messages)){
+            if (!empty($error_messages)) {
                 log_action($this->module, $aksi, "warning", current_url(), "Update completed with some errors", implode(", ", $error_messages));
                 return pesan(ResponseInterface::HTTP_OK, "Data updated successfully, but there were some issues with file uploads: " . implode(", ", $error_messages));
             }
 
             return pesan(ResponseInterface::HTTP_OK, "Update success with $success_count new image file");
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -626,24 +646,25 @@ class MoldSpk extends BaseController
         }
     }
 
-    function prevData(){
+    function prevData()
+    {
         $aksi = "Prev Data";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not found");
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
 
         $this->db->transStart();
 
-        try{
+        try {
             $json_data = $this->request->getJSON(true);
-            if(!is_array($json_data)){
+            if (!is_array($json_data)) {
                 log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
                 throw new \Exception("Input is not a valid JSON object");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
             }
 
-            if(!isset($json_data['code'])){
+            if (!isset($json_data['code'])) {
                 log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
                 throw new \Exception("SPK No. is missing in JSON input");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
@@ -651,12 +672,12 @@ class MoldSpk extends BaseController
 
             $code = $json_data['code'];
             $get_prev_data = $this->spkModel->prevData($code);
-            if(!$get_prev_data){
+            if (!$get_prev_data) {
                 return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the fist data");
             }
 
             $this->db->transComplete();
-            if($this->db->transStatus() === false){
+            if ($this->db->transStatus() === false) {
                 $this->db->transRollback();
                 log_action($this->module, $aksi, "error", current_url(), "Getting prevoius data failed", '', json_encode([
                     'data' => $this->db->error()
@@ -670,7 +691,7 @@ class MoldSpk extends BaseController
             ];
 
             return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -682,24 +703,25 @@ class MoldSpk extends BaseController
         }
     }
 
-    function nextData(){
+    function nextData()
+    {
         $aksi = "Next Data";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not found");
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
 
         $this->db->transStart();
 
-        try{
+        try {
             $json_data = $this->request->getJSON(true);
-            if(!is_array($json_data)){
+            if (!is_array($json_data)) {
                 log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
                 throw new \Exception("Input is not a valid JSON object");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
             }
 
-            if(!isset($json_data['code'])){
+            if (!isset($json_data['code'])) {
                 log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
                 throw new \Exception("Job data ID is missing in JSON input");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
@@ -707,12 +729,12 @@ class MoldSpk extends BaseController
 
             $code = $json_data['code'];
             $get_prev_data = $this->spkModel->nextData($code);
-            if(!$get_prev_data){
+            if (!$get_prev_data) {
                 return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the last data");
             }
 
             $this->db->transComplete();
-            if($this->db->transStatus() === false){
+            if ($this->db->transStatus() === false) {
                 $this->db->transRollback();
                 log_action($this->module, $aksi, "error", current_url(), "Getting next data failed", '', json_encode([
                     'data' => $this->db->error()
@@ -726,7 +748,7 @@ class MoldSpk extends BaseController
             ];
 
             return pesan(ResponseInterface::HTTP_OK, "Prev data found", $data);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -738,23 +760,24 @@ class MoldSpk extends BaseController
         }
     }
 
-    function deleteImage(){
+    function deleteImage()
+    {
         $aksi = "Delete SPK Image";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not found");
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
 
         $this->db->transStart();
-        try{
+        try {
             $json_data = $this->request->getJSON(true);
-            if(!is_array($json_data)){
+            if (!is_array($json_data)) {
                 log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
                 throw new \Exception("Input is not a valid JSON object");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
             }
 
-            if(!isset($json_data['token'])){
+            if (!isset($json_data['token'])) {
                 log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
                 throw new \Exception("Job data ID is missing in JSON input");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
@@ -763,7 +786,7 @@ class MoldSpk extends BaseController
             $id_detail = dekripsi($json_data['token']);
 
             $get = $this->detailModel->where('id', $id_detail)->first();
-            if(!$get){
+            if (!$get) {
                 log_action($this->module, $aksi, "error", current_url(), "Image not found");
                 return pesan(ResponseInterface::HTTP_NOT_FOUND, "Image data not found");
             }
@@ -774,7 +797,7 @@ class MoldSpk extends BaseController
             unlink($uploadPath . $fileName);
 
             $delete = $this->detailModel->delete($id_detail, true);
-            if(!$delete){
+            if (!$delete) {
                 log_action($this->module, $aksi, "error", current_url(), "Failed to delete the image");
 
                 return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to delete the image file");
@@ -782,7 +805,7 @@ class MoldSpk extends BaseController
 
             $this->db->transComplete();
             return pesan(ResponseInterface::HTTP_OK, "Image deleted");
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occurred", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -794,24 +817,25 @@ class MoldSpk extends BaseController
         }
     }
 
-    function showImage(){
+    function showImage()
+    {
         $aksi = "Show Image";
-        if($this->request->getMethod() !== 'POST'){
+        if ($this->request->getMethod() !== 'POST') {
             log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
 
             return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
         }
 
         $this->db->transStart();
-        try{
+        try {
             $json_data = $this->request->getJSON(true);
-            if(!is_array($json_data)){
+            if (!is_array($json_data)) {
                 log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
                 throw new \Exception("Input is not a valid JSON object");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
             }
 
-            if(!isset($json_data['token'])){
+            if (!isset($json_data['token'])) {
                 log_action($this->module, $aksi, "error", current_url(), "Job data ID is missing in JSON input");
                 throw new \Exception("Job data ID is missing in JSON input");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Job data ID is missing in JSON input");
@@ -820,7 +844,7 @@ class MoldSpk extends BaseController
             $id_spk = dekripsi($json_data['token']);
             $get_header = $this->spkModel->where('id', $id_spk)->first();
             $get_data = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'asc')->findAll();
-            if(!$get_data){
+            if (!$get_data) {
                 log_action($this->module, $aksi, "error", current_url(), "Mold SPK image not available");
 
                 return pesan(ResponseInterface::HTTP_NOT_FOUND, "Mold SPK image not available");
@@ -831,9 +855,9 @@ class MoldSpk extends BaseController
                 'title' => $get_header->code
             ];
 
-            foreach($get_data as $item){
+            foreach ($get_data as $item) {
                 $data[] = [
-                    'file_name' => base_url().'uploads/mold_spk/' . $item->file_name,
+                    'file_name' => base_url() . 'uploads/mold_spk/' . $item->file_name,
                     'image_file' => $item->file_name
                 ];
             }
@@ -844,7 +868,7 @@ class MoldSpk extends BaseController
                     'header' => $header,
                     'data' => $data
                 ]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), "Unexpected error occurred", '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -856,11 +880,12 @@ class MoldSpk extends BaseController
         }
     }
 
-    function exportData(){
-        $filename = "oem_list_". date("Ymd_his") . '.xlsx';
+    function exportData()
+    {
+        $filename = "oem_list_" . date("Ymd_his") . '.xlsx';
         $headers =  ['SPK No', 'Reported Date', 'Requested Dept', 'Reported By', 'Part No', 'Part Name', 'Part Model', 'Mold No', 'Repair Reason', 'Defect', 'Sub Defect', 'Problem Position', 'Repeat Problem', 'Problem Description'];
-        
-        $dataCallback = function ($offset, $limit){
+
+        $dataCallback = function ($offset, $limit) {
             $column = 'code, report_date, nama_dept, nama_karyawan, kode_part, part_name, part_model, mold_no, nama_alasan_repair, nama_defect, nama_sub_defect, nama_posisi_defect, nama_berulang, description';
             return $this->masterModel->getChunkedData('vw_mold_spk', $offset, $limit, 'code', $column);
         };

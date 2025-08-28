@@ -33,7 +33,8 @@ const dataForm = {
     defect: document.getElementById('data_defect'),
     sub_defect: document.getElementById('data_sub_defect'),
     berulang: document.getElementById('data_berulang'),
-    posisi: document.getElementById('data_posisi')
+    posisi: document.getElementById('data_posisi'),
+    leader: document.getElementById('data_leader')
 }
 
 buttons.back.addEventListener('click', (e) => {
@@ -126,6 +127,7 @@ function bukaForm() {
     dataForm.sub_defect.removeAttribute('disabled');
     dataForm.berulang.removeAttribute('disabled');
     dataForm.posisi.removeAttribute('disabled');
+    dataForm.leader.removeAttribute('disabled');
     $('.summernote').summernote('enable');
 }
 
