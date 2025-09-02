@@ -192,8 +192,9 @@ if (!function_exists('system_info')) {
     }
 }
 
-if(!function_exists('current_url')){
-    function current_url(){
+if (!function_exists('current_url')) {
+    function current_url()
+    {
         // Mendapatkan objek request
         $request = service('request');
         // Mendapatkan current URL
@@ -205,8 +206,9 @@ if(!function_exists('current_url')){
     }
 }
 
-if(!function_exists('pesan')){
-    function pesan(string $error_code, string $message, $data =  null){
+if (!function_exists('pesan')) {
+    function pesan(string $error_code, string $message, $data =  null)
+    {
         $response = service('response');
         return $response
             ->setStatusCode($error_code)
@@ -218,19 +220,37 @@ if(!function_exists('pesan')){
     }
 }
 
-if(!function_exists('enkripsi')){
-    function enkripsi($value){
+if (!function_exists('enkripsi')) {
+    function enkripsi($value)
+    {
         $encrypter = service('encrypter');
 
         return bin2hex(base64_encode($encrypter->encrypt($value)));
     }
 }
 
-if(!function_exists('dekripsi')){
-    function dekripsi($value){
+if (!function_exists('dekripsi')) {
+    function dekripsi($value)
+    {
         $decrypter = service('encrypter');
 
 
         return $decrypter->decrypt(base64_decode(hex2bin($value)));
+    }
+}
+
+if (!function_exists('phone_hash')) {
+    function phone_hash(string $phone_number)
+    {
+        $secret_key = getenv('phone_salt');
+        return hash('sha256', $secret_key . $phone_number);
+    }
+}
+
+if (!function_exists('email_hash')) {
+    function email_hash(string $email_address)
+    {
+        $secret_key = getenv('phone_salt');
+        return hash('sha256', $secret_key . $email_address);
     }
 }

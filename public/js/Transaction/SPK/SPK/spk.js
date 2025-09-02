@@ -7,5 +7,5 @@ const buttons = {
 
 buttons.add.addEventListener('click', (e) => {
     loading();
-    window.location.replace(baseurl + '/users/add');
+    window.location.replace(baseurl + '/spk/add');
 })

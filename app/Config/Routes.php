@@ -15,6 +15,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Dashboard\Dashboard::index');
     });
 
+    $routes->group('/spk', static function ($routes) {
+        $routes->get('', 'Transaction\SPK\SPK\SPK::index');
+        $routes->get('add', 'Transaction\SPK\SPK\SPK::add');
+    });
+
     // Transaction -> SPK -> General
     $routes->group('/spk_general', static function ($routes) {
         $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
@@ -103,5 +108,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // App Setup -> User Management -> User List
     $routes->group('/users', static function ($routes) {
         $routes->get('', 'AppSetup\UserManagement\UserList\UserList::index');
+        $routes->get('add', 'AppSetup\UserManagement\UserList\UserList::add');
+        $routes->post('check_user', 'AppSetup\UserManagement\UserList\UserList::checkUserName');
+        $routes->post('check_phone', 'AppSetup\UserManagement\UserList\UserList::checkUserPhone');
+        $routes->post('check_email', 'AppSetup\UserManagement\UserList\UserList::checkUserEmail');
     });
 });

@@ -142,23 +142,8 @@
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
-<<<<<<< HEAD
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                    <div class="form-group col-xl-7 col-lg-7 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="fupload">Upload Part Image <strong class="text-danger">*</strong></label>
-=======
-                                    <div class="form-group col-xl-3 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_leader">Team Leader <strong class="text-danger">*</strong></label>
-                                        <select name="data_leader" id="data_leader" required class="form-control select2 select2bs5">
-                                            <option value="">-- Choose --</option>
-                                            <?php foreach ($leader as $lead): ?>
-                                                <option value="<?= $lead->id ?>"><?= "$lead->NIK - $lead->nama" ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <div class="invalid-feedback">This field is required</div>
-                                    </div>
-                                    <div class="form-group col-xl-4 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
->>>>>>> 70ec58dd33931215422ea94d58f779791af4e3c7
                                         <input type="file" multiple class="custom-file-input form-control rounded-0" id="fupload" required name="fupload[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
