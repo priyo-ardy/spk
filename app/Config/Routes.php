@@ -94,4 +94,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\Material\Material::index');
         $routes->post('get_material', 'MasterData\MaterialManagement\Material\Material::getMaterialData');
     });
+
+    // App Setup -> User Management -> User List
+    $routes->group('/users', static function ($routes) {
+        $routes->get('', 'AppSetup\UserManagement\UserList\UserList::index');
+    });
 });

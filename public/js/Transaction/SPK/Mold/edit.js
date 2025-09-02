@@ -15,7 +15,15 @@ const buttons = {
     edit: document.getElementById('btnEdit'),
     cancel: document.getElementById('btnCancel'),
     prev: document.getElementById('btnPrev'),
-    next: document.getElementById('btnNext')
+    next: document.getElementById('btnNext'),
+    planner_confirm: document.getElementById('btnPlannerConfirm'),
+    mold_confirm: document.getElementById('btnEngineerConfirm')
+}
+
+const mold_buttons = {
+    cancel: document.getElementById('btnCancelMold'),
+    reject: document.getElementById('btnRejectMold'),
+    confirm: document.getElementById('btnConfirmMold')
 }
 const dataForm = {
     token: document.getElementById('data_token'),
@@ -34,6 +42,11 @@ const dataForm = {
     sub_defect: document.getElementById('data_sub_defect'),
     berulang: document.getElementById('data_berulang'),
     posisi: document.getElementById('data_posisi')
+}
+
+const mold_form = {
+    tanggal: document.getElementById('data_tanggal_selesai_mold'),
+    keterangan: document.getElementById('data_keterangan_mold')
 }
 
 buttons.back.addEventListener('click', (e) => {
@@ -229,5 +242,16 @@ function deleteImage(token) {
     } catch (e) {
         pesanError(e.message);
         hideLoading();
+    }
+}
+
+buttons.mold_confirm.addEventListener('click', (e) => {
+    $('#modalMoldConfirm').modal('show');
+})
+
+mold_buttons.confirm.onclick = () => {
+    if (mold_form.tanggal.value < dataForm.tanggal.value) {
+        pesanWarning("Required completion date cannot less than reported date");
+        mold_form.tanggal.classList.add('is-invalid');
     }
 }

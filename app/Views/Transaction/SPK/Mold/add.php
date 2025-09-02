@@ -54,7 +54,7 @@
                                         <label class="form-label" for="data_workshop">Reporting Dept/Workshop</label>
                                         <select name="data_workshop" id="data_workshop" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($dept as $d): ?>
+                                            <?php foreach ($dept as $d): ?>
                                                 <option value="<?= $d->id ?>"><?= $d->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -64,7 +64,7 @@
                                         <label class="form-label" for="data_staff">Reporting Staff <strong class="text-danger">*</strong></label>
                                         <select name="data_staff" id="data_staff" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($karyawan as $k) : ?>
+                                            <?php foreach ($karyawan as $k) : ?>
                                                 <option value="<?= $k->id ?>"><?= "$k->NIK - $k->nama" ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -79,8 +79,8 @@
                                         <label class="form-label" for="data_mamterial">Part No. <strong class="text-danger">*</strong></label>
                                         <select name="data_material" id="data_material" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($material as $m): ?>
-                                                    <option value="<?= $m->id ?>"><?= "$m->code - $m->name" ?></option>
+                                            <?php foreach ($material as $m): ?>
+                                                <option value="<?= $m->id ?>"><?= "$m->code - $m->name" ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
@@ -101,7 +101,7 @@
                                         <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($defects as $defect): ?>
+                                            <?php foreach ($defects as $defect): ?>
                                                 <option value="<?= $defect->id ?>"><?= $defect->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -126,7 +126,7 @@
                                         <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
                                         <select name="data_posisi" id="data_posisi" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($posisi as $pos): ?>
+                                            <?php foreach ($posisi as $pos): ?>
                                                 <option value="<?= $pos->id ?>"><?= $pos->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
@@ -136,14 +136,14 @@
                                         <label class="form-label" for="data_repair">Repair Reason</label>
                                         <select name="data_repair" id="data_repair" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <?php foreach($repair as $r): ?>
+                                            <?php foreach ($repair as $r): ?>
                                                 <option value="<?= $r->id ?>"><?= $r->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="fupload">Upload Part Image <strong class="text-danger">*</strong></label>
                                         <input type="file" multiple class="custom-file-input form-control rounded-0" id="fupload" required name="fupload[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>

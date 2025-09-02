@@ -166,7 +166,7 @@
                     </ul>
                 </li>-->
                 <li class="nav-header">APP SETUP</li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-person-gear"></i>
                         <p>
@@ -185,7 +185,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="bi bi-pen nav-icon"></i>
                         <p>
