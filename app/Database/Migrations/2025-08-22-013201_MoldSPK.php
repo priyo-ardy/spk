@@ -58,6 +58,11 @@ class MoldSPK extends Migration
                 'constraint' => 50,
                 'null' => false
             ],
+            'leader' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
+                'null' => false
+            ],
             'description' => [
                 'type' => "TEXT",
                 'null' => false

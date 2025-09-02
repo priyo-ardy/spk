@@ -26,7 +26,8 @@ const dataForm = {
     fupload: document.getElementById('fupload'),
     description: document.getElementById('data_keterangan'),
     defect: document.getElementById('data_defect'),
-    sub_defect: document.getElementById('data_sub_defect')
+    sub_defect: document.getElementById('data_sub_defect'),
+    leader: document.getElementById('data_leader')
 }
 
 buttons.back.addEventListener('click', (e) => {
@@ -40,6 +41,7 @@ function resetForm() {
     $(dataForm.staff).trigger('change');
     $(dataForm.part_no).trigger('change');
     $(dataForm.reason).trigger('change');
+    $(dataForm.leader).trigger('change');
     $('.summernote').summernote('code', '');
 
     const invalidElement = document.querySelectorAll(".is-valid");

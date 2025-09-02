@@ -23,7 +23,11 @@ class VwMoldSpk extends Migration
                 case
                     when a.berulang = '0' then 'No'
                     else 'Yes'
-                end as nama_berulang
+                end as nama_berulang,
+                i.nama as nama_leader,
+                case
+                    when a.status = '0' then 'Open'
+                end as nama_status
             from t_spk_mold as a
                 left join m_dept as b on a.dept = b.id 
                 left join m_karyawan as c on a.report_by = c.id
@@ -32,6 +36,7 @@ class VwMoldSpk extends Migration
                 left join m_defect as f on a.defect = f.id
                 left join m_sub_defect as g on a.sub_defect = g.id
                 left join m_posisi_defect as h on a.position = h.id
+                left join m_leader as i on a.leader = i.id
             order by a.code desc;
         ");
     }

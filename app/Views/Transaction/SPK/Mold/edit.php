@@ -189,7 +189,17 @@
                                         </select>
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
-                                    <div class="form-group col-xl-5 col-lg-5 col-md-6 col-sm-12 clearfix mb-3">
+                                    <div class="form-group col-xl-3 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
+                                        <label class="form-label" for="data_leader">Team Leader</label>
+                                        <select name="data_leader" id="data_leader" required class="form-control select2 select2bs5" disabled>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach ($leader as $lead): ?>
+                                                <option <?= ($data->leader == $lead->id) ? 'selected' : '' ?> value="<?= $lead->id ?>"><?= "$lead->NIK - $lead->nama" ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="invalid-feedback">This field is required</div>
+                                    </div>
+                                    <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="fupload">Upload File <strong class="text-danger">*</strong></label>
                                         <input type="file" multiple class="custom-file-input form-control rounded-0" disabled id="fupload" name="fupload[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback">This field is required</div>

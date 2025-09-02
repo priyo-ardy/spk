@@ -45,6 +45,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('export', 'Transaction\SPK\Mold\MoldSpk::exportData');
     });
 
+    // Transaction -> Identification -> mold
+    $routes->group('identifikasi_mold', static function ($routes) {
+        $routes->get('', 'Transaction\Identification\Mold\IdentificationMold::index');
+    });
+
     // Master Data -> Material Management -> Material Category
     $routes->group('/material_category', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::index');
