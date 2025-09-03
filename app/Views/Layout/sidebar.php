@@ -31,6 +31,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    List of SPK
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?= base_url('spk_general') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
@@ -66,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url() . 'identifikasi_equipment' ?>" class="nav-link" onclick="loading()">
+                            <a href="<?= base_url() . 'identifikasi_mold' ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Mold
@@ -166,7 +174,7 @@
                     </ul>
                 </li>-->
                 <li class="nav-header">APP SETUP</li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-person-gear"></i>
                         <p>
@@ -185,7 +193,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="bi bi-pen nav-icon"></i>
                         <p>

@@ -14,8 +14,7 @@
                         <li class="breadcrumb-item"><a href="<?= base_url() . 'dashboard' ?>" onclick="loading()">Dashboard</a></li>
                         <li class="breadcrumb-item">Transaction</li>
                         <li class="breadcrumb-item">SPK</li>
-                        <li class="breadcrumb-item">Mold</li>
-                        <li class="breadcrumb-item active">List of Mold SPK</li>
+                        <li class="breadcrumb-item active"><?= $title ?></li>
                     </ol>
                 </div>
             </div>

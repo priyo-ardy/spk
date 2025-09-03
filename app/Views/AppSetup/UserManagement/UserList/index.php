@@ -12,10 +12,9 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="<?= base_url() . 'dashboard' ?>" onclick="loading()">Dashboard</a></li>
-                        <li class="breadcrumb-item">Transaction</li>
-                        <li class="breadcrumb-item">SPK</li>
-                        <li class="breadcrumb-item">Mold</li>
-                        <li class="breadcrumb-item active">List of Mold SPK</li>
+                        <li class="breadcrumb-item">App Setup</li>
+                        <li class="breadcrumb-item">User Management</li>
+                        <li class="breadcrumb-item active">List of Users</li>
                     </ol>
                 </div>
             </div>
@@ -49,23 +48,13 @@
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="dataTable">
                                     <thead class="text-center">
-                                        <th class="align-middle bg-body-secondary">SPK No.</th>
-                                        <th class="align-middle bg-body-secondary">Date</th>
-                                        <th class="align-middle bg-body-secondary">Requested Dept.</th>
-                                        <th class="align-middle bg-body-secondary">Reported By</th>
-                                        <th class="align-middle bg-body-secondary">Part No.</th>
-                                        <th class="align-middle bg-body-secondary">Part Name</th>
-                                        <th class="align-middle bg-body-secondary">Part Model</th>
-                                        <th class="align-middle bg-body-secondary">Mold/Jig No.</th>
-                                        <th class="align-middle bg-body-secondary">Repair Reason</th>
-                                        <th class="align-middle bg-body-secondary">Problem Description</th>
-                                        <th class="align-middle bg-body-secondary">Problem Image</th>
-                                        <th class="align-middle bg-body-secondary">Defect</th>
-                                        <th class="align-middle bg-body-secondary">Sub Defect</th>
-                                        <th class="align-middle bg-body-secondary">Repeat Problem</th>
-                                        <th class="align-middle bg-body-secondary">Position</th>
-                                        <th class="align-middle bg-body-secondary">Team Leader</th>
+                                        <th class="align-middle bg-body-secondary">Username</th>
+                                        <th class="align-middle bg-body-secondary">Full Name</th>
+                                        <th class="align-middle bg-body-secondary">Phone Number</th>
+                                        <th class="align-middle bg-body-secondary">Email Address</th>
+                                        <th class="align-middle bg-body-secondary">Level</th>
                                         <th class="align-middle bg-body-secondary">Status</th>
+                                        <th class="align-middle bg-body-secondary">Last Login</th>
                                     </thead>
                                 </table>
                             </div>
