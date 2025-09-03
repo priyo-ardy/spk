@@ -112,5 +112,6 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('check_user', 'AppSetup\UserManagement\UserList\UserList::checkUserName');
         $routes->post('check_phone', 'AppSetup\UserManagement\UserList\UserList::checkUserPhone');
         $routes->post('check_email', 'AppSetup\UserManagement\UserList\UserList::checkUserEmail');
+        $routes->post('save', 'AppSetup\UserManagement\UserList\UserList::saveUser');
     });
 });

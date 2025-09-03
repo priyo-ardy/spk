@@ -211,4 +211,9 @@ class UserList extends BaseController
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured : " . $e->getMessage());
         }
     }
+
+    function saveUser()
+    {
+        $aksi = "save";
+    }
 }

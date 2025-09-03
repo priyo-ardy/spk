@@ -197,7 +197,13 @@ buttons.back.addEventListener('click', (e) => {
 buttons.save.addEventListener('click', (e) => {
     if (validasi()) {
         try {
-
+            loading();
+            fetchData(baseurl + '/users/save', 'POST', new FormData(formData))
+                .then(result => { })
+                .catch(err => {
+                    pesanError(err.message);
+                    hideLoading()
+                })
         } catch (e) {
             pesanError(e.message);
             hideLoading();

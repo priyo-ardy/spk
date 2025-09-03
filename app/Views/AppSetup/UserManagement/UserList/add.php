@@ -85,8 +85,7 @@
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
                                         <label class="form-label" for="user_image">User Image</label>
-                                        <input type="file" class="custom-file-input form-control rounded-0" id="user_image" required name="user_image" accept="image/jpeg, image/png, image/gif, image/webp">
-                                        <div class="invalid-feedback" id="feedback_image"></div>
+                                        <input type="file" class="custom-file-input form-control rounded-0" id="user_image" name="user_image" accept="image/jpeg, image/png, image/gif, image/webp">
                                     </div>
                                 </div>
                             </div>
