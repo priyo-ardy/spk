@@ -189,17 +189,45 @@ dataForm.email_address.addEventListener('keypress', (e) => {
     }
 })
 
+function resetForm() {
+    formData.reset();
+    $(dataForm.user_level).trigger('change');
+
+    const invalidElement = document.querySelectorAll('.is-invalid');
+    const validElement = document.querySelectorAll('.is-valid');
+
+    if (invalidElement.length > 0) {
+        invalidElement.forEach(element => {
+            element.classList.remove('is-invalid');
+        })
+    }
+
+    if (validElement.length > 0) {
+        validElement.forEach(element => {
+            element.classList.remove('is-valid');
+        })
+    }
+}
+
 buttons.back.addEventListener('click', (e) => {
     loading();
     window.location.replace(baseurl + '/users');
 });
+
+buttons.cancel.addEventListener('click', (e) => {
+    resetForm();
+})
 
 buttons.save.addEventListener('click', (e) => {
     if (validasi()) {
         try {
             loading();
             fetchData(baseurl + '/users/save', 'POST', new FormData(formData))
-                .then(result => { })
+                .then(result => {
+                    pesanSukses(result.message);
+                    hideLoading();
+                    resetForm();
+                })
                 .catch(err => {
                     pesanError(err.message);
                     hideLoading()
