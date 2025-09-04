@@ -113,5 +113,12 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('check_phone', 'AppSetup\UserManagement\UserList\UserList::checkUserPhone');
         $routes->post('check_email', 'AppSetup\UserManagement\UserList\UserList::checkUserEmail');
         $routes->post('save', 'AppSetup\UserManagement\UserList\UserList::saveUser');
+        $routes->post('table', 'AppSetup\UserManagement\UserList\UserList::loadTable');
+        $routes->get('show/(:any)', 'AppSetup\UserManagement\UserList\UserList::getUser/$1');
+        $routes->post('update', 'AppSetup\UserManagement\UserList\UserList::updateData');
+        $routes->post('prev', 'AppSetup\UserManagement\UserList\UserList::prevData');
+        $routes->post('next', 'AppSetup\UserManagement\UserList\UserList::nextData');
+        $routes->post('change_password', 'AppSetup\UserManagement\UserList\UserList::changeUserPassword');
+        $routes->post('disable', 'AppSetup\UserManagement\UserList\UserList::disableUser');
     });
 });

@@ -21,18 +21,63 @@ class UserListModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function checkUser($user_name)
+    public function checkUser($user_name, $user_id = null)
     {
-        return $this->where('user_name', $user_name)->first();
+        if ($user_id !== null || $user_id !== '') {
+            return $this->select('user_name')
+                ->where('user_id <>', $user_id)
+                ->where('user_name', $user_name)
+                ->first();
+        }
+
+        return $this->select('user_name')
+            ->where('user_name', $user_name)
+            ->first();
     }
 
-    public function checkUserPhone(string $phone)
+    public function checkUserPhone(string $phone, $user_id = null)
     {
-        return $this->where('phone_hash', $phone)->first();
+        if ($user_id !== null) {
+            return $this->select('phone_hash')
+                ->where('user_id <>', $user_id)
+                ->where('phone_hash', $phone)
+                ->first();
+        }
+
+        return $this->select('phone_hash')
+            ->where('phone_hash', $phone)
+            ->first();
     }
 
-    public function checkUserEmail($email_address)
+    public function checkUserEmail($email_address, $user_id = null)
     {
-        return $this->where('email_hash', $email_address)->first();
+        if ($user_id !== null) {
+            return $this->select('email_hash')
+                ->where('user_id <>', $user_id)
+                ->where('email_hash', $email_address)
+                ->first();
+        }
+
+        return $this->select('email_hash')
+            ->where('email_hash', $email_address)
+            ->first();
+    }
+
+    function getPrevData($user_name)
+    {
+        return $this->select('user_id')
+            ->where('user_name <', $user_name)
+            ->orderBy('user_name', 'desc')
+            ->limit(1)
+            ->first();
+    }
+
+    function getNextData($user_name)
+    {
+        return $this->select('user_id')
+            ->where('user_name >', $user_name)
+            ->orderBy('user_name', 'asc')
+            ->limit(1)
+            ->first();
     }
 }

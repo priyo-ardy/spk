@@ -12,7 +12,8 @@ const dataForm = {
     email_address: document.getElementById('email_address'),
     user_password: document.getElementById('user_password'),
     user_level: document.getElementById('user_level'),
-    user_image: document.getElementById('user_image')
+    user_image: document.getElementById('user_image'),
+    img_preview: document.getElementById('img_preview')
 }
 
 const formFeedback = {
@@ -23,6 +24,32 @@ const formFeedback = {
     user_password: document.getElementById('feedback_password'),
     user_image: document.getElementById('feedback_image')
 }
+
+dataForm.user_image.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+        dataForm.img_preview.display = 'none';
+        return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+        const feedback = dataForm.parentElement.querySelector('.invalid-feedback');
+        e.target.value = '';
+        // dataForm.img_preview.style.display = 'none';
+        feedback.textContent = "Only image file accepted";
+        dataForm.img_preview.src = baseurl + '/image/no-foto.jpg';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        dataForm.img_preview.src = e.target.result;
+        // dataForm.img_preview.style.display = 'block';
+    }
+
+    reader.readAsDataURL(file);
+});
 
 function validasi() {
     let isValid = true;
@@ -207,6 +234,8 @@ function resetForm() {
             element.classList.remove('is-valid');
         })
     }
+
+    dataForm.img_preview.src = baseurl + '/image/no-foto.jpg';
 }
 
 buttons.back.addEventListener('click', (e) => {

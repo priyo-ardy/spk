@@ -45,47 +45,57 @@
                         <div class="card rounded-0">
                             <div class="card-body">
                                 <div class="row g-2">
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="user_name">Username <strong class="text-danger">*</strong></label>
-                                        <input type="text" name="user_name" id="user_name" class="form-control rounded-0" required maxlength="50" placeholder="Username" autofocus autocomplete="off">
-                                        <div class="invalid-feedback" id="feedback_username"></div>
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 clearfix mb-3">
+                                        <div class="row mb-3 g-2">
+                                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 align-middle text-center">
+                                                <img src="<?= base_url() . 'image/no-foto.jpg' ?>" alt="employee_photo" class="img-thumbnail" style="height: 350px;" id="img_preview" alt="Employee Photo">
+                                            </div>
+                                            <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 clearfix">
+                                                <input type="file" class="custom-file-input form-control rounded-0" id="user_image" name="user_image" accept="image/jpeg, image/png, image/gif, image/webp">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="full_name">Full Name <strong class="text-danger">*</strong></label>
-                                        <input type="text" name="full_name" id="full_name" class="form-control rounded-0" required maxlength="150" placeholder="Full Name" autocomplete="off">
-                                        <div class="invalid-feedback" id="feedback_fullname"></div>
-                                    </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="phone_number">Phone Number <strong class="text-danger">*</strong></label>
-                                        <input type="number" name="phone_number" id="phone_number" class="form-control rounded-0" required maxlength="20" placeholder="Phone Number" autocomplete="off">
-                                        <div class="invalid-feedback" id="feedback_phone"></div>
-                                    </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="email_address">Email Address <strong class="text-danger">*</strong></label>
-                                        <input type="email" name="email_address" id="email_address" class="form-control rounded-0" required maxlength="150" placeholder="Email Address" autocomplete="off">
-                                        <div class="invalid-feedback" id="feedback_email"></div>
-                                    </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="user_password">Password <strong class="text-danger">*</strong></label>
-                                        <input type="password" name="user_password" id="user_password" class="form-control rounded-0" required maxlength="20" placeholder="Password" autocomplete="off">
-                                        <div class="invalid-feedback" id="feedback_password"></div>
-                                    </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="user_level">User Level <strong class="text-danger">*</strong></label>
-                                        <select name="user_level" id="user_level" class="form-control select2 select2bs5" required>
-                                            <option value="">-- Choose --</option>
-                                            <option value="0">Super Administrator</option>
-                                            <option value="1">Administrator</option>
-                                            <option value="3">Planner/ME</option>
-                                            <option value="4">Mold Engineer</option>
-                                            <option value="5">Quality</option>
-                                            <option value="6">User</option>
-                                        </select>
-                                        <div class="invalid-feedback">This field is required</div>
-                                    </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="user_image">User Image</label>
-                                        <input type="file" class="custom-file-input form-control rounded-0" id="user_image" name="user_image" accept="image/jpeg, image/png, image/gif, image/webp">
+                                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 clearfix mb-3">
+                                        <div class="row g-2">
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="user_name">Username <strong class="text-danger">*</strong></label>
+                                                <input type="text" name="user_name" id="user_name" class="form-control rounded-0" required maxlength="50" placeholder="Username" autofocus autocomplete="off">
+                                                <div class="invalid-feedback" id="feedback_username"></div>
+                                            </div>
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="full_name">Full Name <strong class="text-danger">*</strong></label>
+                                                <input type="text" name="full_name" id="full_name" class="form-control rounded-0" required maxlength="150" placeholder="Full Name" autocomplete="off">
+                                                <div class="invalid-feedback" id="feedback_fullname"></div>
+                                            </div>
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="phone_number">Phone Number <strong class="text-danger">*</strong></label>
+                                                <input type="number" name="phone_number" id="phone_number" class="form-control rounded-0" required maxlength="20" placeholder="Phone Number" autocomplete="off">
+                                                <div class="invalid-feedback" id="feedback_phone"></div>
+                                            </div>
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="email_address">Email Address <strong class="text-danger">*</strong></label>
+                                                <input type="email" name="email_address" id="email_address" class="form-control rounded-0" required maxlength="150" placeholder="Email Address" autocomplete="off">
+                                                <div class="invalid-feedback" id="feedback_email"></div>
+                                            </div>
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="user_password">Password <strong class="text-danger">*</strong></label>
+                                                <input type="password" name="user_password" id="user_password" class="form-control rounded-0" required maxlength="20" placeholder="Password" autocomplete="off">
+                                                <div class="invalid-feedback" id="feedback_password"></div>
+                                            </div>
+                                            <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
+                                                <label class="form-label" for="user_level">User Level <strong class="text-danger">*</strong></label>
+                                                <select name="user_level" id="user_level" class="form-control select2 select2bs5" required>
+                                                    <option value="">-- Choose --</option>
+                                                    <option value="0">Super Administrator</option>
+                                                    <option value="1">Administrator</option>
+                                                    <option value="2">Planner/ME</option>
+                                                    <option value="3">Mold Engineer</option>
+                                                    <option value="4">Quality</option>
+                                                    <option value="5">User</option>
+                                                </select>
+                                                <div class="invalid-feedback">This field is required</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

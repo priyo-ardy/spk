@@ -233,9 +233,14 @@ if (!function_exists('dekripsi')) {
     function dekripsi($value)
     {
         $decrypter = service('encrypter');
+        // $level_1 = hex2bin($value);
+        // $level_2 = base64_decode($level_1);
+        // $level_3 = $decrypter->decrypt($level_2);
 
 
         return $decrypter->decrypt(base64_decode(hex2bin($value)));
+        // return base64_decode(hex2bin($value));
+        // return $level_2;
     }
 }
 
@@ -253,4 +258,39 @@ if (!function_exists('email_hash')) {
         $secret_key = getenv('phone_salt');
         return hash('sha256', $secret_key . $email_address);
     }
+}
+
+function sensor_email($email)
+{
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return '***@***';
+    }
+
+    list($username, $domain) = explode('@', $email);
+    $domainParts = explode('.', $domain);
+    $tld = array_pop($domainParts);
+    $domainName = implode('.', $domainParts);
+
+    // Mask username (tampilkan 2 karakter pertama, 1 karakter terakhir)
+    $usernameLength = strlen($username);
+    if ($usernameLength <= 3) {
+        $maskedUsername = str_repeat('*', $usernameLength);
+    } else {
+        $firstChars = substr($username, 0, 2);
+        $lastChar = substr($username, -1);
+        $maskedPart = str_repeat('*', $usernameLength - 3);
+        $maskedUsername = $firstChars . $maskedPart . $lastChar;
+    }
+
+    // Mask domain name (tampilkan 2 karakter pertama)
+    $domainNameLength = strlen($domainName);
+    if ($domainNameLength <= 2) {
+        $maskedDomainName = str_repeat('*', $domainNameLength);
+    } else {
+        $firstChars = substr($domainName, 0, 2);
+        $maskedPart = str_repeat('*', $domainNameLength - 2);
+        $maskedDomainName = $firstChars . $maskedPart;
+    }
+
+    return $maskedUsername . '@' . $maskedDomainName . '.' . $tld;
 }

