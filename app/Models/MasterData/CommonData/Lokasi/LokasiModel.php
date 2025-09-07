@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\MasterData\CommonData\Defect;
+namespace App\Models\MasterData\CommonData\Lokasi;
 
 use CodeIgniter\Model;
 
-class DefectModel extends Model
+class LokasiModel extends Model
 {
-    protected $table            = 'm_defect';
+    protected $table            = 'm_lokasi';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'object';
@@ -21,8 +21,8 @@ class DefectModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    function generateList()
+    public function generateList()
     {
-        return $this->orderBy('name', 'asc')->findAll();
+        return $this->orderBy('code', 'asc')->findAll();
     }
 }

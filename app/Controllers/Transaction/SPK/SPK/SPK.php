@@ -18,6 +18,7 @@ use App\Models\MasterData\CommonData\Defect\DefectModel;
 use App\Models\MasterData\CommonData\SubDefect\SubDefectModel;
 use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
+use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
 use Config\Services;
 use Config\Database;
 
@@ -37,6 +38,7 @@ class SPK extends BaseController
     protected $defectModel;
     protected $positionModel;
     protected $subDefectModel;
+    protected $lokasiModel;
     protected $validasi;
     protected $enkripsi;
 
@@ -51,9 +53,10 @@ class SPK extends BaseController
         $this->leaderModel = new LeaderModel();
         $this->masterModel = new MasterModel();
         $this->repairModel = new RepairReasonModel();
-        $this->dataTable = new DefectModel();
+        $this->defectModel = new DefectModel();
         $this->subDefectModel = new SubDefectModel();
         $this->positionModel = new ProblemPositionModel();
+        $this->lokasiModel = new LokasiModel();
 
         $this->db = Database::connect();
         $this->validasi = Services::validation();
@@ -82,11 +85,37 @@ class SPK extends BaseController
 
         $data = [
             'title' => 'Create New SPK',
+            'location_list' => $this->lokasiModel->generateList(),
+            'dept_list' => $this->deptModel->generateList(),
+            'emp_list' => $this->karyawanModel->generateList(),
+            'leader_list' => $this->leaderModel->generateList(),
+            'defect_list' => $this->defectModel->generateList(),
+            'position_list' => $this->positionModel->generateList(),
+            'reason_list' => $this->repairModel->generateList(),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/add.js' . '"></script>'
             ]
         ];
 
         return view('Transaction/SPK/SPK/add', $data);
+    }
+
+    function saveData()
+    {
+        $aksi =  "save SPK";
+
+        $this->db->transStart();
+        try {
+            $id = generate_uuid();
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 }

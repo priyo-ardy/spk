@@ -1,11 +1,269 @@
-const formData = document.getElementById('formData');
+window.onload = () => {
+  $(".summernote").summernote({
+    height: 150, // set editor height
+    minHeight: null, // set minimum height of editor
+    maxHeight: null, // set maximum height of editor
+  });
+};
+
+const formData = document.getElementById("formData");
 const buttons = {
-    back: document.getElementById('btnBack'),
-    save: document.getElementById('btnSave'),
-    cancel: document.getElementById('btnCancel'),
+  back: document.getElementById("btnBack"),
+  save: document.getElementById("btnSave"),
+  cancel: document.getElementById("btnCancel"),
+};
+
+const dataForm = {
+  doc_type: document.getElementById("doc_type"),
+  lokasi: document.getElementById("data_lokasi"),
+  dept: document.getElementById("data_dept"),
+  pelapor: document.getElementById("data_pelapor"),
+  tanggal: document.getElementById("data_tanggal"),
+  material: document.getElementById("data_material"),
+  model: document.getElementById("data_model"),
+  mold: document.getElementById("data_mold"),
+  tipe_equipment: document.getElementById("tipe_equipment"),
+  leader: document.getElementById("data_leader"),
+  defect: document.getElementById("data_defect"),
+  sub_defect: document.getElementById("data_sub_defect"),
+  berulang: document.getElementById("data_berulang"),
+  posisi: document.getElementById("data_posisi"),
+  repair: document.getElementById("data_repair"),
+  image: document.getElementById("data_image"),
+  img_preview: document.getElementById("img_preview"),
+  keterangan: document.getElementById("data_keterangan"),
+};
+
+buttons.back.addEventListener("click", (e) => {
+  loading();
+  window.location.replace(baseurl + "/spk");
+});
+
+dataForm.doc_type.onchange = () => {
+  try {
+    dataForm.model.value = "";
+    dataForm.mold.value = "";
+    dataForm.tipe_equipment.value = "";
+    $(dataForm.tipe_equipment).trigger("change");
+    if (dataForm.doc_type.value === "") {
+      dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+    } else {
+      if (dataForm.doc_type.value == "1") {
+        dataForm.tipe_equipment.setAttribute("disabled", true);
+      } else {
+        dataForm.tipe_equipment.removeAttribute("disabled");
+      }
+      fetchData(
+        baseurl + "/material/generate_material",
+        "POST",
+        JSON.stringify({ kategori: dataForm.doc_type.value })
+      )
+        .then((result) => {
+          if (result.data.length > 0) {
+            result.data.forEach((item) => {
+              const option = document.createElement("option");
+              option.value = item.id;
+              option.textContent = item.code + " - " + item.name;
+              dataForm.material.appendChild(option);
+            });
+          }
+        })
+        .catch((err) => {
+          dataForm.material.innerHTML =
+            '<option value="">-- Choose --</option>';
+        });
+    }
+  } catch (e) {
+    pesanError(e.message);
+  }
+};
+
+dataForm.defect.onchange = () => {
+  try {
+    if (dataForm.defect.value === "") {
+      dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.sub_defect.setAttribute("disabled", true);
+    } else {
+      fetchData(
+        baseurl + "/sub_defect/get_list",
+        "POST",
+        JSON.stringify({ token: dataForm.defect.value })
+      )
+        .then((result) => {
+          dataForm.sub_defect.innerHTML =
+            '<option value="">-- Choose --</option>';
+
+          if (result.data.length > 0) {
+            dataForm.sub_defect.removeAttribute("disabled");
+            result.data.forEach((item) => {
+              const option = document.createElement("option");
+              option.value = item.id;
+              option.textContent = item.name;
+
+              dataForm.sub_defect.appendChild(option);
+            });
+          }
+        })
+        .catch((err) => {
+          dataForm.sub_defect.setAttribute("disabled", true);
+          dataForm.sub_defect.innerHTML =
+            '<option value="">-- Choose --</option>';
+        });
+    }
+  } catch (e) {
+    pesanError(e.message);
+  }
+};
+
+dataForm.material.onchange = () => {
+  try {
+    if (dataForm.material.value === "") {
+      dataForm.model.value = "";
+      dataForm.mold.value = "";
+      dataForm.tipe_equipment.value = "";
+      $(dataForm.tipe_equipment).trigger("change");
+    } else {
+      fetchData(
+        baseurl + "/material/get_material",
+        "POST",
+        JSON.stringify({
+          kategori: dataForm.doc_type.value,
+          token: dataForm.material.value,
+        })
+      ).then((result) => {
+        dataForm.model.value = result.data.model;
+        dataForm.mold.value = result.data.code;
+      });
+    }
+  } catch (e) {
+    pesanError(e.message);
+  }
+};
+
+dataForm.image.onchange = () => {
+  try {
+    let uploadedFiles = [];
+    const files = dataForm.image.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (!file.type.match("image.*")) {
+        pesanWarning("Only image file aloowed");
+        continue;
+      }
+
+      uploadedFiles.push(file);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const divCol = document.createElement("div");
+        divCol.className =
+          "col-xl-3 col-lg-3 col-md-6 col-sm-12 preview-container";
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "img img-thumbnail";
+        const deleteBtn = document.createElement("div");
+        deleteBtn.className = "bdelete-btn";
+        deleteBtn.innerHTML = '<i class="bi bi-x"></i>';
+        deleteBtn.onclick = () => {
+          divCol.remove();
+          const index = uploadedFiles.indexOf(file);
+          if (index !== -1) {
+            uploadedFiles.splice(index, 1);
+          }
+        };
+        divCol.appendChild(img);
+        divCol.appendChild(deleteBtn);
+        dataForm.img_preview.appendChild(divCol);
+        console.log(divCol);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  } catch (e) {
+    pesanError(e.message);
+  }
+};
+
+function validasi() {
+  let isValid = true;
+  const requiredElement = document.querySelectorAll("[required]");
+  if (requiredElement.length > 0) {
+    requiredElement.forEach((element) => {
+      const feedback = element.parentNode.querySelector(".invalid-feedback");
+      if (element.value.trim() === "") {
+        element.classList.add("is-invalid");
+        feedback.textContent = "This field is required";
+        isValid = false;
+      } else {
+        element.classList.remove("is-invalid");
+        feedback.textContent = "";
+      }
+    });
+  }
+
+  if (dataForm.doc_type.value !== "1" || dataForm.tipe_equipment.value !== "") {
+    dataForm.tipe_equipment.classList.add("is-invalid");
+    dataForm.tipe_equipment.parentNode.querySelector(
+      ".invalid-feedback"
+    ).textContent = "This field is required";
+    isValid = false;
+  } else {
+    dataForm.tipe_equipment.classList.remove("is-invalid");
+  }
+
+  return isValid;
 }
 
-buttons.back.addEventListener('click', (e) => {
-    loading();
-    window.location.replace(baseurl + '/spk');
-})
+function resetForm() {
+  formData.reset();
+  $(dataForm.doc_type).trigger("change");
+  $(dataForm.lokasi).trigger("change");
+  $(dataForm.dept).trigger("change");
+  $(dataForm.pelapor).trigger("change");
+  dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+  $(dataForm.tipe_equipment).trigger("change");
+  $(dataForm.leader).trigger("change");
+  $(dataForm.defect).trigger("change");
+  dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+  dataForm.sub_defect.setAttribute("disabled", true);
+  $(dataForm.berulang).trigger("change");
+  $(dataForm.posisi).trigger("change");
+  $(dataForm.repair).trigger("change");
+  dataForm.image.value = "";
+  $(".summernote").summernote("code", "");
+
+  const requiredElement = document.querySelectorAll(".is-invalid");
+  if (requiredElement.length > 0) {
+    requiredElement.forEach((element) => {
+      element.classList.remove("is-invalid");
+    });
+  }
+
+  const invalidFeedBack = document.querySelectorAll(".invalid-feedback");
+  invalidFeedBack.textContent = "";
+}
+
+buttons.cancel.addEventListener("click", (e) => {
+  resetForm();
+});
+
+buttons.save.addEventListener("click", (e) => {
+  if (validasi()) {
+    try {
+      loading();
+      fetchData(baseurl + "/spk/save", "POST", new FormData(formData))
+        .then((result) => {
+          pesanSukses(result.message);
+          hideLoading();
+        })
+        .catch((err) => {
+          pesanError(err.message);
+          hideLoading();
+        });
+    } catch (e) {
+      pesanError(e.message);
+    }
+  }
+});

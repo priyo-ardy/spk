@@ -21,11 +21,17 @@ class MaterialModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function generateList(){
-        return $this->orderBy('code', 'asc')->findAll();
+    public function generatePartList()
+    {
+        return $this->where('kategori', 'b3cf99d9-30f5-4e3b-8c3c-6dcecaff260a')
+            ->orderBy('code', 'asc')
+            ->findAll();
     }
 
-    public function getDataById($id){
-        return $this->where('id', $id)->first();
+    public function getPartData($id)
+    {
+        return $this->where('kategori', 'b3cf99d9-30f5-4e3b-8c3c-6dcecaff260a')
+            ->where('id', $id)
+            ->first();
     }
 }

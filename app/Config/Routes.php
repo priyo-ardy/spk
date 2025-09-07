@@ -18,6 +18,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->group('/spk', static function ($routes) {
         $routes->get('', 'Transaction\SPK\SPK\SPK::index');
         $routes->get('add', 'Transaction\SPK\SPK\SPK::add');
+        $routes->post('save', 'Transaction\SPK\SPK\SPK:saveData');
     });
 
     // Transaction -> SPK -> General
@@ -102,6 +103,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // Master Data -> Material Management -> Material
     $routes->group('/material', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\Material\Material::index');
+        $routes->post('generate_material', 'MasterData\MaterialManagement\Material\Material::generateMaterialList');
         $routes->post('get_material', 'MasterData\MaterialManagement\Material\Material::getMaterialData');
     });
 
