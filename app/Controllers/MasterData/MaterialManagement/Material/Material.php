@@ -5,16 +5,19 @@ namespace App\Controllers\MasterData\MaterialManagement\Material;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\MasterData\MaterialManagement\Material\MaterialModel;
+use App\Models\MasterData\CommonData\Machine\MachineModel;
 
 class Material extends BaseController
 {
     protected $module;
     protected $materialModel;
+    protected $machineModel;
 
     public function __construct()
     {
         $this->module = "Material";
         $this->materialModel = new MaterialModel();
+        $this->machineModel = new MachineModel();
     }
 
     public function index()
@@ -43,6 +46,7 @@ class Material extends BaseController
                     $lists = $this->materialModel->generatePartList();
                     break;
                 case 2:
+                    $lists = $this->machineModel->generateMachineList();
                     break;
                 case 3:
                     break;
@@ -50,16 +54,7 @@ class Material extends BaseController
                     break;
             }
 
-            foreach ($lists as $item) {
-                $data[] = [
-                    'id' => $item->id,
-                    'code' => $item->code,
-                    'name' => $item->name,
-                    'model' => ''
-                ];
-            }
-
-            return pesan(ResponseInterface::HTTP_OK, 'Material List Found', $data);
+            return pesan(ResponseInterface::HTTP_OK, 'Material List Found', $lists);
         } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
                 'message' => $e->getMessage(),
@@ -107,6 +102,7 @@ class Material extends BaseController
                     $get_material = $this->materialModel->getPartData($id_material);
                     break;
                 case 2:
+                    $get_material =  $this->machineModel->getMachineData($id_material);
                     break;
                 case 3:
                     break;
@@ -114,13 +110,9 @@ class Material extends BaseController
                     break;
             }
 
-            $data = [
-                'name' => $get_material->name,
-                'model' => '',
-                'code' => $get_material->code
-            ];
+            
 
-            return pesan(ResponseInterface::HTTP_OK, "Material data found", $data);
+            return pesan(ResponseInterface::HTTP_OK, "Material data found", $get_material);
         } catch (\Exception $e) {
             log_action($this->module, $aksi, 'error', current_url(), "Unexpected error occured", '', json_encode([
                 'message' => $e->getMessage(),

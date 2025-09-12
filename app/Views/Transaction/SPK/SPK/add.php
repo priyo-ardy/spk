@@ -47,10 +47,10 @@
                                         <label class="form-label" for="doc_type">Document Type <strong class="text-danger">*</strong></label>
                                         <select name="doc_type" id="doc_type" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
-                                            <option value="1">1. SPK Mold Repair</option>
-                                            <option value="2">2. SPK ME</option>
-                                            <option value="3">3. SPK Equipment Request</option>
-                                            <option value="4">4. SPK Preventive Maintenance Request</option>
+                                            <option value="1">1. SPK Mold Repair</option> <!-- hanya keluar part no -->
+                                            <option value="2">2. SPK Mesin</option> <!-- hanya keluar mesin & equipment -->
+                                            <option value="3">3. SPK Preventive Maintenance Request</option> <!-- all part no -->
+                                            <option value="4">4. SPK Equipment Request</option> <!-- material custom/input manual -->
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
@@ -101,7 +101,7 @@
                                         <input type="text" name="data_model" id="data_model" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Material Model/Equipment No.">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
-                                        <label class="form-label" for="data_mold">Mold No</label>
+                                        <label class="form-label" for="data_mold">Mold No/Machine No</label>
                                         <input type="text" name="data_mold" id="data_mold" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Mold No.">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">

@@ -26,6 +26,11 @@ class SPK extends Migration
                 'constraint' => '50',
                 'null' => false,
             ],
+            'lokasi' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
+                'null' => false
+            ],
             'dept' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,

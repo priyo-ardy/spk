@@ -45,6 +45,8 @@ dataForm.doc_type.onchange = () => {
     dataForm.mold.value = "";
     dataForm.tipe_equipment.value = "";
     $(dataForm.tipe_equipment).trigger("change");
+    dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+
     if (dataForm.doc_type.value === "") {
       dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
     } else {
@@ -53,6 +55,7 @@ dataForm.doc_type.onchange = () => {
       } else {
         dataForm.tipe_equipment.removeAttribute("disabled");
       }
+
       fetchData(
         baseurl + "/material/generate_material",
         "POST",
@@ -132,7 +135,14 @@ dataForm.material.onchange = () => {
         })
       ).then((result) => {
         dataForm.model.value = result.data.model;
-        dataForm.mold.value = result.data.code;
+        switch (dataForm.doc_type.value) {
+          case "1":
+            dataForm.mold.value = result.data.code;
+            break;
+          case "2":
+            dataForm.mold.value = result.data.no_mesin;
+            break;
+        }
       });
     }
   } catch (e) {

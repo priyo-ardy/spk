@@ -105,8 +105,244 @@ class SPK extends BaseController
         $aksi =  "save SPK";
 
         $this->db->transStart();
+
         try {
-            $id = generate_uuid();
+            $id_header = generate_uuid();
+            $doc_type = trim($this->request->getPost('doc_type'));
+            $lokasi = trim($this->request->getPost('data_lokasi'));
+            $dept = trim($this->request->getPost('data_dept'));
+            $pelapor = trim($this->request->getPost('data_pelapor'));
+            $tanggal = trim($this->request->getPost('data_tanggal'));
+            $material = trim($this->request->getPost('data_material'));
+            $model = trim($this->request->getMethod('data_model'));
+            $mold_no = trim($this->request->getPost('data_mold'));
+            $tipe_equipment = trim($this->request->getPost('tipe_equipment'));
+            $leader = trim($this->request->getPost('data_leader'));
+            $defect = trim($this->request->getPost('data_defect'));
+            $sub_defect = trim($this->request->getPost('data_sub_defect'));
+            $berulang = trim($this->request->getPost('data_berulang'));
+            $posisi = trim($this->request->getPost('data_posisi'));
+            $repair = trim($this->request->getPost('data_repair'));
+            $images = $this->request->getFileMultiple('data_image');
+            $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
+            $date = date("Ymd", strtotime($tanggal));
+            $error_message = [];
+            $success_count = 0;
+            $baris = 1;
+
+            switch ($doc_type) {
+                case 1:
+                    $doc_no = $this->spkModel->generateDocNo('', $date, $mold_no);
+                    break;
+                case 2:
+                    $doc_no = $this->spkModel->generateDocNo('SLMMA', $date, $mold_no);
+                    break;
+            }
+
+            $uploadPath = FCPATH . '/uploads/spk/';
+            if (is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+                chmod($uploadPath, 0777);
+            }
+
+            $rules = [
+                'doc_type' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Document type is required"
+                    ]
+                ],
+                'data_lokasi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Equipment/Machine location is required"
+                    ]
+                ],
+                'data_dept' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Requested dept is required"
+                    ]
+                ],
+                'data_pelapor' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Requested by is required'
+                    ]
+                ],
+                'data_tanggal' => [
+                    'rules' => 'requried|valid_date',
+                    'errors' => [
+                        'required' => "Requested date is required",
+                        'valid_date' => "Request date must have a valid date format"
+                    ]
+                ],
+                'data_material' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Material is required"
+                    ]
+                ],
+                'data_leader' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Team leader/supervisor is required"
+                    ]
+                ],
+                'data_defect' => [
+                    'rules'  => 'requried',
+                    'errors' => [
+                        'required' => "Problem defect is required"
+                    ]
+                ],
+                'data_sub_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem sub defect is required'
+                    ]
+                ],
+                'data_berulang' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Repeat problem is required"
+                    ]
+                ],
+                'data_posisi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem position is required'
+                    ]
+                ],
+                'data_repair' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Repair reason is required"
+                    ]
+                ],
+                'data_image' => [
+                    'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
+                    'errors' => [
+                        'uploaded' => 'Problem position photo is required',
+                        'max_size' => 'Problem position photo maximum size is 50MB',
+                        'is_image' => 'Problem position photo must image file type (JPG/JPEG/PNG)',
+                        'mime_in' => 'Problem position photo file format must JPG, JPEG atau PNG',
+                        'ext_in' => 'Problem position photo file extension mus .jpg, .jpeg atau .png'
+                    ]
+                ]
+            ];
+
+            if ($doc_type !== '1') {
+                $rules = array_merge($rules, [
+                    'tipe_equipment' => [
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => "Equipment type is required"
+                        ]
+                    ]
+                ]);
+            }
+
+            if (!$this->validasi->withRequest($this->request)->run()) {
+                $error_message = implode("<br>", $this->validasi->getErrors());
+                log_action($this->module, $aksi, "error", current_url(), "Validation failed", '', json_encode([
+                    'data' => $this->validasi->getErrors()
+                ]));
+
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed ! <br>" . $error_message);
+            }
+
+            $data_header = [
+                'id' => $id_header,
+                'kategori' => $doc_type,
+                'code' => $doc_no,
+                'lokasi' => $lokasi,
+                'dept' => $dept,
+                'pelapor' => $pelapor,
+                'tgl_lapor' => $tanggal,
+                'material' => $material,
+                'material_name' => '',
+                'material_model' => $model,
+                'nomor_mesin' => $mold_no,
+                'leader' => $leader,
+                'defect' => $defect,
+                'sub_defect' => $sub_defect,
+                'berulang' => $berulang,
+                'posisi' => $posisi,
+                'alasan_repair' => $repair,
+                'deskripsi' => $keterangan,
+                'dokumen_status' => 0,
+                'created_by' => $this->NIK,
+            ];
+
+            $insert_header = $this->spkModel->insert($data_header);
+            if (!$insert_header) {
+                log_action($this->module, $aksi, "error", current_url(), "Save failed, failed to save a new SPK transaction", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Save failed, there was an error during processing your request");
+            }
+
+            foreach ($images as $image) {
+                if ($image->isValid() && !$image->hasMoved()) {
+                    $fileName = "$doc_no-$baris." . $image->getExtension;
+                    $image->move($uploadPath, $fileName, true);
+                    $data_details = [
+                        'id' => generate_uuid(),
+                        'id_spk' => $id_header,
+                        'urut' => $baris,
+                        'file_name' => $fileName,
+                        'file_size' => $image->getSize(),
+                        'file_path' => $uploadPath,
+                        'created_by' => $this->NIK,
+                    ];
+
+                    $insert_details = $this->detailModel->insert($data_details);
+                    if (!$insert_details) {
+                        $error_message[] = "Failed to insert image $fileName on row $baris";
+
+                        if (file_exists($uploadPath . $fileName)) {
+                            unlink($uploadPath . $fileName);
+                        }
+                    } else {
+                        $success_count++;
+                        $baris++;
+                    }
+                } else {
+                    $error_message[] = "Invalid file: " . $image->getName();
+                }
+
+                $baris++;
+            }
+
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) {
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Save failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                throw new \Exception("Save failed, there was an error during processing your request");
+            }
+
+            if (!empty($error_message)) {
+                log_action($this->module, $aksi, "error", current_url(), "Successfully saved SPK data with some errors, here are the details :<br>" . implode(", ", $error_message), '', json_encode([
+                    'data' => $error_message
+                ]));
+
+                return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with some error with details: <br>" . implode("<br>", $error_message));
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Successfully saved SPK data with document No. <strong>$doc_no</strong>", '', json_encode([
+                'data' => [
+                    'header' => $data_header,
+                    'details' => $data_details
+                ]
+            ]));
+
+            return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with document No. : $doc_no", [
+                'token' => enkripsi($id_header)
+            ]);
         } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
                 'message' => $e->getMessage(),
@@ -117,5 +353,33 @@ class SPK extends BaseController
 
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
+    }
+
+    function show($token)
+    {
+        $id_spk = dekripsi($token);
+        $data_header = $this->spkModel->where('id', $id_spk)->first();
+        $data_details = $this->detailModel->where('id_spk', $id_spk)->findAll();
+
+        $aksi = "Open";
+        log_action($this->module, $aksi, "info", current_url(), "Opening SPK details page");
+
+        $data = [
+            'title' => 'SPK Details ' . $data_header->code,
+            'header' => $data_header,
+            'details' => $data_details,
+            'location_list' => $this->lokasiModel->generateList(),
+            'dept_list' => $this->deptModel->generateList(),
+            'emp_list' => $this->karyawanModel->generateList(),
+            'leader_list' => $this->leaderModel->generateList(),
+            'defect_list' => $this->defectModel->generateList(),
+            'position_list' => $this->positionModel->generateList(),
+            'reason_list' => $this->repairModel->generateList(),
+            'footer' => [
+                '<script src="' . base_url() . 'js/Transaction/SPK/SPK/edit.js' . '"></script>'
+            ]
+        ];
+
+        return view('Transaction/SPK/SPK/edit', $data);
     }
 }
