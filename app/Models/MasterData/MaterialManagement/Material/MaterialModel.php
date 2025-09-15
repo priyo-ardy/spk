@@ -27,6 +27,7 @@ class MaterialModel extends Model
         $query = $this->where('kategori', 'b3cf99d9-30f5-4e3b-8c3c-6dcecaff260a')
             ->orderBy('code', 'asc')
             ->findAll();
+
         foreach ($query as $item) {
             $data[] = [
                 'id' => $item->id,

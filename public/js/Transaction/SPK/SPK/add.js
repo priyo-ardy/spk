@@ -85,7 +85,6 @@ dataForm.defect.onchange = () => {
   try {
     if (dataForm.defect.value === "") {
       dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
-      dataForm.sub_defect.setAttribute("disabled", true);
     } else {
       fetchData(
         baseurl + "/sub_defect/get_list",
@@ -95,12 +94,10 @@ dataForm.defect.onchange = () => {
         .then((result) => {
           dataForm.sub_defect.innerHTML =
             '<option value="">-- Choose --</option>';
-
           if (result.data.length > 0) {
-            dataForm.sub_defect.removeAttribute("disabled");
             result.data.forEach((item) => {
               const option = document.createElement("option");
-              option.value = item.id;
+              option.value = item.token;
               option.textContent = item.name;
 
               dataForm.sub_defect.appendChild(option);
@@ -108,7 +105,6 @@ dataForm.defect.onchange = () => {
           }
         })
         .catch((err) => {
-          dataForm.sub_defect.setAttribute("disabled", true);
           dataForm.sub_defect.innerHTML =
             '<option value="">-- Choose --</option>';
         });
@@ -144,52 +140,6 @@ dataForm.material.onchange = () => {
             break;
         }
       });
-    }
-  } catch (e) {
-    pesanError(e.message);
-  }
-};
-
-dataForm.image.onchange = () => {
-  try {
-    let uploadedFiles = [];
-    const files = dataForm.image.files;
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-
-      if (!file.type.match("image.*")) {
-        pesanWarning("Only image file aloowed");
-        continue;
-      }
-
-      uploadedFiles.push(file);
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const divCol = document.createElement("div");
-        divCol.className =
-          "col-xl-3 col-lg-3 col-md-6 col-sm-12 preview-container";
-        const img = document.createElement("img");
-        img.src = e.target.result;
-        img.className = "img img-thumbnail";
-        const deleteBtn = document.createElement("div");
-        deleteBtn.className = "bdelete-btn";
-        deleteBtn.innerHTML = '<i class="bi bi-x"></i>';
-        deleteBtn.onclick = () => {
-          divCol.remove();
-          const index = uploadedFiles.indexOf(file);
-          if (index !== -1) {
-            uploadedFiles.splice(index, 1);
-          }
-        };
-        divCol.appendChild(img);
-        divCol.appendChild(deleteBtn);
-        dataForm.img_preview.appendChild(divCol);
-        console.log(divCol);
-      };
-
-      reader.readAsDataURL(file);
     }
   } catch (e) {
     pesanError(e.message);
@@ -237,7 +187,6 @@ function resetForm() {
   $(dataForm.leader).trigger("change");
   $(dataForm.defect).trigger("change");
   dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
-  dataForm.sub_defect.setAttribute("disabled", true);
   $(dataForm.berulang).trigger("change");
   $(dataForm.posisi).trigger("change");
   $(dataForm.repair).trigger("change");
@@ -267,6 +216,7 @@ buttons.save.addEventListener("click", (e) => {
         .then((result) => {
           pesanSukses(result.message);
           hideLoading();
+          window.location.replace(baseurl + "/spk/show/" + result.data.token);
         })
         .catch((err) => {
           pesanError(err.message);

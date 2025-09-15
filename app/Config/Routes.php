@@ -18,7 +18,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->group('/spk', static function ($routes) {
         $routes->get('', 'Transaction\SPK\SPK\SPK::index');
         $routes->get('add', 'Transaction\SPK\SPK\SPK::add');
-        $routes->post('save', 'Transaction\SPK\SPK\SPK:saveData');
+        $routes->post('save', 'Transaction\SPK\SPK\SPK::saveData');
+        $routes->get('show/(:any)', 'Transaction\SPK\SPK\SPK::showData/$1');
     });
 
     // Transaction -> SPK -> General

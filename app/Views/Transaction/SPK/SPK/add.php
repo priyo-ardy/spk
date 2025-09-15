@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
-                                        <select name="data_sub_defect" id="data_sub_defect" class="form-control select2 select2bs5" disabled required>
+                                        <select name="data_sub_defect" id="data_sub_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
                                         </select>
                                         <div class="invalid-feedback"></div>

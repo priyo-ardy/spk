@@ -10,6 +10,7 @@ use App\Models\Transaction\SPK\SPK\SPKModel;
 use App\Models\Transaction\SPK\SPK\SPKDetailsModel;
 use App\Models\DataTable\DataTableModel;
 use App\Models\Master\MasterModel;
+use App\Models\MasterData\CommonData\Machine\MachineModel;
 use App\Models\MasterData\CommonData\Employee\EmployeeModel;
 use App\Models\MasterData\CommonData\Leader\LeaderModel;
 use App\Models\MasterData\CommonData\Dept\DeptModel;
@@ -39,6 +40,7 @@ class SPK extends BaseController
     protected $positionModel;
     protected $subDefectModel;
     protected $lokasiModel;
+    protected $machineModel;
     protected $validasi;
     protected $enkripsi;
 
@@ -57,6 +59,7 @@ class SPK extends BaseController
         $this->subDefectModel = new SubDefectModel();
         $this->positionModel = new ProblemPositionModel();
         $this->lokasiModel = new LokasiModel();
+        $this->machineModel = new MachineModel();
 
         $this->db = Database::connect();
         $this->validasi = Services::validation();
@@ -114,7 +117,7 @@ class SPK extends BaseController
             $pelapor = trim($this->request->getPost('data_pelapor'));
             $tanggal = trim($this->request->getPost('data_tanggal'));
             $material = trim($this->request->getPost('data_material'));
-            $model = trim($this->request->getMethod('data_model'));
+            $model = trim($this->request->getPost('data_model'));
             $mold_no = trim($this->request->getPost('data_mold'));
             $tipe_equipment = trim($this->request->getPost('tipe_equipment'));
             $leader = trim($this->request->getPost('data_leader'));
@@ -132,7 +135,7 @@ class SPK extends BaseController
 
             switch ($doc_type) {
                 case 1:
-                    $doc_no = $this->spkModel->generateDocNo('', $date, $mold_no);
+                    $doc_no = $this->spkModel->generateDocNo('SLMMJ', $date, $mold_no);
                     break;
                 case 2:
                     $doc_no = $this->spkModel->generateDocNo('SLMMA', $date, $mold_no);
@@ -140,7 +143,7 @@ class SPK extends BaseController
             }
 
             $uploadPath = FCPATH . '/uploads/spk/';
-            if (is_dir($uploadPath)) {
+            if (!is_dir($uploadPath)) {
                 mkdir($uploadPath, 0777, true);
                 chmod($uploadPath, 0777);
             }
@@ -171,7 +174,7 @@ class SPK extends BaseController
                     ]
                 ],
                 'data_tanggal' => [
-                    'rules' => 'requried|valid_date',
+                    'rules' => 'required|valid_date',
                     'errors' => [
                         'required' => "Requested date is required",
                         'valid_date' => "Request date must have a valid date format"
@@ -190,7 +193,7 @@ class SPK extends BaseController
                     ]
                 ],
                 'data_defect' => [
-                    'rules'  => 'requried',
+                    'rules'  => 'required',
                     'errors' => [
                         'required' => "Problem defect is required"
                     ]
@@ -220,7 +223,7 @@ class SPK extends BaseController
                     ]
                 ],
                 'data_image' => [
-                    'rules' => 'uploaded[fupload]|max_size[fupload,51200]|is_image[fupload]|mime_in[fupload,image/jpg,image/jpeg,image/png]|ext_in[fupload,jpg,jpeg,png]',
+                    'rules' => 'uploaded[data_image]|max_size[data_image,51200]|is_image[data_image]|mime_in[data_image,image/jpg,image/jpeg,image/png]|ext_in[data_image,jpg,jpeg,png]',
                     'errors' => [
                         'uploaded' => 'Problem position photo is required',
                         'max_size' => 'Problem position photo maximum size is 50MB',
@@ -242,13 +245,16 @@ class SPK extends BaseController
                 ]);
             }
 
-            if (!$this->validasi->withRequest($this->request)->run()) {
-                $error_message = implode("<br>", $this->validasi->getErrors());
+            if (!$this->validasi->setRules($rules)->withRequest($this->request)->run()) {
+                $error_fields = $this->validasi->getErrors();
+                $error_message = implode("<br>", array_map(function ($field, $msg) {
+                    return "$field: $msg";
+                }, array_keys($error_fields), $error_fields));
                 log_action($this->module, $aksi, "error", current_url(), "Validation failed", '', json_encode([
-                    'data' => $this->validasi->getErrors()
+                    'data' => $error_fields
                 ]));
 
-                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed ! <br>" . $error_message);
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed! <br>" . $error_message);
             }
 
             $data_header = [
@@ -268,6 +274,7 @@ class SPK extends BaseController
                 'sub_defect' => $sub_defect,
                 'berulang' => $berulang,
                 'posisi' => $posisi,
+                'tipe_equipment' => $tipe_equipment,
                 'alasan_repair' => $repair,
                 'deskripsi' => $keterangan,
                 'dokumen_status' => 0,
@@ -280,26 +287,26 @@ class SPK extends BaseController
                     'data' => $this->spkModel->errors()
                 ]));
 
-                throw new \Exception("Save failed, there was an error during processing your request");
+                // throw new \Exception("Save failed, there was an error during processing your request");
+                throw new \Exception(json_encode($this->spkModel->errors()));
             }
 
             foreach ($images as $image) {
                 if ($image->isValid() && !$image->hasMoved()) {
-                    $fileName = "$doc_no-$baris." . $image->getExtension;
+                    $fileName = "$doc_no-$baris." . $image->getExtension();
                     $image->move($uploadPath, $fileName, true);
                     $data_details = [
                         'id' => generate_uuid(),
-                        'id_spk' => $id_header,
                         'urut' => $baris,
-                        'file_name' => $fileName,
-                        'file_size' => $image->getSize(),
-                        'file_path' => $uploadPath,
+                        'id_spk' => $id_header,
+                        'nama_file' => $fileName,
+                        'ukuran_file' => $image->getSize(),
                         'created_by' => $this->NIK,
                     ];
 
                     $insert_details = $this->detailModel->insert($data_details);
                     if (!$insert_details) {
-                        $error_message[] = "Failed to insert image $fileName on row $baris";
+                        $error_message[] = "Failed to insert image $fileName on row $baris. Error: " . json_encode($this->detailModel->errors());
 
                         if (file_exists($uploadPath . $fileName)) {
                             unlink($uploadPath . $fileName);
@@ -311,8 +318,6 @@ class SPK extends BaseController
                 } else {
                     $error_message[] = "Invalid file: " . $image->getName();
                 }
-
-                $baris++;
             }
 
             $this->db->transComplete();
@@ -322,7 +327,8 @@ class SPK extends BaseController
                     'data' => $this->db->error()
                 ]));
 
-                throw new \Exception("Save failed, there was an error during processing your request");
+                // throw new \Exception("Save failed, there was an error during processing your request");
+                throw new \Exception(json_encode($error_message));
             }
 
             if (!empty($error_message)) {
@@ -355,19 +361,38 @@ class SPK extends BaseController
         }
     }
 
-    function show($token)
+    function showData($token)
     {
         $id_spk = dekripsi($token);
         $data_header = $this->spkModel->where('id', $id_spk)->first();
         $data_details = $this->detailModel->where('id_spk', $id_spk)->findAll();
 
+        switch ($data_header->kategori) {
+            case 1:
+                $lists_material = $this->materialModel->generatePartList();
+                break;
+            case 2:
+                $lists_material = $this->machineModel->generateMachineList();
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+
+        $sub_defect = $this->subDefectModel->getListByDefect($data_header->defect);
+
         $aksi = "Open";
         log_action($this->module, $aksi, "info", current_url(), "Opening SPK details page");
 
         $data = [
-            'title' => 'SPK Details ' . $data_header->code,
+            'token' => enkripsi($data_header->id),
+            'title' => 'SPK Details',
+            'code' => $data_header->code,
             'header' => $data_header,
             'details' => $data_details,
+            'sub_defect' => $sub_defect,
+            'material_list' => $lists_material,
             'location_list' => $this->lokasiModel->generateList(),
             'dept_list' => $this->deptModel->generateList(),
             'emp_list' => $this->karyawanModel->generateList(),
