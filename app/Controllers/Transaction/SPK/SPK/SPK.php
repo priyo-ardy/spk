@@ -365,7 +365,7 @@ class SPK extends BaseController
     {
         $id_spk = dekripsi($token);
         $data_header = $this->spkModel->where('id', $id_spk)->first();
-        $data_details = $this->detailModel->where('id_spk', $id_spk)->findAll();
+        $data_details = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'asc')->findAll();
 
         switch ($data_header->kategori) {
             case 1:
@@ -377,6 +377,27 @@ class SPK extends BaseController
             case 3:
                 break;
             case 4:
+                break;
+        }
+
+        switch ($data_header->dokumen_status) {
+            case 0:
+                $nama_status = "Created";
+                break;
+            case 1:
+                $nama_status = "Under Review";
+                break;
+            case 2:
+                $nama_status = "Approved";
+                break;
+            case 3:
+                $nama_status = "Re-Approve";
+                break;
+            case 4:
+                $nama_status = "Reject";
+                break;
+            case 5:
+                $nama_status = "Close";
                 break;
         }
 
@@ -392,6 +413,8 @@ class SPK extends BaseController
             'header' => $data_header,
             'details' => $data_details,
             'sub_defect' => $sub_defect,
+            'status' => $data_header->dokumen_status,
+            'nama_status' => $nama_status,
             'material_list' => $lists_material,
             'location_list' => $this->lokasiModel->generateList(),
             'dept_list' => $this->deptModel->generateList(),
@@ -406,5 +429,473 @@ class SPK extends BaseController
         ];
 
         return view('Transaction/SPK/SPK/edit', $data);
+    }
+
+    function updateData()
+    {
+        $aksi = "update";
+
+        log_action($this->module, $aksi, "info", current_url(), "preparing to update SPK data");
+
+        $this->db->transStart();
+
+        try {
+            $token = trim($this->request->getPost('data_token'));
+            $id_spk = dekripsi($token);
+            $code = trim($this->request->getPost('data_code'));
+            $doc_type = trim($this->request->getPost('doc_type'));
+            $lokasi = trim($this->request->getPost('data_lokasi'));
+            $dept = trim($this->request->getPost('data_dept'));
+            $pelapor = trim($this->request->getPost('data_pelapor'));
+            $tanggal = trim($this->request->getPost('data_tanggal'));
+            $material = trim($this->request->getPost('data_material'));
+            $model = trim($this->request->getPost('data_model'));
+            $mold_no = trim($this->request->getPost('data_mold'));
+            $tipe_equipment = trim($this->request->getPost('tipe_equipment'));
+            $leader = trim($this->request->getPost('data_leader'));
+            $defect = trim($this->request->getPost('data_defect'));
+            $sub_defect = trim($this->request->getPost('data_sub_defect'));
+            $berulang = trim($this->request->getPost('data_berulang'));
+            $posisi = trim($this->request->getPost('data_posisi'));
+            $repair = trim($this->request->getPost('data_repair'));
+            $images = $this->request->getFileMultiple('data_image');
+            $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
+            $date = date("Ymd", strtotime($tanggal));
+            $error_message = [];
+            $success_count = 0;
+            $baris = $this->detailModel->getLastRow($id_spk);
+
+            $uploadPath = FCPATH . '/uploads/spk/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+                chmod($uploadPath, 0777);
+            }
+
+            $rules = [
+                'doc_type' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Document type is required"
+                    ]
+                ],
+                'data_lokasi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Equipment/Machine location is required"
+                    ]
+                ],
+                'data_dept' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Requested dept is required"
+                    ]
+                ],
+                'data_pelapor' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Requested by is required'
+                    ]
+                ],
+                'data_tanggal' => [
+                    'rules' => 'required|valid_date',
+                    'errors' => [
+                        'required' => "Requested date is required",
+                        'valid_date' => "Request date must have a valid date format"
+                    ]
+                ],
+                'data_material' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Material is required"
+                    ]
+                ],
+                'data_leader' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Team leader/supervisor is required"
+                    ]
+                ],
+                'data_defect' => [
+                    'rules'  => 'required',
+                    'errors' => [
+                        'required' => "Problem defect is required"
+                    ]
+                ],
+                'data_sub_defect' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem sub defect is required'
+                    ]
+                ],
+                'data_berulang' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Repeat problem is required"
+                    ]
+                ],
+                'data_posisi' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Problem position is required'
+                    ]
+                ],
+                'data_repair' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Repair reason is required"
+                    ]
+                ],
+            ];
+
+            $uploadedImages = $this->request->getFileMultiple('data_image');
+            $hasValidImage = false;
+            if (!empty($uploadedImages)) {
+                foreach ($uploadedImages as $img) {
+                    if ($img && $img->isValid() && $img->getSize() > 0) {
+                        $hasValidImage = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($hasValidImage) {
+                $rules = array_merge($rules, [
+                    'data_image' => [
+                        'rules' => 'uploaded[data_image]|max_size[data_image,51200]|is_image[data_image]|mime_in[data_image,image/jpg,image/jpeg,image/png]|ext_in[data_image,jpg,jpeg,png]',
+                        'errors' => [
+                            'uploaded' => 'Problem position photo is required',
+                            'max_size' => 'Problem position photo maximum size is 50MB',
+                            'is_image' => 'Problem position photo must image file type (JPG/JPEG/PNG)',
+                            'mime_in' => 'Problem position photo file format must JPG, JPEG atau PNG',
+                            'ext_in' => 'Problem position photo file extension mus .jpg, .jpeg atau .png'
+                        ]
+                    ]
+                ]);
+            }
+
+            if ($doc_type !== '1') {
+                $rules = array_merge($rules, [
+                    'tipe_equipment' => [
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => "Equipment type is required"
+                        ]
+                    ]
+                ]);
+            }
+
+            if (!$this->validasi->setRules($rules)->withRequest($this->request)->run()) {
+                $error_fields = $this->validasi->getErrors();
+                $error_message = implode("<br>", array_map(function ($field, $msg) {
+                    return "$field: $msg";
+                }, array_keys($error_fields), $error_fields));
+                log_action($this->module, $aksi, "error", current_url(), "Validation failed", '', json_encode([
+                    'data' => $error_fields
+                ]));
+
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed! <br>" . $error_message);
+            }
+
+            $data_header = [
+                'kategori' => $doc_type,
+                'lokasi' => $lokasi,
+                'dept' => $dept,
+                'pelapor' => $pelapor,
+                'tgl_lapor' => $tanggal,
+                'material' => $material,
+                'material_name' => '',
+                'material_model' => $model,
+                'nomor_mesin' => $mold_no,
+                'leader' => $leader,
+                'defect' => $defect,
+                'sub_defect' => $sub_defect,
+                'berulang' => $berulang,
+                'posisi' => $posisi,
+                'tipe_equipment' => $tipe_equipment,
+                'alasan_repair' => $repair,
+                'deskripsi' => $keterangan,
+                'dokumen_status' => 0,
+                'updated_by' => $this->NIK,
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data_header);
+            if (!$update) {
+                log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Update failed, there was an error during processing updating data");
+            }
+            $details = [];
+
+
+            if ($hasValidImage) {
+                foreach ($images as $image) {
+                    if ($image->isValid() && !$image->hasMoved()) {
+                        $fileName = "$code-" . "$baris." . $image->getExtension();
+                        $image->move($uploadPath, $fileName, true);
+                        $data_details = [
+                            'id' => generate_uuid(),
+                            'urut' => $baris,
+                            'id_spk' => $id_spk,
+                            'nama_file' => $fileName,
+                            'ukuran_file' => $image->getSize(),
+                            'created_by' => $this->NIK,
+                        ];
+
+                        $insert_details = $this->detailModel->insert($data_details);
+                        if (!$insert_details) {
+                            $error_message[] = "Failed to insert image $fileName on row $baris. Error: " . json_encode($this->detailModel->errors());
+
+                            if (file_exists($uploadPath . $fileName)) {
+                                unlink($uploadPath . $fileName);
+                            }
+                        } else {
+                            $success_count++;
+                            $details[] = $data_details;
+                            $baris++;
+                        }
+                    } else {
+                        $error_message[] = "Invalid file: " . $image->getName();
+                    }
+                }
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Update success", '', json_encode([
+                'header' => $data_header,
+                'details' => $details
+            ]));
+
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) {
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Update failed", '', json_encode([
+                    'data' => $this->db->error()
+                ]));
+
+                // throw new \Exception("Save failed, there was an error during processing your request");
+                throw new \Exception(json_encode($error_message));
+            }
+
+            if (!empty($error_message)) {
+                log_action($this->module, $aksi, "error", current_url(), "Successfully updated SPK data with some errors, here are the details :<br>" . implode(", ", $error_message), '', json_encode([
+                    'data' => $error_message
+                ]));
+
+                return pesan(ResponseInterface::HTTP_OK, "Successfully updated SPK data with some error with details: <br>" . implode("<br>", $error_message));
+            }
+            return pesan(ResponseInterface::HTTP_OK, "Successfully updated SPK data with document No. : <strong>$code</strong>");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function deleteImage()
+    {
+        $aksi = "delete image";
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_detail = dekripsi($token);
+
+            $get_data = $this->detailModel->where('id', $id_detail)->first();
+            if (!$get_data) {
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Image data not found in the database");
+            }
+
+            $uploadPath = FCPATH . 'uploads/spk/' . $get_data->nama_file;
+
+            if (!unlink($uploadPath)) {
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Image directory not found");
+            }
+
+            $delete = $this->detailModel->delete($id_detail, true);
+            if (!$delete) {
+                log_action($this->module, $aksi, "error", current_url(), "Failed to delete image data", '', json_encode([
+                    'data' => $this->detailModel->errors()
+                ]));
+
+                throw new \Exception("Failed to delete the image data");
+            }
+
+            log_action($this->module, $aksi, "success", current_url(), "Image deleted successfully", '', json_encode([
+                'data' => $id_detail
+            ]));
+
+            return pesan(ResponseInterface::HTTP_OK, "Delete success");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function submitData()
+    {
+        $aksi = "submit spk";
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_spk = dekripsi($token);
+
+            $data = [
+                'dokumen_status' => '1',
+                'updated_by' => $this->NIK
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data);
+            if (!$update) {
+                log_action($this->module, $aksi, "error", current_url(), "Submit SPK is failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Failed to submit SPK data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Submit successfully");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trance' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function approveData()
+    {
+        $aksi = "approve spk";
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_spk = dekripsi($token);
+
+            $data = [
+                'dokumen_status' => '2',
+                'updated_by' => $this->NIK
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data);
+            if (!$update) {
+                log_action($this->module, $aksi, "error", current_url(), "Approve SPK is failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Failed to approve SPK data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Approve successfully");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trance' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function unApproveData()
+    {
+        $aksi = "approve spk";
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_spk = dekripsi($token);
+
+            $data = [
+                'dokumen_status' => '3',
+                'updated_by' => $this->NIK
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data);
+            if (!$update) {
+                log_action($this->module, $aksi, "error", current_url(), "Un-Approve SPK is failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Failed to un-approve SPK data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Un-Approve successfully");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trance' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 }

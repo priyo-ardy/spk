@@ -2,6 +2,7 @@
 
 namespace App\Models\Transaction\SPK\SPK;
 
+use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Model;
 
 class SPKDetailsModel extends Model
@@ -20,4 +21,21 @@ class SPKDetailsModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
+
+    function getLastRow(string $id_spk)
+    {
+        $query =  $this->select('*')
+            ->where('id_spk', $id_spk)
+            ->orderBy('urut', 'desc')
+            ->limit(1)
+            ->first();
+
+        if ($query) {
+            $baris = (int) $query->urut + 1;
+        } else {
+            $baris = 1;
+        }
+
+        return $baris;
+    }
 }

@@ -20,6 +20,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('add', 'Transaction\SPK\SPK\SPK::add');
         $routes->post('save', 'Transaction\SPK\SPK\SPK::saveData');
         $routes->get('show/(:any)', 'Transaction\SPK\SPK\SPK::showData/$1');
+        $routes->post('update', 'Transaction\SPK\SPK\SPK::updateData');
+        $routes->post('delete_image', 'Transaction\SPK\SPK\SPK::deleteImage');
+        $routes->post('submit', 'Transaction\SPK\SPK\SPK::submitData');
+        $routes->post('approve', 'Transaction\SPK\SPK\SPK::approveData');
+        $routes->post('un_approve', 'Transaction\SPK\SPK\SPK::unApproveData');
     });
 
     // Transaction -> SPK -> General

@@ -4,7 +4,11 @@ window.onload = () => {
     minHeight: null, // set minimum height of editor
     maxHeight: null, // set maximum height of editor
   });
-  $(".summernote").summernote("disable");
+  if (document.getElementById("status") !== "0") {
+    $(".summernote").summernote("disable");
+  } else {
+    $(".summernote").summernote();
+  }
 };
 
 const formData = document.getElementById("formData");
@@ -13,6 +17,7 @@ const buttons = {
   save: document.getElementById("btnSave"),
   submit: document.getElementById("btnSubmit"),
   approve: document.getElementById("btnApprove"),
+  un_approve: document.getElementById("btnUnApprove"),
   cancel: document.getElementById("btnCancel"),
 };
 
@@ -186,8 +191,134 @@ function validasi() {
   return isValid;
 }
 
-buttons.save.addEventListener("click", (e) => {});
+buttons.save.addEventListener("click", (e) => {
+  if (validasi()) {
+    try {
+      loading();
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-primary rounded-0",
+          cancelButton: "btn btn-secondary rounded-0",
+        },
+      });
 
-buttons.submit.addEventListener("click", (e) => {});
+      swalWithBootstrapButtons
+        .fire({
+          title: "Confirmation !",
+          text: "Apakah anda yakin akan mengupdate data ini ?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: '<i class="bi bi-check"></i>&ensp;Yes',
+          cancelButtonText: '<i class="bi bi-x"></i>&ensp;Cancel',
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Please wait ...",
+              timerProgressBar: true,
+              allowEscapeKey: false,
+              allowOutsideClick: false,
+              didOpen: () => {
+                Swal.showLoading();
+              },
+            }).then(
+              fetchData(baseurl + "/spk/update", "POST", new FormData(formData))
+                .then((result) => {
+                  pesanSukses(result.message);
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1500);
+                })
+                .catch((err) => {
+                  pesanError(err.message);
+                })
+            );
+          }
+        });
+    } catch (e) {
+      pesanError(e.message);
+    }
+  }
+});
 
-buttons.approve.addEventListener("click", (e) => {});
+function deleteImage(token) {
+  try {
+    loading();
+    hapusData("/spk/delete_image", token);
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+}
+
+function kunciForm() {
+  const inputElement = document.querySelectorAll("input");
+  const selectElement = document.querySelectorAll("select");
+}
+
+buttons.submit.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/submit",
+      "POST",
+      JSON.stringify({ token: dataForm.token.value })
+    )
+      .then((result) => {
+        pesanSukses(result.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
+
+buttons.approve.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/approve",
+      "POST",
+      JSON.stringify({ token: dataForm.token.value })
+    )
+      .then((result) => {
+        pesanSukses(result.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
+
+buttons.un_approve.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/un_approve",
+      "POST",
+      JSON.stringify({ token: dataForm.token.value })
+    )
+      .then((result) => {
+        pesanSukses(result.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
