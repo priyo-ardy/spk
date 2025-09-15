@@ -48,6 +48,9 @@
                             <button type="button" id="btnBack" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Back">
                                 <i class="bi bi-arrow-left"></i>&ensp;Back
                             </button>
+                            <button type="button" id="btnAdd" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="New">
+                                <i class="bi bi-plus-circle"></i>&ensp;New
+                            </button>
                             <button <?= ($header->dokumen_status == 0 || $header->dokumen_status == '3') ? '' : 'hidden' ?> type="button" id="btnSave" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Save">
                                 <i class="bi bi-floppy"></i>&ensp;Save
                             </button>

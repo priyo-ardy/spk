@@ -19,6 +19,7 @@ const buttons = {
   approve: document.getElementById("btnApprove"),
   un_approve: document.getElementById("btnUnApprove"),
   cancel: document.getElementById("btnCancel"),
+  add: document.getElementById("btnAdd"),
 };
 
 const dataForm = {
@@ -47,6 +48,11 @@ const dataForm = {
 buttons.back.addEventListener("click", (e) => {
   loading();
   window.location.replace(baseurl + "/spk");
+});
+
+buttons.add.addEventListener("click", (e) => {
+  loading();
+  window.location.replace(baseurl + "/spk/add");
 });
 
 buttons.cancel.addEventListener("click", (e) => {
