@@ -24,7 +24,6 @@ class SPKModel extends Model
     function generateDocNo(string $prefix, string $tanggal, string $mold_no)
     {
         $query = $this->select("RIGHT(code, 8) as kode", true)
-            ->where('LEFT(code, 5)', $prefix)
             ->orderBy('code', 'desc')
             ->limit(1)
             ->first();

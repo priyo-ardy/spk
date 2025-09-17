@@ -163,14 +163,16 @@ function validasi() {
     });
   }
 
-  if (dataForm.doc_type.value !== "1" || dataForm.tipe_equipment.value !== "") {
-    dataForm.tipe_equipment.classList.add("is-invalid");
-    dataForm.tipe_equipment.parentNode.querySelector(
-      ".invalid-feedback"
-    ).textContent = "This field is required";
-    isValid = false;
-  } else {
-    dataForm.tipe_equipment.classList.remove("is-invalid");
+  if (dataForm.doc_type.value !== "1") {
+    if (dataForm.tipe_equipment.value === '') {
+      dataForm.tipe_equipment.classList.add("is-invalid");
+      dataForm.tipe_equipment.parentNode.querySelector(
+        ".invalid-feedback"
+      ).textContent = "This field is required";
+      isValid = false;
+    } else {
+      dataForm.tipe_equipment.classList.remove("is-invalid");
+    }
   }
 
   return isValid;

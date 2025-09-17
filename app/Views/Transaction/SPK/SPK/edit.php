@@ -57,6 +57,9 @@
                             <button type="button" <?= ($header->dokumen_status == '0') ? '' : 'hidden' ?> id="btnSubmit" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Submit">
                                 <i class="bi bi-send"></i>&ensp;Submit
                             </button>
+                            <button type="button" <?= ($header->dokumen_status ==  '1') ? '' : 'hidden' ?> id="btnUndo" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Submit">
+                                <i class="bi bi-arrow-counterclockwise"></i>&ensp;Undo
+                            </button>
                             <button type="button" <?= ($header->dokumen_status ==  '1' || $header->dokumen_status == '3') ? '' : 'hidden'; ?> id="btnApprove" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve">
                                 <i class="bi bi-check2-circle"></i>&ensp;Approve
                             </button>
@@ -158,7 +161,7 @@
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="tipe_equipment">Equipment Type</label>
-                                        <select name="tipe_equipment" id="tipe_equipment" <?= ($header->kategori == '1' && ($header->dokumen_status !== '0' && $header->dokumen_status !== '3')) ? 'disabled' : '' ?> class="form-control select2 select2bs5">
+                                        <select name="tipe_equipment" id="tipe_equipment" <?= ($header->kategori == '1' || ($header->dokumen_status !== '0' && $header->dokumen_status !== '3')) ? 'disabled' : '' ?> class="form-control select2 select2bs5">
                                             <option <?= ($header->tipe_equipment == '') ? 'selected' : '' ?> value="">-- Choose --</option>
                                             <option <?= ($header->tipe_equipment == '1') ? 'selected' : '' ?> value="1">1. Machine Equipment</option>
                                             <option <?= ($header->tipe_equipment == '2') ? 'selected' : '' ?> value="2">2. Transportation Equipment</option>

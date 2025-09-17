@@ -113,7 +113,7 @@
                                             <option value="3">3. Final Inspection Equipment</option>
                                             <option value="4">4. Laboratorium Equipment</option>
                                             <option value="5">5. Electronic Equipment</option>
-                                            <option value="5">6. Other Equipment</option>
+                                            <option value="6">6. Other Equipment</option>
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>

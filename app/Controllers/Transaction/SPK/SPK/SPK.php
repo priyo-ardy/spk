@@ -64,6 +64,62 @@ class SPK extends BaseController
         $this->db = Database::connect();
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
+
+        $table = 'vw_t_spk';
+        $column_order = [];
+        $column_search = [];
+        $order = array('tgl_lapor' => 'desc');
+
+        $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
+    }
+
+    function loadTable()
+    {
+        $aksi = 'load table';
+        log_action($this->module, $aksi, "generate", current_url(), 'Generate list of SPK transaction');
+
+        $lists = $this->dataTable->get_datatables();
+        $data = [];
+
+        foreach ($lists as $item) {
+            $row = [];
+            $row[] = $item->nama_kategori;
+            $row[] = '
+                    <a href="' . base_url() . 'spk/show/' . enkripsi($item->id) . '" class="link-underline-opacity-100-hover fw-bolder" onlick="loading()">' . $item->code . '</a>
+                ';
+            $row[] = $item->nama_dokumen_status;
+            $row[] = $item->tgl_lapor;
+            $row[] = $item->nama_dept;
+            $row[] = "$item->NIK - $item->nama_karyawan";
+            $row[] = ($item->kategori == '1') ? $item->kode_material : $item->nomor_mesin;
+            $row[] = $item->nama_material;
+            $row[] = $item->model_material;
+            $row[] = $item->nomor_mesin;
+            $row[] = $item->nama_alasan_repair;
+            $row[] = strip_tags($item->deskripsi);
+            $row[] = '
+                <a href="#" class="link-underline-opacity-100-hover">Show Image</a>
+            ';
+            $row[] = $item->nama_defect;
+            $row[] = $item->nama_sub_defect;
+            $row[] = $item->nama_berulang;
+            $row[] = $item->nama_posisi;
+            $row[] = $item->nama_leader;
+            $row[] = $item->nama_status;
+
+            $data[] = $row;
+        }
+
+        $output = [
+            "draw" => $_POST["draw"],
+            "recordsTotal" => $this->dataTable->count_all(),
+            "recordsFiltered" => $this->dataTable->count_filtered(),
+            "data" => $data
+        ];
+
+        return $this->response
+            ->setStatusCode(ResponseInterface::HTTP_OK, "Generate successfully")
+            ->setJSON($output);
     }
 
     public function index()
@@ -135,12 +191,18 @@ class SPK extends BaseController
 
             switch ($doc_type) {
                 case 1:
-                    $doc_no = $this->spkModel->generateDocNo('SLMMJ', $date, $mold_no);
+                    $prefix = 'SLMMJ';
+                    $mold = $mold_no;
+                    // $doc_no = $this->spkModel->generateDocNo('SLMMJ', $date, $mold_no);
                     break;
                 case 2:
-                    $doc_no = $this->spkModel->generateDocNo('SLMMA', $date, $mold_no);
+                    $prefix = 'SLMMA';
+                    $mold = str_replace('#', '', $mold_no);
+                    // $doc_no = $this->spkModel->generateDocNo('SLMMA', $date,);
                     break;
             }
+
+            $doc_no = $this->spkModel->generateDocNo($prefix, $date, $mold);
 
             $uploadPath = FCPATH . '/uploads/spk/';
             if (!is_dir($uploadPath)) {
@@ -287,8 +349,8 @@ class SPK extends BaseController
                     'data' => $this->spkModel->errors()
                 ]));
 
-                // throw new \Exception("Save failed, there was an error during processing your request");
-                throw new \Exception(json_encode($this->spkModel->errors()));
+                throw new \Exception("Save failed, there was an error during processing your request <br>" . json_encode($data_header));
+                // throw new \Exception(json_encode($this->spkModel->errors()));
             }
 
             foreach ($images as $image) {
@@ -350,7 +412,7 @@ class SPK extends BaseController
                 'token' => enkripsi($id_header)
             ]);
         } catch (\Exception $e) {
-            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured : <br>" . $e->getMessage(), '', json_encode([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
@@ -791,6 +853,54 @@ class SPK extends BaseController
             }
 
             return pesan(ResponseInterface::HTTP_OK, "Submit successfully");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trance' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function undoData()
+    {
+        $aksi = "undo spk";
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_spk = dekripsi($token);
+
+            $data = [
+                'dokumen_status' => '0',
+                'updated_by' => $this->NIK
+            ];
+
+            $update = $this->spkModel->update($id_spk, $data);
+            if (!$update) {
+                log_action($this->module, $aksi, "error", current_url(), "Undo SPK is failed", '', json_encode([
+                    'data' => $this->spkModel->errors()
+                ]));
+
+                throw new \Exception("Failed to undo SPK data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Undo successfully");
         } catch (\Exception $e) {
             log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
                 'message' => $e->getMessage(),

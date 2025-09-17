@@ -16,6 +16,7 @@ const buttons = {
   back: document.getElementById("btnBack"),
   save: document.getElementById("btnSave"),
   submit: document.getElementById("btnSubmit"),
+  undo: document.getElementById("btnUndo"),
   approve: document.getElementById("btnApprove"),
   un_approve: document.getElementById("btnUnApprove"),
   cancel: document.getElementById("btnCancel"),
@@ -184,14 +185,16 @@ function validasi() {
     });
   }
 
-  if (dataForm.doc_type.value !== "1" || dataForm.tipe_equipment.value !== "") {
-    dataForm.tipe_equipment.classList.add("is-invalid");
-    dataForm.tipe_equipment.parentNode.querySelector(
-      ".invalid-feedback"
-    ).textContent = "This field is required";
-    isValid = false;
-  } else {
-    dataForm.tipe_equipment.classList.remove("is-invalid");
+  if (dataForm.doc_type.value !== "1") {
+    if (dataForm.tipe_equipment.value === '') {
+      dataForm.tipe_equipment.classList.add("is-invalid");
+      dataForm.tipe_equipment.parentNode.querySelector(
+        ".invalid-feedback"
+      ).textContent = "This field is required";
+      isValid = false;
+    } else {
+      dataForm.tipe_equipment.classList.remove("is-invalid");
+    }
   }
 
   return isValid;
@@ -284,6 +287,28 @@ buttons.submit.addEventListener("click", (e) => {
     hideLoading();
   }
 });
+
+buttons.undo.addEventListener('click', (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/undo",
+      "POST",
+      JSON.stringify({ token: dataForm.token.value })
+    )
+      .then((result) => {
+        pesanSukses(result.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+})
 
 buttons.approve.addEventListener("click", (e) => {
   try {
