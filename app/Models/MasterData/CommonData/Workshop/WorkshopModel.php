@@ -21,7 +21,13 @@ class WorkshopModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function getDataById($id){
+    public function getDataById($id)
+    {
         return $this->where('id', $id)->first();
+    }
+
+    function generateList()
+    {
+        return $this->orderBy('name', 'asc')->findAll();
     }
 }

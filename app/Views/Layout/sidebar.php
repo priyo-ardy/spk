@@ -110,7 +110,7 @@
                         </li>
                     </ul>
                 </li>
-                <!-- <li class="nav-header">MASTER DATA</li>
+                <li class="nav-header">MASTER DATA</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-box-seam"></i>
@@ -133,6 +133,14 @@
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     List of Material
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('equipment_type') ?>" class="nav-link" onclick="loading()">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Equipment Type
                                 </p>
                             </a>
                         </li>
@@ -171,8 +179,80 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('defect') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Defect
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('sub_defect') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Sub Defect
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('posisi_defect') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Defect Position
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('repair_reason') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Repair Reason
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('satuan') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Unit
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('departemen') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Department
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('leader') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Leader
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('karyawan') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Employee
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('lokasi') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Location
+                                </p>
+                            </a>
+                        </li>
                     </ul>
-                </li>-->
+                </li>
                 <li class="nav-header">APP SETUP</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
