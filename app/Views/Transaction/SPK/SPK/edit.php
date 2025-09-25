@@ -63,11 +63,14 @@
                             <button type="button" <?= ($header->dokumen_status ==  '1' || $header->dokumen_status == '3') ? '' : 'hidden'; ?> id="btnApprove" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve">
                                 <i class="bi bi-check2-circle"></i>&ensp;Approve
                             </button>
-                            <button type="button" <?= ($header->dokumen_status !== '2') ? 'hidden' : ''  ?> id="btnUnApprove" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Un-Approve">
+                            <button type="button" <?= ($header->dokumen_status !== '2' || $header->dokumen_status == '5') ? 'hidden' : ''  ?> id="btnUnApprove" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Un-Approve">
                                 <i class="bi bi-check2-circle"></i>&ensp;Un-Approve
                             </button>
                             <button type="button" <?= ($header->dokumen_status !== '0') ? 'hidden' : '' ?> id="btnCancel" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancel">
                                 <i class="bi bi-arrow-counterclockwise"></i>&ensp;Cancel
+                            </button>
+                            <button type="button" id="btnPrint" <?= ($header->dokumen_status !== '5') ? 'hidden' : '' ?> class="btn shadow-none rounded-0 btn-light border-0" title="Print">
+                                <i class="bi bi-printer"></i>&ensp;Print
                             </button>
                             <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" title="Previous Data">
                                 <i class="bi bi-chevron-double-left"></i>&ensp;Prev

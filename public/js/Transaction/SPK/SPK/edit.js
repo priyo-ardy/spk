@@ -21,6 +21,8 @@ const buttons = {
   un_approve: document.getElementById("btnUnApprove"),
   cancel: document.getElementById("btnCancel"),
   add: document.getElementById("btnAdd"),
+  prev: document.getElementById("btnPrev"),
+  next: document.getElementById("btnNext"),
 };
 
 const dataForm = {
@@ -186,7 +188,7 @@ function validasi() {
   }
 
   if (dataForm.doc_type.value !== "1") {
-    if (dataForm.tipe_equipment.value === '') {
+    if (dataForm.tipe_equipment.value === "") {
       dataForm.tipe_equipment.classList.add("is-invalid");
       dataForm.tipe_equipment.parentNode.querySelector(
         ".invalid-feedback"
@@ -288,7 +290,7 @@ buttons.submit.addEventListener("click", (e) => {
   }
 });
 
-buttons.undo.addEventListener('click', (e) => {
+buttons.undo.addEventListener("click", (e) => {
   try {
     loading();
     fetchData(
@@ -308,7 +310,7 @@ buttons.undo.addEventListener('click', (e) => {
     pesanError(e.message);
     hideLoading();
   }
-})
+});
 
 buttons.approve.addEventListener("click", (e) => {
   try {
@@ -343,6 +345,48 @@ buttons.un_approve.addEventListener("click", (e) => {
       .then((result) => {
         pesanSukses(result.message);
         window.location.reload();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
+
+buttons.prev.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/prev",
+      "POST",
+      JSON.stringify({ code: dataForm.code.value })
+    )
+      .then((result) => {
+        window.location.replace(baseurl + "/spk/show/" + result.data.token);
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
+
+buttons.next.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/spk/next",
+      "POST",
+      JSON.stringify({ code: dataForm.code.value })
+    )
+      .then((result) => {
+        window.location.replace(baseurl + "/spk/show/" + result.data.token);
       })
       .catch((err) => {
         pesanError(err.message);

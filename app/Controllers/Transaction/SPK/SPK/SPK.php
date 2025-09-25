@@ -23,6 +23,8 @@ use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
 use Config\Services;
 use Config\Database;
 
+use function PHPSTORM_META\map;
+
 class SPK extends BaseController
 {
     protected $db;
@@ -89,16 +91,18 @@ class SPK extends BaseController
                 ';
             $row[] = $item->nama_dokumen_status;
             $row[] = $item->tgl_lapor;
+            $row[] = $item->nama_lokasi;
             $row[] = $item->nama_dept;
             $row[] = "$item->NIK - $item->nama_karyawan";
             $row[] = ($item->kategori == '1') ? $item->kode_material : $item->nomor_mesin;
             $row[] = $item->nama_material;
             $row[] = $item->model_material;
             $row[] = $item->nomor_mesin;
+            $row[] = $item->nama_tipe_equipment;
             $row[] = $item->nama_alasan_repair;
             $row[] = strip_tags($item->deskripsi);
             $row[] = '
-                <a href="#" class="link-underline-opacity-100-hover">Show Image</a>
+                <a href="#" class="link-underline-opacity-100-hover" onclick="showImage(`' . enkripsi($item->id) . '`)">Show Image</a>
             ';
             $row[] = $item->nama_defect;
             $row[] = $item->nama_sub_defect;
@@ -1006,6 +1010,173 @@ class SPK extends BaseController
             ]));
 
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function pevData()
+    {
+        $aksi = "prev";
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request Not Allowed");
+        }
+
+        log_action($this->module, $aksi, "info", current_url(), "Preparing to getting previous data");
+        try {
+            $json_data = $this->request->getJSON('true');
+
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['code'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+
+            $get_prev_data = $this->spkModel->getPrevData($code);
+            if (empty($get_prev_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "You are in the first data", '', json_encode([
+                    'data' => $code
+                ]));
+
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the first data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Data found", [
+                'token' => enkripsi($get_prev_data->id)
+            ]);
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured : " . $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(500, "Unexpected error occured : " . $e->getMessage());
+        }
+    }
+
+    function nextData()
+    {
+        $aksi = "next";
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request Not Allowed");
+        }
+
+        log_action($this->module, $aksi, "info", current_url(), "Preparing to getting next data");
+        try {
+            $json_data = $this->request->getJSON('true');
+
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Input is not a valid JSON object");
+                throw new \Exception("Input is not a valid JSON object");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['code'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK no. is missing in JSON input");
+                throw new \Exception("SPK No. is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK no. is missing in JSON input");
+            }
+
+            $code = $json_data['code'];
+
+            $get_prev_data = $this->spkModel->getNextData($code);
+            if (empty($get_prev_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "You are in the last data", '', json_encode([
+                    'data' => $code
+                ]));
+
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "You are in the last data");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Data found", [
+                'token' => enkripsi($get_prev_data->id)
+            ]);
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured : " . $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(500, "Unexpected error occured : " . $e->getMessage());
+        }
+    }
+
+    function exportData()
+    {
+        $aksi = "export";
+        log_action($this->module, $aksi, "info", current_url(), "Preparing to export SPK data");
+
+        try {
+            $fileName = "SPK_list_" . date("Y-m-d H:i:s") . ".xlsx";
+            $headers = ['SPK Category', 'SPK No', 'Doc. Status', 'Date', 'Location', 'Requested Dept.', 'Reported By', 'Part/Machine No.', 'Part/Machine Name', 'Part/Machine Model', 'Mold/Jig No.', 'Equipment Type', 'Repair Reason', 'Problem Description', 'Defect', 'Sub Defect', 'Repeat Problem', 'Problem Position', 'Team Leader/Supervisor', 'Status'];
+
+            $dataCallBack = function ($offset, $limit) {
+                $column = 'nama_kategori, code, nama_dokumen_status, tgl_lapor, nama_lokasi, nama_dept nama_karyawan, kode_material, nama_material, model_material, nomor_mesin, nama_tipe_equipment,nama_alasan_repair, deskripsi, nama_defect, nama_sub_defect, nama_berulang, nama_posisi, nama_leader, nama_status';
+                return $this->masterModel->getChunkedData('vw_t_spk', $offset, $limit, 'tgl_lapor', $column);
+            };
+
+            return export_to_excel($fileName, $headers, $dataCallBack);
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured : " . $e->getMessage(), '', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured : " . $e->getMessage());
+        }
+    }
+
+    function showImage($token)
+    {
+        $aksi = "show image";
+        log_action($this->module, $aksi, "info", current_url(), "Preparing to show transaction image", '', json_encode([
+            'token' => $token
+        ]));
+
+        try {
+            $id_spk = dekripsi($token);
+            $get_header_data = $this->spkModel->where('id', $id_spk)->first();
+            $get_image_data = $this->detailModel->where('id_spk', $id_spk)->orderBy('urut', 'asc')->findAll();
+            if (!$get_image_data || empty($get_image_data)) {
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "No image available");
+            }
+
+            $data = [];
+            foreach ($get_image_data as $list) {
+                $data[] = [
+                    'file_name' => base_url() . 'uploads/spk/' . $list->nama_file
+                ];
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Image available", [
+                'header' => $get_header_data->code,
+                'details' => $data
+            ]);
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), "Unexpected error occured", '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured : " . $e->getMessage());
         }
     }
 }

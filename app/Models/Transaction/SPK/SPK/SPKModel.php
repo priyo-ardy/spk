@@ -38,4 +38,24 @@ class SPKModel extends Model
 
         return $generated_code;
     }
+
+    function getPrevData($code)
+    {
+        return $this
+            ->select('id, code')
+            ->where('code <', $code)
+            ->orderBy('code', 'desc')
+            ->limit(1)
+            ->first();
+    }
+
+    public function getNextData($code)
+    {
+        return $this
+            ->select('id, code')
+            ->where('code >', $code)
+            ->orderBy('code', 'asc')
+            ->limit(1)
+            ->first();
+    }
 }

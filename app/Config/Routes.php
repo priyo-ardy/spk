@@ -27,6 +27,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('undo', 'Transaction\SPK\SPK\SPK::undoData');
         $routes->post('approve', 'Transaction\SPK\SPK\SPK::approveData');
         $routes->post('un_approve', 'Transaction\SPK\SPK\SPK::unApproveData');
+        $routes->post('prev', 'Transaction\SPK\SPK\SPK::pevData');
+        $routes->post('next', 'Transaction\SPK\SPK\SPK::nextData');
+        $routes->get('export', 'Transaction\SPK\SPK\SPK::exportData');
+        $routes->get('image/(:any)', 'Transaction\SPK\SPK\SPK::showImage/$1');
     });
 
     // Transaction -> SPK -> General

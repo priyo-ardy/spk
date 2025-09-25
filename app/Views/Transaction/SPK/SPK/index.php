@@ -52,12 +52,14 @@
                                         <th class="align-middle bg-body-secondary">SPK No.</th>
                                         <th class="align-middle bg-body-secondary">Doc. Status</th>
                                         <th class="align-middle bg-body-secondary">Date</th>
+                                        <th class="align-middle bg-body-secondary">Location</th>
                                         <th class="align-middle bg-body-secondary">Requested Dept.</th>
                                         <th class="align-middle bg-body-secondary">Reported By</th>
                                         <th class="align-middle bg-body-secondary">Part No.</th>
                                         <th class="align-middle bg-body-secondary">Part Name</th>
                                         <th class="align-middle bg-body-secondary">Part Model</th>
                                         <th class="align-middle bg-body-secondary">Mold/Jig No.</th>
+                                        <th class="align-middle bg-body-secondary">Equipment Type</th>
                                         <th class="align-middle bg-body-secondary">Repair Reason</th>
                                         <th class="align-middle bg-body-secondary">Problem Description</th>
                                         <th class="align-middle bg-body-secondary">Problem Image</th>
