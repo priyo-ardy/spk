@@ -46,22 +46,22 @@
     <link
         rel="stylesheet"
         href="<?= base_url() . 'dist/css/adminlte.css'; ?>" />
-        <!-- Fontawesome -->
-    <link 
-        rel="stylesheet" 
+    <!-- Fontawesome -->
+    <link
+        rel="stylesheet"
         href="<?php echo base_url() ?>plugins/fontawesome-free/css/all.min.css">
-    <link 
-        rel="stylesheet" 
+    <link
+        rel="stylesheet"
         href="<?= base_url() . 'css/loading.css' ?>">
     <!-- Fancy box styling -->
     <link
         rel="stylesheet"
-        href="<?= base_url(). 'lightbox/src/css/lightbox.css' ?>" />
+        href="<?= base_url() . 'lightbox/src/css/lightbox.css' ?>" />
     <!-- Summernote -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
     <!-- <link
         rel="stylesheet"
-        href="<?= base_url().'plugins/summernote/summernote.min.css' ?>" /> -->
+        href="<?= base_url() . 'plugins/summernote/summernote.min.css' ?>" /> -->
 
     <style>
         .form-label {
@@ -85,7 +85,7 @@
             -moz-appearance: textfield;
         }
     </style>
-    
+
     <?= csrf_meta() . PHP_EOL ?>
 </head>
 
@@ -140,7 +140,24 @@
             </div>
         </nav>
 
-        <?= $this->include('Layout/sidebar'); ?>
+        <?php
+        switch (session('level')) {
+            case '0':
+            case '1':
+                echo $this->include('Layout/sidebar.php');
+                break;
+            case '2':
+                echo $this->include('Layout/sidebar_planner.php');
+                break;
+            case '3':
+                echo $this->include('Layout/sidebar_mold.php');
+                break;
+            case '4':
+                echo $this->include('Layout/sidebar_quality.php');
+                break;
+        }
+        ?>
+
 
 
         <?= $this->renderSection('content') ?>
@@ -180,29 +197,29 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
     <!-- Select2 JS -->
-    <script 
+    <script
         src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- SweetAlert Plugins -->
     <script
         src="<?= base_url() . 'SweetAlert/sweetalert2.min.js'; ?>"></script>
     <!-- Datatable -->
-    <script 
+    <script
         src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <!-- AdminLTE JS -->
     <script
         src="<?= base_url() . 'dist/js/adminlte.js'; ?>"></script>
     <!-- Fancybox for image preview -->
-    <script 
-        src="<?= base_url().'lightbox/src/js/lightbox.js' ?>"></script>
+    <script
+        src="<?= base_url() . 'lightbox/src/js/lightbox.js' ?>"></script>
     <!-- Summernote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
     <!-- <script
-        src="<?= base_url(). '/plugins/summernote/summernote.min.js' ?>"></script> -->
-    
+        src="<?= base_url() . '/plugins/summernote/summernote.min.js' ?>"></script> -->
+
     <!-- My App Custom JS -->
     <script src="<?= base_url() . 'js/App/app.js' ?>"></script>
     <script src="<?= base_url() . 'js/App/fetching.js' ?>"></script>
-    
+
     <!-- Module JS -->
     <?php foreach ($footer as $ft): ?>
         <?= $ft . PHP_EOL; ?>

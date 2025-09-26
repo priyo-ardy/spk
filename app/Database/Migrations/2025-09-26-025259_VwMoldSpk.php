@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class VwApproveMoldList extends Migration
+class VwMoldSpk extends Migration
 {
     public function up()
     {
@@ -103,6 +103,7 @@ class VwApproveMoldList extends Migration
     	        LEFT JOIN m_posisi_defect AS I ON A.posisi = I.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
             WHERE 
+                A.kategori = '1' AND
                 A.approve_mold IS NULL AND 
                 A.approve_planner IS NULL AND 
                 A.approve_qa IS NULL AND

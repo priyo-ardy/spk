@@ -1,18 +1,38 @@
-<div class="modal fade" id="modalImage" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirm" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModal()"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-2 image-container" id="imageData"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary rounded-0" id="btnSaveMember" onclick="clearModal()">
-                    <i class="bi bi-check-circle"></i> &ensp;OK
-                </button>
-            </div>
+            <form id="formKonfirmasi">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Mold Repair Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="form-group col-12">
+                            <input type="text" name="konfirmasi_token" id="konfirmasi_token" class="form-control rounded-0" hidden readonly>
+                        </div>
+                        <div class="form-group col-12 mb-3">
+                            <label class="form-label">Plan Finish Date <strong class="text-danger">*</strong></label>
+                            <input type="date" name="tgl_lapor" id="tgl_lapor" readonly class="form-control bg-body-secondary rounded-0" required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-12 mb-3">
+                            <label class="form-label">Plan Finish Date <strong class="text-danger">*</strong></label>
+                            <input type="date" name="plan_finish_date" id="plan_finish_date" class="form-control rounded-0" required autofocus>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-12">
+                            <label class="form-label"></label>Reason <strong class="text-danger">*</strong></label>
+                            <textarea name="reason" id="reason" class="form-control rounded-0" required></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-0" id="btnCancel" onclick="clearModal()" data-dismiss=" modal"><i class="bi bi-x-circle"></i>&ensp;Cancel</button>
+                    <button type="button" class="btn btn-primary rounded-0" id="btnConfirm"><i class="bi bi-check-circle"></i>&ensp;Confirm</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

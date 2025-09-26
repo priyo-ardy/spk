@@ -15,6 +15,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Dashboard\Dashboard::index');
     });
 
+    // Routes for system administrator and administrator
     $routes->group('/spk', static function ($routes) {
         $routes->get('', 'Transaction\SPK\SPK\SPK::index');
         $routes->post('table', 'Transaction\SPK\SPK\SPK::loadTable');
@@ -33,35 +34,43 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('image/(:any)', 'Transaction\SPK\SPK\SPK::showImage/$1');
     });
 
-    // Transaction -> SPK -> General
-    $routes->group('/spk_general', static function ($routes) {
-        $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
-        $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
-        $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
-        $routes->post('table', 'Transaction\SPK\General\GeneralSpk::loadTable');
-        $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
-        $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
-        $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
-        $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
-        $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
-        $routes->post('prev', 'Transaction\SPK\General\GeneralSpk::prevData');
-        $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
+    // Routes SPK for mold engineer
+    $routes->group('/mold_spk', static function ($routes) {
+        $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
+        $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
+        $routes->post('get_data', 'Transaction\SPK\Mold\MoldSpk::getSpkData');
+        $routes->post('confirm', 'Transaction\SPK\Mold\MoldSpk::konfirmSelesai');
     });
 
-    $routes->group('/spk_mold', static function ($routes) {
-        $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
-        $routes->get('add', 'Transaction\SPK\Mold\MoldSpk::add');
-        $routes->post('save', 'Transaction\SPK\Mold\MoldSpk::saveData');
-        $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
-        $routes->get('show/(:any)', 'Transaction\SPK\Mold\MoldSpk::showData/$1');
-        $routes->post('update', 'Transaction\SPK\Mold\MoldSpk::updateData');
-        $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
-        $routes->post('prev', 'Transaction\SPK\Mold\MoldSpk::prevData');
-        $routes->post('next', 'Transaction\SPK\Mold\MoldSpk::nextData');
-        $routes->post('delete_image', 'Transaction\SPK\Mold\MoldSpk::DeleteImage');
-        $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
-        $routes->get('export', 'Transaction\SPK\Mold\MoldSpk::exportData');
-    });
+    // Transaction -> SPK -> General
+    // $routes->group('/spk_general', static function ($routes) {
+    //     $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
+    //     $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
+    //     $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
+    //     $routes->post('table', 'Transaction\SPK\General\GeneralSpk::loadTable');
+    //     $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
+    //     $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
+    //     $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
+    //     $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
+    //     $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
+    //     $routes->post('prev', 'Transaction\SPK\General\GeneralSpk::prevData');
+    //     $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
+    // });
+
+    // $routes->group('/spk_mold', static function ($routes) {
+    //     $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
+    //     $routes->get('add', 'Transaction\SPK\Mold\MoldSpk::add');
+    //     $routes->post('save', 'Transaction\SPK\Mold\MoldSpk::saveData');
+    //     $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
+    //     $routes->get('show/(:any)', 'Transaction\SPK\Mold\MoldSpk::showData/$1');
+    //     $routes->post('update', 'Transaction\SPK\Mold\MoldSpk::updateData');
+    //     $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
+    //     $routes->post('prev', 'Transaction\SPK\Mold\MoldSpk::prevData');
+    //     $routes->post('next', 'Transaction\SPK\Mold\MoldSpk::nextData');
+    //     $routes->post('delete_image', 'Transaction\SPK\Mold\MoldSpk::DeleteImage');
+    //     $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
+    //     $routes->get('export', 'Transaction\SPK\Mold\MoldSpk::exportData');
+    // });
 
     // Transaction -> Identification -> mold
     $routes->group('identifikasi_mold', static function ($routes) {

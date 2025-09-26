@@ -51,21 +51,16 @@
                                     <thead class="text-center">
                                         <th class="align-middle bg-body-secondary">SPK No.</th>
                                         <th class="align-middle bg-body-secondary">Date</th>
+                                        <th class="align-middle bg-body-secondary">Location</th>
                                         <th class="align-middle bg-body-secondary">Requested Dept.</th>
                                         <th class="align-middle bg-body-secondary">Reported By</th>
                                         <th class="align-middle bg-body-secondary">Part No.</th>
                                         <th class="align-middle bg-body-secondary">Part Name</th>
                                         <th class="align-middle bg-body-secondary">Part Model</th>
-                                        <th class="align-middle bg-body-secondary">Mold/Jig No.</th>
+                                        <th class="align-middle bg-body-secondary">Mold No.</th>
                                         <th class="align-middle bg-body-secondary">Repair Reason</th>
                                         <th class="align-middle bg-body-secondary">Problem Description</th>
                                         <th class="align-middle bg-body-secondary">Problem Image</th>
-                                        <th class="align-middle bg-body-secondary">Defect</th>
-                                        <th class="align-middle bg-body-secondary">Sub Defect</th>
-                                        <th class="align-middle bg-body-secondary">Repeat Problem</th>
-                                        <th class="align-middle bg-body-secondary">Position</th>
-                                        <th class="align-middle bg-body-secondary">Team Leader</th>
-                                        <th class="align-middle bg-body-secondary">Status</th>
                                     </thead>
                                 </table>
                             </div>
@@ -76,5 +71,6 @@
         </div>
     </div>
 </main>
+
 <?= $this->include('Transaction/SPK/Mold/modal') ?>
 <?= $this->endSection(); ?>
