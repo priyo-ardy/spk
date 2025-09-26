@@ -166,9 +166,15 @@ class UserList extends BaseController
 
             $user_name = $json_data['username'];
             $token = $json_data['token'];
-            $user_id = ($token) ? dekripsi($token) : '';
 
-            $check_username = $this->userModel->checkUser($user_name, $user_id);
+
+            if ($token !== '') {
+                $user_id = dekripsi($token);
+                $check_username = $this->userModel->checkUser($user_name, $user_id);
+            } else {
+                $check_username = $this->userModel->checkUser($user_name);
+            }
+
             if ($check_username) {
                 log_action($this->module, $aksi, "error", current_url(), "Username $user_name is already taken");
                 // throw new \Exception("Username is already taken");
@@ -224,11 +230,16 @@ class UserList extends BaseController
 
             $user_phone = $json_data['user_phone'];
             $token = $json_data['token'];
-            $user_id = ($token) ? dekripsi($token) : '';
 
             $hash = phone_hash($user_phone);
 
-            $check_user_phone = $this->userModel->checkUserPhone($hash, $user_id);
+            if ($token == '') {
+                $check_user_phone = $this->userModel->checkUserPhone($hash);
+            } else {
+                $user_id = ($token) ? dekripsi($token) : '';
+                $check_user_phone = $this->userModel->checkUserPhone($hash, $user_id);
+            }
+
             if ($check_user_phone) {
                 log_action($this->module, $aksi, "error", current_url(), "Phone number $hash already taken");
                 return pesan(ResponseInterface::HTTP_CONFLICT, "Phone number already taken");
@@ -273,11 +284,17 @@ class UserList extends BaseController
 
             $user_email = $json_data['user_email'];
             $token = $json_data['token'];
-            $user_id = ($token) ? dekripsi($token) : '';
+
 
             $hash = email_hash($user_email);
 
-            $check_user_email = $this->userModel->checkUserEmail($hash, $user_id);
+            if ($token == '') {
+                $check_user_email = $this->userModel->checkUserEmail($hash);
+            } else {
+                $user_id = ($token) ? dekripsi($token) : '';
+                $check_user_email = $this->userModel->checkUserEmail($hash, $user_id);
+            }
+
             if ($check_user_email) {
                 log_action($this->module, $aksi, "error", current_url(), "Email address $hash already taken");
                 return pesan(ResponseInterface::HTTP_CONFLICT, "Email address already taken");

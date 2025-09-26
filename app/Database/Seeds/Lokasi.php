@@ -10,7 +10,7 @@ class Lokasi extends Seeder
     {
         $data = [
             [
-                'id' => generate_uuid(),
+                'id' => '434040cd-2994-44ef-b38b-e46d5c27e51c',
                 'code' => 'LOC-0001',
                 'name' => 'Main Factory',
                 'remark' => null,
@@ -21,7 +21,7 @@ class Lokasi extends Seeder
                 'deleted_at' => null
             ],
             [
-                'id' => generate_uuid(),
+                'id' => 'b31eff01-3a49-465a-9bc6-2f8d3b5cd358',
                 'code' => 'LOC-0002',
                 'name' => 'Warehose',
                 'remark' => null,

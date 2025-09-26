@@ -5,9 +5,19 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\AppSetup\UserManagement\UserList\UserListModel;
+use App\Models\Master\MasterModel;
 
 class ViewDataFilter implements FilterInterface
 {
+    private $userModel;
+    private $masterModel;
+
+    public function __construct()
+    {
+        $this->userModel = new UserListModel();
+        $this->masterModel = new MasterModel();
+    }
     /**
      * Do whatever processing this filter needs to do.
      * By default it should not return anything during

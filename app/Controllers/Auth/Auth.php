@@ -46,9 +46,9 @@ class Auth extends BaseController
             if (!$validasi->withRequest($this->request)->run()) {
                 $error_message = implode("<br>", $validasi->getErrors());
 
-                log_action('Auth', 'process', 'error', current_url(), "Validation failed", '', json_encode([
-                    'data' => $validasi->getErrors()
-                ]));
+                // log_action('Auth', 'process', 'error', current_url(), "Validation failed", '', json_encode([
+                //     'data' => $validasi->getErrors()
+                // ]));
 
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed $error_message");
             }
@@ -59,22 +59,22 @@ class Auth extends BaseController
 
             $cari_user = $model->getUser($username);
             if (!$cari_user) {
-                log_action('Auth', 'process', 'error', current_url(), "Account not available", '', json_encode([
-                    'data' => $model->errors()
-                ]));
+                // log_action('Auth', 'process', 'error', current_url(), "Account not available", '', json_encode([
+                //     'data' => $model->errors()
+                // ]));
 
                 return pesan(ResponseInterface::HTTP_NOT_FOUND, "User not available");
             }
 
             $verify = password_verify($password, $cari_user->user_password);
             if (!$verify) {
-                log_action('Auth', 'process', 'error', current_url(), "Invalid password");
+                // log_action('Auth', 'process', 'error', current_url(), "Invalid password");
 
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Invalid password");
             }
 
             if ($cari_user->user_status === 0) {
-                log_action('Auth', 'process', 'error', current_url(), "User is inactive");
+                // log_action('Auth', 'process', 'error', current_url(), "User is inactive");
 
                 return pesan(ResponseInterface::HTTP_FORBIDDEN, "User is inactive");
             }
@@ -88,19 +88,20 @@ class Auth extends BaseController
 
             $update = $model->update($cari_user->user_id, $updateData);
             if (!$update) {
-                log_action('Auth', 'process', 'error', current_url(), "Authorization failed", '', json_encode([
-                    'data' => $model->errors()
-                ]));
+                // log_action('Auth', 'process', 'error', current_url(), "Authorization failed", '', json_encode([
+                //     'data' => $model->errors()
+                // ]));
 
                 return pesan(ResponseInterface::HTTP_FORBIDDEN, "Authorization failed");
             }
 
             // Set session
             session()->set([
-                'logged'     => true,
-                'user_name'  => $cari_user->user_name,
-                'full_name'  => $cari_user->full_name,
-                'user_image' => $cari_user->user_image
+                'logged'        => true,
+                'user_name'     => $cari_user->user_name,
+                'full_name'     => $cari_user->full_name,
+                'level'         => $cari_user->user_level,
+                'user_image'    => $cari_user->user_image
             ]);
 
             return $this->response->setJSON([
@@ -109,12 +110,12 @@ class Auth extends BaseController
                 'redirect' => base_url('dashboard')
             ]);
         } catch (\Exception $e) {
-            log_action('Auth', 'process', 'error', current_url(), "Unexpected error occured", '', json_encode([
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            ]));
+            // log_action('Auth', 'process', 'error', current_url(), "Unexpected error occured", '', json_encode([
+            //     'message' => $e->getMessage(),
+            //     'file' => $e->getFile(),
+            //     'line' => $e->getLine(),
+            //     'trace' => $e->getTraceAsString()
+            // ]));
 
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
         }

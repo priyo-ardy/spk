@@ -67,7 +67,25 @@ class SPK extends BaseController
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
 
-        $table = 'vw_t_spk';
+        switch (session()->get('level')) {
+            case '0': //Super Administrator
+            case '1': //Administrator
+                $table = 'vw_t_spk';
+                break;
+            case '2':
+                $table = '';
+                break;
+            case '3':
+                $table = 'vw_t_spk_mold';
+                break;
+            case '4':
+                $table = '';
+                break;
+            case '5':
+                $table = '';
+                break;
+        }
+
         $column_order = [];
         $column_search = [];
         $order = array('tgl_lapor' => 'desc');
@@ -133,6 +151,7 @@ class SPK extends BaseController
 
         $data = [
             'title' => 'List of SPK',
+            'data_level' => session('user_level'),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/spk.js' . '"></script>'
             ]
