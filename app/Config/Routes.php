@@ -40,6 +40,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
         $routes->post('get_data', 'Transaction\SPK\Mold\MoldSpk::getSpkData');
         $routes->post('confirm', 'Transaction\SPK\Mold\MoldSpk::konfirmSelesai');
+        $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
     });
 
     // Transaction -> SPK -> General

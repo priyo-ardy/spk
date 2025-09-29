@@ -50,7 +50,7 @@
                                 <table class="table table-striped table-hover table-bordered" id="dataTable">
                                     <thead class="text-center">
                                         <th class="align-middle bg-body-secondary">SPK No.</th>
-                                        <th class="align-middle bg-body-secondary">Date</th>
+                                        <th class="align-middle bg-body-secondary">Reported Date</th>
                                         <th class="align-middle bg-body-secondary">Location</th>
                                         <th class="align-middle bg-body-secondary">Requested Dept.</th>
                                         <th class="align-middle bg-body-secondary">Reported By</th>

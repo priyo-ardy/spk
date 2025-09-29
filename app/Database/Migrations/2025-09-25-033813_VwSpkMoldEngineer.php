@@ -4,13 +4,13 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class VwSPK extends Migration
+class VwSpkMoldEngineer extends Migration
 {
     public function up()
     {
-        $this->db->query("DROP VIEW IF EXISTS vw_t_spk");
+        $this->db->query("DROP VIEW IF EXISTS vw_spk_mold_engineer");
         $this->db->query("
-            CREATE VIEW vw_t_spk AS
+            CREATE VIEW vw_spk_mold_engineer AS
             SELECT
                 A.id,
                 A.kategori,
@@ -77,15 +77,8 @@ class VwSPK extends Migration
                     WHEN A.dokumen_status = '1' THEN 'Waiting Approval'
                     WHEN A.dokumen_status = '2' THEN 'Approve'
                     WHEN A.dokumen_status = '3' THEN 'Re-Approving'
-                    WHEN A.dokumen_status = '4' THEN 'Hold'
-                    WHEN A.dokumen_status = '5' THEN 'Reject'
-                    WHEN A.dokumen_status = '6' THEN 'Close'
-                    WHEN A.dokumen_status = '7' THEN 'Mold Engineer Confirmation'
-                    WHEN A.dokumen_status = '8' THEN 'Mold Engineer Close'
-                    WHEN A.dokumen_status = '9' THEN 'ME Confirmation'
-                    WHEN A.dokumen_status = '10' THEN 'Me Close'
-                    WHEN A.dokumen_status = '11' THEN 'Planner Confirmation'
-                    WHEN A.dokumen_status = '12' THEN 'Quality Confirmation'
+                    WHEN A.dokumen_status = '4' THEN 'Reject'
+                    WHEN A.dokumen_status = '5' THEN 'Close'
                 END AS nama_dokumen_status,
                 CASE
                 	WHEN A.approve_mold IS NULL then 'Waiting for mold egineer confirmation'
@@ -109,12 +102,18 @@ class VwSPK extends Migration
 	            LEFT JOIN m_sub_defect AS H ON A.sub_defect = H.id
     	        LEFT JOIN m_posisi_defect AS I ON A.posisi = I.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
-            ORDER BY A.tgl_lapor DESC
+            WHERE 
+                A.kategori = '1' AND
+                A.approve_mold IS NULL AND 
+                A.approve_planner IS NULL AND 
+                A.approve_qa IS NULL AND
+                A.dokumen_status = '2'
+            ORDER BY A.code ASC
         ");
     }
 
     public function down()
     {
-        $this->db->query("DROP VIEW IF EXISTS vw_t_spk");
+        $this->db->query("DROP VIEW IF EXISTS vw_spk_mold_engineer");
     }
 }

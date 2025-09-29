@@ -22,8 +22,8 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group col-12">
-                            <label class="form-label"></label>Reason <strong class="text-danger">*</strong></label>
-                            <textarea name="reason" id="reason" class="form-control rounded-0" required></textarea>
+                            <label class="form-label"></label>Reason</label>
+                            <textarea name="reason" id="reason" class="form-control rounded-0" placeholder="Describe the reason here ..."></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -33,6 +33,21 @@
                     <button type="button" class="btn btn-primary rounded-0" id="btnConfirm"><i class="bi bi-check-circle"></i>&ensp;Confirm</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalImage" tabindex="-1" role="dialog" aria-labelledby="modalConfirm" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2" id="imageData"></div>
+            </div>
+            <div class=" modal-footer"></div>
         </div>
     </div>
 </div>

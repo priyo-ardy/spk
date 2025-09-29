@@ -105,6 +105,13 @@ class SPK extends Migration
                 'null' => false,
                 'comment' => '0 -> Created, 1 -> Submit, 2 -> Approve, 3 -> On progress in Mold, 4 -> On progress in Planner, 5 -> On progress in Quality, 6 -> Hold, 7 -> Reject, 8 -> close'
             ],
+            'status_level' => [
+                'type' => "VARCHAR",
+                'constraint' => 1,
+                'null' => false,
+                'default' => '0',
+                'comment' => '0 : normal, 1 : urgent, 2 : very urgent, 3 : critical'
+            ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,

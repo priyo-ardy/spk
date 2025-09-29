@@ -76,7 +76,7 @@ class SPK extends BaseController
                 $table = '';
                 break;
             case '3':
-                $table = 'vw_t_spk_mold';
+                $table = 'vw_spk_mold_engineer';
                 break;
             case '4':
                 $table = '';

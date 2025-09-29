@@ -13,7 +13,7 @@ const buttons = {
 };
 
 const modalData = {
-  title: document.getElementById("modalTitle"),
+  title: document.getElementById("imageTitle"),
   body: document.getElementById("imageData"),
 };
 
@@ -59,25 +59,25 @@ function refreshTable() {
   $("#dataTable").DataTable().ajax.reload(null, false);
 }
 
-function showImage(token) {
+function lihatGambar(token) {
   try {
     loading();
     fetchData(
-      baseurl + "/spk_mold/image",
+      baseurl + "/mold_spk/image",
       "POST",
       JSON.stringify({ token: token })
     )
       .then((result) => {
-        modalData.title.textContent = result.header.title;
-        if (result.data.length > 0) {
-          result.data.forEach((item) => {
+        modalData.title.textContent = result.data.code;
+        if (result.data.image.length > 0) {
+          result.data.image.forEach((item) => {
             let imageList = `
-                            <div class="col-4 clearfix mb-3">
-                                <a href="${item.file_name}?#" class="link-underline-opacity-0" data-lightbox="preview" data-title="${item.image_file}">
-                                    <img src="${item.file_name}" class="img-fluid img-thumbnail rounded-0">
-                                </a>
-                            </div>
-                        `;
+                <div class="col-4 clearfix mb-3">
+                    <a href="${item.file_name}?#" class="link-underline-opacity-0" data-lightbox="preview" data-title="${item.title}">
+                        <img src="${item.file_name}" class="img-fluid img-thumbnail rounded-0">
+                    </a>
+                </div>
+            `;
 
             modalData.body.insertAdjacentHTML("beforeend", imageList);
           });
