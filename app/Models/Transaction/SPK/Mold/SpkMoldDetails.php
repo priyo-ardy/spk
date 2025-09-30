@@ -4,9 +4,9 @@ namespace App\Models\Transaction\SPK\Mold;
 
 use CodeIgniter\Model;
 
-class MoldSpkModel extends Model
+class SpkMoldDetails extends Model
 {
-    protected $table            = 't_spk_mold';
+    protected $table            = 't_spk_mold_details';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'object';
