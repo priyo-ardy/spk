@@ -21,8 +21,19 @@ class LokasiModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+<<<<<<< HEAD
     public function generateList()
     {
         return $this->orderBy('code', 'asc')->findAll();
+=======
+    function generateList()
+    {
+        return $this->orderBy('name', 'asc')->findAll();
+    }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
+>>>>>>> test
     }
 }

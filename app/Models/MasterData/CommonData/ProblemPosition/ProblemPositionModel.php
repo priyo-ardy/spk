@@ -21,7 +21,13 @@ class ProblemPositionModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    function generateList(){
+    public function generateList()
+    {
         return $this->orderBy('name', 'asc')->findAll();
+    }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
     }
 }

@@ -21,7 +21,13 @@ class LeaderModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function generateList(){
+    public function generateList()
+    {
         return $this->orderBy('NIK', 'ASC')->findAll();
+    }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
     }
 }

@@ -21,7 +21,13 @@ class RepairReasonModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    function generateList(){
+    function generateList()
+    {
         return $this->orderBy('code', 'ASC')->findAll();
+    }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
     }
 }

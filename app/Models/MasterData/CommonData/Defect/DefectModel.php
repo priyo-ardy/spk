@@ -25,4 +25,9 @@ class DefectModel extends Model
     {
         return $this->orderBy('name', 'asc')->findAll();
     }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
 }

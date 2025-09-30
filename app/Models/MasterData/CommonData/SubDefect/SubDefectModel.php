@@ -21,9 +21,15 @@ class SubDefectModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    function getListByDefect($defect){
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
+    public function getListByDefect($defect)
+    {
         return $this->where('defect', $defect)
-                    ->orderBy('name', 'asc')
-                    ->findAll();
+            ->orderBy('name', 'asc')
+            ->findAll();
     }
 }

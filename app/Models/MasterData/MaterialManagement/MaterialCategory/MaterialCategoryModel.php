@@ -21,7 +21,18 @@ class MaterialCategoryModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    public function getDataById($category_id){
+    public function getDataById($category_id)
+    {
         return $this->where('id', $category_id, true)->first();
+    }
+
+    function generateList()
+    {
+        return $this->orderBy('name', 'asc')->findAll();
+    }
+
+    function checkPrefix($id)
+    {
+        return $this->where('id', $id, true)->first();
     }
 }

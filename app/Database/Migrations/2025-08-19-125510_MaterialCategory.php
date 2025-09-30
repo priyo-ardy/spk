@@ -24,6 +24,11 @@ class MaterialCategory extends Migration
                 'constraint' => 150,
                 'null' => false,
             ],
+            'prefix' => [
+                'type' => "VARCHAR",
+                'constraint' => 45,
+                'null' => true
+            ],
             'remark' => [
                 'type' => "text",
                 'null' => true

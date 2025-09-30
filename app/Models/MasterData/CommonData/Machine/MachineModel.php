@@ -21,6 +21,7 @@ class MachineModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+<<<<<<< HEAD
     function generateList()
     {
         return $this->orderBy('code', 'asc')->findAll();
@@ -58,5 +59,30 @@ class MachineModel extends Model
         ];
 
         return $data;
+=======
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
+    public function prevData($code)
+    {
+        return $this
+            ->select('id, code')
+            ->where('code <', $code)
+            ->orderBy('code', 'desc')
+            ->limit(1)
+            ->first();
+    }
+
+    public function nextData($code)
+    {
+        return $this
+            ->select('id, code')
+            ->where('code >', $code)
+            ->orderBy('code', 'asc')
+            ->limit(1)
+            ->first();
+>>>>>>> test
     }
 }

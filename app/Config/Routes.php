@@ -88,6 +88,42 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('delete', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::deleteData');
     });
 
+    $routes->group('/equipment_type', static function ($routes) {
+        $routes->get('', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::index');
+        $routes->post('table', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::loadTable');
+        $routes->post('save', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::saveData');
+        $routes->post('get', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::getData');
+        $routes->post('update', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::updateData');
+        $routes->post('delete', 'MasterData\MaterialManagement\EquipmentType\EquipmentType::deleteData');
+    });
+
+    $routes->group('/departemen', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Departemen\Departemen::index');
+        $routes->post('table', 'MasterData\CommonData\Departemen\Departemen::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Departemen\Departemen::saveData');
+        $routes->post('get', 'MasterData\CommonData\Departemen\Departemen::getData');
+        $routes->post('update', 'MasterData\CommonData\Departemen\Departemen::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Departemen\Departemen::deleteData');
+    });
+
+    $routes->group('/karyawan', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Karyawan\Karyawan::index');
+        $routes->post('table', 'MasterData\CommonData\Karyawan\Karyawan::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Karyawan\Karyawan::saveData');
+        $routes->post('get', 'MasterData\CommonData\Karyawan\Karyawan::getData');
+        $routes->post('update', 'MasterData\CommonData\Karyawan\Karyawan::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Karyawan\Karyawan::deleteData');
+    });
+
+    $routes->group('/lokasi', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Lokasi\Lokasi::index');
+        $routes->post('table', 'MasterData\CommonData\Lokasi\Lokasi::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Lokasi\Lokasi::saveData');
+        $routes->post('get', 'MasterData\CommonData\Lokasi\Lokasi::getData');
+        $routes->post('update', 'MasterData\CommonData\Lokasi\Lokasi::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Lokasi\Lokasi::deleteData');
+    });
+
     // Master Data -> Common Data -> Workshop
     $routes->group('/workshop', static function ($routes) {
         $routes->get('', 'MasterData\CommonData\Workshop\Workshop::index');
@@ -99,11 +135,42 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     });
 
     // Master Data -> Common Data -> Defect
-    $routes->group('/defect', static function ($routes) {});
+    $routes->group('/defect', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Defect\Defect::index');
+        $routes->post('table', 'MasterData\CommonData\Defect\Defect::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Defect\Defect::saveData');
+        $routes->post('get', 'MasterData\CommonData\Defect\Defect::getData');
+        $routes->post('update', 'MasterData\CommonData\Defect\Defect::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Defect\Defect::deleteData');
+    });
+
+    $routes->group('/satuan', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Satuan\Satuan::index');
+        $routes->post('table', 'MasterData\CommonData\Satuan\Satuan::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Satuan\Satuan::saveData');
+        $routes->post('get', 'MasterData\CommonData\Satuan\Satuan::getData');
+        $routes->post('update', 'MasterData\CommonData\Satuan\Satuan::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Satuan\Satuan::deleteData');
+    });
 
     // Master Data -> Common Data -> Sub Defect
     $routes->group('/sub_defect', static function ($routes) {
-        $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
+        $routes->get('', 'MasterData\CommonData\SubDefect\SubDefect::index');
+        $routes->post('table', 'MasterData\CommonData\SubDefect\SubDefect::loadTable');
+        $routes->post('save', 'MasterData\CommonData\SubDefect\SubDefect::saveData');
+        $routes->post('get', 'MasterData\CommonData\SubDefect\SubDefect::getData');
+        $routes->post('update', 'MasterData\CommonData\SubDefect\SubDefect::updateData');
+        $routes->post('delete', 'MasterData\CommonData\SubDefect\SubDefect::deleteData');
+        // $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
+    });
+
+    $routes->group('/posisi_defect', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\PosisiDefect\PosisiDefect::index');
+        $routes->post('table', 'MasterData\CommonData\PosisiDefect\PosisiDefect::loadTable');
+        $routes->post('save', 'MasterData\CommonData\PosisiDefect\PosisiDefect::saveData');
+        $routes->post('get', 'MasterData\CommonData\PosisiDefect\PosisiDefect::getData');
+        $routes->post('update', 'MasterData\CommonData\PosisiDefect\PosisiDefect::updateData');
+        $routes->post('delete', 'MasterData\CommonData\PosisiDefect\PosisiDefect::deleteData');
     });
 
     // Master Data -> Common Data -> Tonnage
@@ -119,14 +186,48 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // Master Data -> Common Data -> Machine
     $routes->group('/machine', static function ($routes) {
         $routes->get('', 'MasterData\CommonData\Machine\Machine::index');
-        $routes->post('machine_data', 'MasterData\CommonData\Machine\Machine::getDataById');
+        $routes->get('add', 'MasterData\CommonData\Machine\Machine::add');
+        $routes->get('details/(:any)', 'MasterData\CommonData\Machine\Machine::details/$1');
+        $routes->post('table', 'MasterData\CommonData\Machine\Machine::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Machine\Machine::saveData');
+        $routes->post('update', 'MasterData\CommonData\Machine\Machine::updateData');
+        $routes->post('prev', 'MasterData\CommonData\Machine\Machine::prevData');
+        $routes->post('next', 'MasterData\CommonData\Machine\Machine::nextData');
+        $routes->get('export', 'MasterData\CommonData\Machine\Machine::exportData');
     });
 
     // Master Data -> Material Management -> Material
     $routes->group('/material', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\Material\Material::index');
         $routes->post('generate_material', 'MasterData\MaterialManagement\Material\Material::generateMaterialList');
+        $routes->get('add', 'MasterData\MaterialManagement\Material\Material::addData');
+        $routes->get('details/(:any)', 'MasterData\MaterialManagement\Material\Material::details/$1');
         $routes->post('get_material', 'MasterData\MaterialManagement\Material\Material::getMaterialData');
+        $routes->post('table', 'MasterData\MaterialManagement\Material\Material::loadTable');
+        $routes->post('save', 'MasterData\MaterialManagement\Material\Material::saveData');
+        $routes->post('update', 'MasterData\MaterialManagement\Material\Material::updateData');
+        $routes->post('prev', 'MasterData\MaterialManagement\Material\Material::prevData');
+        $routes->post('next', 'MasterData\MaterialManagement\Material\Material::nextData');
+        $routes->get('export', 'MasterData\MaterialManagement\Material\Material::exportData');
+    });
+
+    $routes->group('/repair_reason', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\RepairReason\RepairReason::index');
+        $routes->post('table', 'MasterData\CommonData\RepairReason\RepairReason::loadTable');
+        $routes->post('save', 'MasterData\CommonData\RepairReason\RepairReason::saveData');
+        $routes->post('get', 'MasterData\CommonData\RepairReason\RepairReason::getData');
+        $routes->post('update', 'MasterData\CommonData\RepairReason\RepairReason::updateData');
+        $routes->post('delete', 'MasterData\CommonData\RepairReason\RepairReason::deleteData');
+    });
+
+    $routes->group('/leader', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Leader\Leader::index');
+        $routes->post('table', 'MasterData\CommonData\Leader\Leader::loadTable');
+        $routes->post('save', 'MasterData\CommonData\Leader\Leader::saveData');
+        $routes->post('get', 'MasterData\CommonData\Leader\Leader::getData');
+        $routes->post('update', 'MasterData\CommonData\Leader\Leader::updateData');
+        $routes->post('delete', 'MasterData\CommonData\Leader\Leader::deleteData');
+        $routes->post('namaKaryawan', 'MasterData\CommonData\Leader\Leader::getNamaByNIK');
     });
 
     // App Setup -> User Management -> User List
