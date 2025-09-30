@@ -21,45 +21,6 @@ class MachineModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-<<<<<<< HEAD
-    function generateList()
-    {
-        return $this->orderBy('code', 'asc')->findAll();
-    }
-
-    function generateMachineList()
-    {
-        $data = [];
-
-        $query = $this->db->escape($this->orderBy('code', 'asc')->findAll());
-
-        foreach ($query as $item) {
-            $data[] = [
-                'id' => $item->id,
-                'code' => $item->code,
-                'name' => $item->name . ' - ' . $item->nomor_mesin,
-                'model' => $item->model,
-                'no_mesin' => $item->nomor_mesin
-            ];
-        }
-
-        return $data;
-    }
-
-    function getMachineData($id)
-    {
-        $data = [];
-        $query = $this->where('id', $id, true)->first();
-
-        $data = [
-            'name' => $query->name,
-            'model' => $query->model,
-            'code' => $query->code,
-            'no_mesin' => $query->nomor_mesin
-        ];
-
-        return $data;
-=======
     public function getDataById($id)
     {
         return $this->where('id', $id)->first();
@@ -83,6 +44,5 @@ class MachineModel extends Model
             ->orderBy('code', 'asc')
             ->limit(1)
             ->first();
->>>>>>> test
     }
 }

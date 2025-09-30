@@ -6,6 +6,11 @@ use CodeIgniter\Database\Migration;
 
 class Mesin extends Migration
 {
+    /**
+     * Membuat tabel mesin
+     *
+     * @return void
+     */
      public function up()
     {
         $this->forge->addField([
@@ -101,6 +106,9 @@ class Mesin extends Migration
         $this->forge->createTable('m_mesin');
     }
 
+/**
+ * Drop m_mesin table
+ */
     public function down()
     {
         $this->forge->dropTable('m_mesin');

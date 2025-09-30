@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="row mb-3 g-2">
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3">
-                                        <label class="form-label" for="data_workshop"><strong class="text-danger">*</strong>Workshop</label>
+                                        <label class="form-label" for="data_workshop">Workshop&ensp;<strong class="text-danger">*</strong></label>
                                         <select name="data_workshop" id="id_workshop" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
                                             <?php foreach ($workshop as $w) : ?>
@@ -85,19 +85,19 @@
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_mesin">Machine No.<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_mesin">Machine No.&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="text" name="data_mesin" id="id_mesin" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine No" autocomplete="off" readonly value="<?= $data->nomor_mesin ?>">
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_nama">Machine Name<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_nama">Machine Name&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="text" name="data_nama" id="id_nama" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Name" autocomplete="off" readonly value="<?= $data->name ?>">
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_spesifikasi">Specification<strong class="text-danger">*</strong></label>
-                                        <input type="text" name="data_spesifikasi" id="id_spesifikasi" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Specification" autocomplete="off" readonly value="<?= $data->spesifikasi ?>">
+                                        <label class="form-label" for="data_spesifikasi">Specification&ensp;<strong class="text-danger">*</strong></label>
+                                        <input type="text" name="data_spesifikasi" id="id_spesifikasi" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Specification" autocomplete="off" readonly value="<?= $data->model ?>">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_brand">Brand<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_brand">Brand&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="text" name="data_brand" id="id_brand" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Brand" autocomplete="off" readonly value="<?= $data->brand ?>">
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
@@ -105,7 +105,7 @@
                                         <input type="text" name="data_serial" id="id_serial" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Serial" autocomplete="off" readonly value="<?= $data->serial_no ?>">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3">
-                                        <label class="form-label" for="data_tonnage">Tonnage<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_tonnage">Tonnage&ensp;<strong class="text-danger">*</strong></label>
                                         <select name="data_tonnage" id="id_tonnage" class="form-control select2 select2bs5" required disabled>
                                             <option value="">-- Choose --</option>
                                             <?php foreach ($tonnage as $t) : ?>
@@ -115,15 +115,15 @@
                                         <div class="invalid-feedback">This field is required</div>
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 clearfix mb-3">
-                                        <label class="form-label" for="data_rate">Machine Rate<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_rate">Machine Rate&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="text" name="data_rate" id="id_rate" class="form-control rounded-0 bg-body-secondary" maxlength="150" placeholder="Machine Rate" autocomplete="off" readonly value="<?= $data->rate ?>">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3">
-                                        <label class="form-label" for="data_tanggal">Manufacturing Date<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_tanggal">Manufacturing Date&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="date" name="data_tanggal" id="id_tanggal" class="form-control rounded-0 bg-body-secondary" value="<?= date("Y-m-d") ?>" required readonly value="<?= $data->mfg_date ?>">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3">
-                                        <label class="form-label" for="data_beli">Purchase Date<strong class="text-danger">*</strong></label>
+                                        <label class="form-label" for="data_beli">Purchase Date&ensp;<strong class="text-danger">*</strong></label>
                                         <input type="date" name="data_beli" id="id_beli" class="form-control rounded-0 bg-body-secondary" value="<?= date("Y-m-d") ?>" required readonly value="<?= $data->purchase_date ?>">
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 clearfix mb-3">

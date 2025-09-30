@@ -36,8 +36,8 @@ class Machine extends BaseController
         $this->db = Database::connect();
 
         $table = 'vw_mesin';
-        $column_order = ['code', 'nomor_mesin', 'name', 'spesifikasi', 'brand', 'serial_no', 'workshop'];
-        $column_search = ['code', 'nomor_mesin', 'name', 'spesifikasi', 'brand', 'serial_no', 'workshop'];
+        $column_order = ['code', 'nomor_mesin', 'name', 'model', 'brand', 'serial_no', 'workshop'];
+        $column_search = ['code', 'nomor_mesin', 'name', 'model', 'brand', 'serial_no', 'workshop'];
         $order = array('code' => 'asc');
 
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
@@ -74,7 +74,7 @@ class Machine extends BaseController
             ';
             $row[] = $list->nomor_mesin;
             $row[] = $list->name;
-            $row[] = $list->spesifikasi != NULL ? $list->spesifikasi : '-';
+            $row[] = $list->model != NULL ? $list->model : '-';
             $row[] = $list->workshop != NULL ? $list->workshop : '-';
             $row[] = $list->tonnage != NULL ? $list->tonnage : '-';
             $row[] = $list->brand != NULL ? $list->brand : '-';
@@ -132,7 +132,7 @@ class Machine extends BaseController
             $workshop = trim($this->request->getPost('data_workshop'));
             $mesin = trim($this->request->getPost('data_mesin'));
             $nama = trim($this->request->getPost('data_nama'));
-            $spesifikasi = trim($this->request->getPost('data_spesifikasi'));
+            $model = trim($this->request->getPost('data_model'));
             $brand = trim($this->request->getPost('data_brand'));
             $serial = trim($this->request->getPost('data_serial'));
             $tonnage = trim($this->request->getPost('data_tonnage'));
@@ -161,7 +161,7 @@ class Machine extends BaseController
                         'required' => "Machine name is required"
                     ]
                 ],
-                'data_spesifikasi' => [
+                'data_model' => [
                     'rules' => 'required',
                     'errors' => [
                         'required' => "Machine specifications is required"
@@ -220,7 +220,7 @@ class Machine extends BaseController
                 'code' => $code,
                 'nomor_mesin' => $mesin,
                 'name' => $nama,
-                'spesifikasi' => $spesifikasi,
+                'model' => $model,
                 'tonnage' => $tonnage,
                 'brand' => $brand,
                 'serial_no' => $serial,
@@ -305,7 +305,7 @@ class Machine extends BaseController
             $workshop = trim($this->request->getPost('data_workshop'));
             $mesin = trim($this->request->getPost('data_mesin'));
             $nama = trim($this->request->getPost('data_nama'));
-            $spesifikasi = trim($this->request->getPost('data_spesifikasi'));
+            $model = trim($this->request->getPost('data_model'));
             $brand = trim($this->request->getPost('data_brand'));
             $serial = trim($this->request->getPost('data_serial'));
             $tonnage = trim($this->request->getPost('data_tonnage'));
@@ -333,7 +333,7 @@ class Machine extends BaseController
                         'required' => "Machine name is required"
                     ]
                 ],
-                'data_spesifikasi' => [
+                'data_model' => [
                     'rules' => 'required',
                     'errors' => [
                         'required' => "Machine specifications is required"
@@ -390,7 +390,7 @@ class Machine extends BaseController
                 'workshop' => $workshop,
                 'nomor_mesin' => $mesin,
                 'name' => $nama,
-                'spesifikasi' => $spesifikasi,
+                'model' => $model,
                 'tonnage' => $tonnage,
                 'brand' => $brand,
                 'serial_no' => $serial,
@@ -552,10 +552,10 @@ class Machine extends BaseController
     function exportData()
     {
         $filename = "machine_list" . date("Ymd_his") . 'xlsx';
-        $headers = ['No Mesin', 'Workshop', 'Nama Mesin', 'Spesifikasi', 'Tonnage', 'Brand', 'Serial No', 'Rate', 'Mfg Date', 'Purchase Date'];
+        $headers = ['No Mesin', 'Workshop', 'Nama Mesin', 'model', 'Tonnage', 'Brand', 'Serial No', 'Rate', 'Mfg Date', 'Purchase Date'];
 
         $dataCallback = function ($offset, $limit) {
-            $column = 'nomor_mesin, workshop, name, spesifikasi, tonnage, brand, serial_no, rate, mfg_date, purchase_date';
+            $column = 'nomor_mesin, workshop, name, model, tonnage, brand, serial_no, rate, mfg_date, purchase_date';
             return $this->masterModel->getChunkedData('vw_mesin', $offset, $limit, 'nomor_mesin', $column);
         };
 
@@ -603,7 +603,7 @@ class Machine extends BaseController
 //             'workshop' => $get->workshop,
 //             'nomor_mesin' => $get->nomor_mesin,
 //             'name' => $get->name,
-//             'specification' => $get->spesifikasi,
+//             'specification' => $get->model,
 //             'tonnage' => $get->tonnage,
 //             'brand' => $get->brand,
 //             'serial_no' => $get->serial_no,

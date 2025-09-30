@@ -22,6 +22,12 @@ class MoldSpk extends BaseController
     protected $validasi;
     protected $enkripsi;
 
+
+/**
+ * Constructor
+ *
+ * @return void
+ */
     public function __construct()
     {
         $this->module = "Mold Confirmation";
@@ -39,6 +45,11 @@ class MoldSpk extends BaseController
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $columnt_search, $order);
     }
 
+    /**
+     * Generate table of Mold Confirmation list
+     * 
+     * @return ResponseInterface
+     */
     function loadTable()
     {
         $aksi = "Load Table";
@@ -79,6 +90,13 @@ class MoldSpk extends BaseController
             ->setStatusCode(ResponseInterface::HTTP_OK, "Generate successfully")
             ->setJSON($output);
     }
+
+
+/**
+ * Open list of SPK page
+ * 
+ * @return \Illuminate\Contracts\View\Factory
+ */
     public function index()
     {
         $aksi = "Open";
@@ -94,6 +112,15 @@ class MoldSpk extends BaseController
         return view('Transaction/SPK/Mold/index', $data);
     }
 
+
+
+/**
+ * Get SPK details
+ *
+ * @return \Psr\Http\Message\ResponseInterface
+ *
+ * @throws \Exception
+ */
     function getSpkData()
     {
         $aksi = "Get spk details";
@@ -145,6 +172,13 @@ class MoldSpk extends BaseController
         }
     }
 
+/**
+ * Show SPK image
+ *
+ * @return \Psr\Http\Message\ResponseInterface
+ *
+ * @throws \Exception
+ */
     function showImage()
     {
         $aksi = "Show image";
@@ -208,6 +242,16 @@ class MoldSpk extends BaseController
         }
     }
 
+/**
+ * Confirm SPK selesai
+ *
+ * @param string $token SPK token
+ * @param string $tgl_lapor Tanggal laporan
+ * @param string $tgl_selesai Tanggal rencana selesai
+ * @param string $keterangan Keterangan
+ *
+ * @return object ResponseInterface
+ */
     function konfirmSelesai()
     {
         $aksi = "Confirm spk selesai";
