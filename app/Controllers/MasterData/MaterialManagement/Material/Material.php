@@ -26,6 +26,7 @@ class Material extends BaseController
     protected $enkripsi;
     protected $materialModel;
     protected $materialKategoriModel;
+    protected $machineModel;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ class Material extends BaseController
         $this->workshopModel = new WorkshopModel();
         $this->satuanModel = new SatuanModel();
         $this->masterModel = new MasterModel();
+        $this->machineModel = new MachineModel();
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
         $this->db = Database::connect();
