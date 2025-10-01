@@ -142,6 +142,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('get', 'MasterData\CommonData\Defect\Defect::getData');
         $routes->post('update', 'MasterData\CommonData\Defect\Defect::updateData');
         $routes->post('delete', 'MasterData\CommonData\Defect\Defect::deleteData');
+        $routes->post('generate_defect', 'MasterData\CommonData\Defect\Defect::generateDefectList');
     });
 
     $routes->group('/satuan', static function ($routes) {
@@ -161,7 +162,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('get', 'MasterData\CommonData\SubDefect\SubDefect::getData');
         $routes->post('update', 'MasterData\CommonData\SubDefect\SubDefect::updateData');
         $routes->post('delete', 'MasterData\CommonData\SubDefect\SubDefect::deleteData');
-        // $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
+        $routes->post('get_list', 'MasterData\CommonData\SubDefect\SubDefect::getSubDefectByDefect');
     });
 
     $routes->group('/posisi_defect', static function ($routes) {

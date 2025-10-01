@@ -21,6 +21,16 @@ class MaterialModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+    public function generatePartList()
+    {
+        return $this->where('kategori', 'b3cf99d9-30f5-4e3b-8c3c-6dcecaff260a')->orderBy('code', 'asc')->findAll();
+    }
+
+    function getMaterialData($id_material)
+    {
+        return $this->where('id', $id_material)->get()->getRow();
+    }
+
     public function generateList()
     {
         return $this->orderBy('code', 'asc')->findAll();

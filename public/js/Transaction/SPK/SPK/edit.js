@@ -63,6 +63,49 @@ buttons.cancel.addEventListener("click", (e) => {
   window.location.reload();
 });
 
+function getMaterialList() {
+  return fetchData(
+    baseurl + "/material/generate_material",
+    "POST",
+    JSON.stringify({ kategori: dataForm.doc_type.value })
+  )
+    .then((result) => {
+      if (result.data.length > 0) {
+        result.data.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.id;
+          option.textContent = item.code + " - " + item.name;
+          dataForm.material.appendChild(option);
+        });
+      }
+    })
+    .catch((err) => {
+      dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+      throw err;
+    });
+}
+
+function getDefectList() {
+  return fetchData(
+    baseurl + "/defect/generate_defect",
+    "POST",
+    JSON.stringify({ kategori: dataForm.doc_type.value })
+  )
+    .then((result) => {
+      if (result.data.length > 0) {
+        result.data.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.id;
+          option.textContent = item.name;
+          dataForm.defect.appendChild(option);
+        });
+      }
+    })
+    .catch((err) => {
+      dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+      throw err;
+    });
+}
 dataForm.doc_type.onchange = () => {
   try {
     dataForm.model.value = "";
@@ -70,9 +113,13 @@ dataForm.doc_type.onchange = () => {
     dataForm.tipe_equipment.value = "";
     $(dataForm.tipe_equipment).trigger("change");
     dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+    dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+    dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
 
     if (dataForm.doc_type.value === "") {
       dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
     } else {
       if (dataForm.doc_type.value == "1") {
         dataForm.tipe_equipment.setAttribute("disabled", true);
@@ -80,25 +127,8 @@ dataForm.doc_type.onchange = () => {
         dataForm.tipe_equipment.removeAttribute("disabled");
       }
 
-      fetchData(
-        baseurl + "/material/generate_material",
-        "POST",
-        JSON.stringify({ kategori: dataForm.doc_type.value })
-      )
-        .then((result) => {
-          if (result.data.length > 0) {
-            result.data.forEach((item) => {
-              const option = document.createElement("option");
-              option.value = item.id;
-              option.textContent = item.code + " - " + item.name;
-              dataForm.material.appendChild(option);
-            });
-          }
-        })
-        .catch((err) => {
-          dataForm.material.innerHTML =
-            '<option value="">-- Choose --</option>';
-        });
+      getMaterialList();
+      getDefectList();
     }
   } catch (e) {
     pesanError(e.message);

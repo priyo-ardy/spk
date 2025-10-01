@@ -27,7 +27,6 @@ const dataForm = {
   defect: document.getElementById("data_defect"),
   sub_defect: document.getElementById("data_sub_defect"),
   berulang: document.getElementById("data_berulang"),
-  posisi: document.getElementById("data_posisi"),
   repair: document.getElementById("data_repair"),
   image: document.getElementById("data_image"),
   img_preview: document.getElementById("img_preview"),
@@ -39,6 +38,50 @@ buttons.back.addEventListener("click", (e) => {
   window.location.replace(baseurl + "/spk");
 });
 
+function getMaterialList() {
+  return fetchData(
+    baseurl + "/material/generate_material",
+    "POST",
+    JSON.stringify({ kategori: dataForm.doc_type.value })
+  )
+    .then((result) => {
+      if (result.data.length > 0) {
+        result.data.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.id;
+          option.textContent = item.code + " - " + item.name;
+          dataForm.material.appendChild(option);
+        });
+      }
+    })
+    .catch((err) => {
+      dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+      throw err;
+    });
+}
+
+function getDefectList() {
+  return fetchData(
+    baseurl + "/defect/generate_defect",
+    "POST",
+    JSON.stringify({ kategori: dataForm.doc_type.value })
+  )
+    .then((result) => {
+      if (result.data.length > 0) {
+        result.data.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.id;
+          option.textContent = item.name;
+          dataForm.defect.appendChild(option);
+        });
+      }
+    })
+    .catch((err) => {
+      dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+      throw err;
+    });
+}
+
 dataForm.doc_type.onchange = () => {
   try {
     dataForm.model.value = "";
@@ -46,9 +89,13 @@ dataForm.doc_type.onchange = () => {
     dataForm.tipe_equipment.value = "";
     $(dataForm.tipe_equipment).trigger("change");
     dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+    dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+    dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
 
     if (dataForm.doc_type.value === "") {
       dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
     } else {
       if (dataForm.doc_type.value == "1") {
         dataForm.tipe_equipment.setAttribute("disabled", true);
@@ -56,25 +103,8 @@ dataForm.doc_type.onchange = () => {
         dataForm.tipe_equipment.removeAttribute("disabled");
       }
 
-      fetchData(
-        baseurl + "/material/generate_material",
-        "POST",
-        JSON.stringify({ kategori: dataForm.doc_type.value })
-      )
-        .then((result) => {
-          if (result.data.length > 0) {
-            result.data.forEach((item) => {
-              const option = document.createElement("option");
-              option.value = item.id;
-              option.textContent = item.code + " - " + item.name;
-              dataForm.material.appendChild(option);
-            });
-          }
-        })
-        .catch((err) => {
-          dataForm.material.innerHTML =
-            '<option value="">-- Choose --</option>';
-        });
+      getMaterialList();
+      getDefectList();
     }
   } catch (e) {
     pesanError(e.message);
@@ -136,7 +166,7 @@ dataForm.material.onchange = () => {
             dataForm.mold.value = result.data.code;
             break;
           case "2":
-            dataForm.mold.value = result.data.no_mesin;
+            dataForm.mold.value = result.data.nomor_mesin;
             break;
         }
       });
@@ -148,11 +178,13 @@ dataForm.material.onchange = () => {
 
 function validasi() {
   let isValid = true;
+
   const requiredElement = document.querySelectorAll("[required]");
+
   if (requiredElement.length > 0) {
     requiredElement.forEach((element) => {
       const feedback = element.parentNode.querySelector(".invalid-feedback");
-      if (element.value.trim() === "") {
+      if (element.value == "") {
         element.classList.add("is-invalid");
         feedback.textContent = "This field is required";
         isValid = false;
@@ -164,7 +196,7 @@ function validasi() {
   }
 
   if (dataForm.doc_type.value !== "1") {
-    if (dataForm.tipe_equipment.value === '') {
+    if (dataForm.tipe_equipment.value == "") {
       dataForm.tipe_equipment.classList.add("is-invalid");
       dataForm.tipe_equipment.parentNode.querySelector(
         ".invalid-feedback"
@@ -190,7 +222,6 @@ function resetForm() {
   $(dataForm.defect).trigger("change");
   dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
   $(dataForm.berulang).trigger("change");
-  $(dataForm.posisi).trigger("change");
   $(dataForm.repair).trigger("change");
   dataForm.image.value = "";
   $(".summernote").summernote("code", "");
@@ -227,5 +258,7 @@ buttons.save.addEventListener("click", (e) => {
     } catch (e) {
       pesanError(e.message);
     }
+  } else {
+    pesanError("Data belum lengkap");
   }
 });

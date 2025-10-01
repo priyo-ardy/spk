@@ -349,4 +349,39 @@ class Defect extends BaseController
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured" . $e->getMessage());
         }
     }
+
+    function generateDefectList()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+            log_message('error', 'Generate Defect List Error: Request method not allowed');
+        }
+
+        try {
+            $json_data = $this->request->getJSON(true);
+
+            if (!is_array($json_data)) {
+                log_message('error', 'Generate Defect List Error: Input is not valid JSON object');
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, 'Input is not valid JSON input');
+            }
+
+            if (!isset($json_data['kategori'])) {
+                log_message('error', 'Generate Defect List Error: Kategori is missing in JSON input');
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Kategori is missing in JSON input");
+            }
+
+            $kategori = $json_data['kategori'];
+
+            $get_defect = $this->defectModel->where('kategori', $kategori)->findAll();
+
+            if ($get_defect) {
+                return pesan(ResponseInterface::HTTP_OK, "Data found", $get_defect);
+            } else {
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "Data not found");
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Generate Defect List Error: ' . $e->getMessage());
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured" . $e->getMessage());
+        }
+    }
 }

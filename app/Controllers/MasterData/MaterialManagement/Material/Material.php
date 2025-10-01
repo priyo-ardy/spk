@@ -13,6 +13,7 @@ use App\Models\DataTable\DataTableModel;
 use Config\Database;
 use Config\Services;
 use App\Models\MasterData\CommonData\Machine\MachineModel;
+use CodeIgniter\HTTP\Response;
 
 class Material extends BaseController
 {
@@ -546,5 +547,102 @@ class Material extends BaseController
         };
 
         return export_to_excel($filename, $headers, $dataCallback);
+    }
+
+    /*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * Generate Material List
+     *
+     * @return ResponseInterface
+     *
+     * @throws \Exception
+     */
+    /*******  860c3f4b-3475-4338-bd2f-bb78edf70b6e  *******/
+
+    function generateMaterialList()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+            log_message('error', 'Generate Material List Error: Request method not allowed');
+        }
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+                log_message('error', 'Generate Material List Error: Input is not a valid JSON object');
+            }
+
+            if (!isset($json_data['kategori'])) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Kategori is missing in JSON input");
+                log_message('error', 'Generate Material List Error: Kategori is missing in JSON input');
+            }
+
+            $kategori = $json_data['kategori'];
+
+            switch ($kategori) {
+                case 1:
+                    $lists = $this->materialModel->generatePartList();
+                    break;
+                case 2:
+                    $lists = $this->machineModel->generateMachineList();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+
+            // echo $kategori;
+            return pesan(ResponseInterface::HTTP_OK, "Material list generated", $lists);
+        } catch (\Exception $e) {
+            log_message('error', 'Generate Material List Error: ' . $e->getMessage());
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Generate Material List Error: " . $e->getMessage());
+        }
+    }
+
+    function getMaterialData()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request not allowed");
+            log_message('error', 'Get Material Data Error: Request method not allowed');
+        }
+
+        try {
+            $json_data = $this->request->getJSON(true);
+            if (!is_array($json_data)) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+                log_message('error', 'Get Material Data Error: Input is not a valid JSON object');
+            }
+
+            if (!isset($json_data['token'])) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Token is missing in JSON input");
+                log_message('error', 'Get Material Data Error: Token is missing in JSON input');
+            }
+
+            $token = $json_data['token'];
+            $kategori = $json_data['kategori'];
+            $id_data = $token;
+
+            switch ($kategori) {
+                case 1:
+                    $get_material = $this->materialModel->getMaterialData($id_data);
+                    break;
+                case 2:
+                    $get_material = $this->machineModel->getMachineData($id_data);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Material data found", $get_material);
+        } catch (\Exception $e) {
+            log_message('error', 'Get Material Data Error: ' . $e->getMessage());
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Get Material Data Error: " . $e->getMessage());
+        }
     }
 }

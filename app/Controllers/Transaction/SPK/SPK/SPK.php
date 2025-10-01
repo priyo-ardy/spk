@@ -295,12 +295,6 @@ class SPK extends BaseController
                         'required' => "Repeat problem is required"
                     ]
                 ],
-                'data_posisi' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => 'Problem position is required'
-                    ]
-                ],
                 'data_repair' => [
                     'rules' => 'required',
                     'errors' => [
@@ -485,7 +479,7 @@ class SPK extends BaseController
                 $nama_status = "Close";
                 break;
         }
-
+        $defect = $this->defectModel->where('kategori', $data_header->kategori)->findAll();
         $sub_defect = $this->subDefectModel->getListByDefect($data_header->defect);
 
         $aksi = "Open";
@@ -497,6 +491,7 @@ class SPK extends BaseController
             'code' => $data_header->code,
             'header' => $data_header,
             'details' => $data_details,
+            'defect_list' => $defect,
             'sub_defect' => $sub_defect,
             'status' => $data_header->dokumen_status,
             'nama_status' => $nama_status,
@@ -505,7 +500,6 @@ class SPK extends BaseController
             'dept_list' => $this->deptModel->generateList(),
             'emp_list' => $this->karyawanModel->generateList(),
             'leader_list' => $this->leaderModel->generateList(),
-            'defect_list' => $this->defectModel->generateList(),
             'position_list' => $this->positionModel->generateList(),
             'reason_list' => $this->repairModel->generateList(),
             'footer' => [

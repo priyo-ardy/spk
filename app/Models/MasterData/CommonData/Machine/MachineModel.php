@@ -45,4 +45,14 @@ class MachineModel extends Model
             ->limit(1)
             ->first();
     }
+
+    function generateMachineList()
+    {
+        return $this->orderBy('code', 'asc')->findAll();
+    }
+
+    function getMachineData($id_mesin)
+    {
+        return $this->where('id', $id_mesin)->first();
+    }
 }
