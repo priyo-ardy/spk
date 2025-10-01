@@ -95,11 +95,18 @@ class Defect extends BaseController
 
         try {
             $id = generate_uuid();
+            $kategori = trim($this->request->getPost('data_kategori'));
             $code = $this->masterModel->generateCode('m_defect', 'code', 'DFC-', 6);
             $name = ucwords(trim($this->request->getPost('data_name')));
             $remark = trim($this->request->getPost('data_remark'));
 
             $rules = [
+                'data_kategori' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Category is required'
+                    ]
+                ],
                 'data_name' => [
                     'rules' => 'required|min_length[1]|max_length[150]',
                     'errors' => [
@@ -124,6 +131,7 @@ class Defect extends BaseController
 
             $data = [
                 'id' => $id,
+                'kategori' => $kategori,
                 'code' => $code,
                 'name' => $name,
                 'description' => $remark,
@@ -191,6 +199,7 @@ class Defect extends BaseController
 
             $data = [
                 'token' => enkripsi($getData->id),
+                'kategori' => $getData->kategori,
                 'code' => $getData->code,
                 'name' => $getData->name,
                 'remark' => $getData->description
@@ -220,11 +229,18 @@ class Defect extends BaseController
         try {
             $token = trim($this->request->getPost('data_token'));
             $id = dekripsi($token);
+            $kategori = trim($this->request->getPost('data_kategori'));
             $code = trim($this->request->getPost('data_code'));
             $name = ucwords(trim($this->request->getPost('data_name')));
             $remark = trim($this->request->getPost('data_remark'));
 
             $rules = [
+                'data_kategori' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Defect category is required'
+                    ]
+                ],
                 'data_token' => [
                     'rules' => 'required',
                     'errors' => [
@@ -260,6 +276,7 @@ class Defect extends BaseController
             }
 
             $data = [
+                'kategori' => $kategori,
                 'name' => $name,
                 'description' => $remark,
                 'updated_by' => $this->NIK

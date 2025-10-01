@@ -9,6 +9,7 @@ const buttons = {
 
 const dataForm = {
   token: document.getElementById("data_token"),
+  kategori: document.getElementById("data_kategori"),
   code: document.getElementById("data_code"),
   name: document.getElementById("data_name"),
   remark: document.getElementById("data_remark"),
@@ -59,6 +60,7 @@ function resetForm() {
     });
   }
 
+  $(dataForm.kategori).trigger("change");
   buttons.save.removeAttribute("hidden");
   buttons.update.setAttribute("hidden", true);
 }
@@ -68,7 +70,9 @@ buttons.cancel.addEventListener("click", (e) => {
 });
 
 buttons.save.addEventListener("click", (e) => {
-  if (dataForm.name.value === "") {
+  if (dataForm.kategori.value == "") {
+    dataForm.kategori.classList.add("is-invalid");
+  } else if (dataForm.name.value === "") {
     dataForm.name.classList.add("is-invalid");
   } else {
     dataForm.name.classList.remove("is-invalid");
@@ -100,11 +104,13 @@ function getData(token) {
       .then((result) => {
         dataForm.token.value = result.data.token;
         dataForm.code.value = result.data.code;
+        dataForm.kategori.value = result.data.kategori;
         dataForm.name.value = result.data.name;
         dataForm.remark.value = result.data.remark;
         buttons.save.setAttribute("hidden", true);
         buttons.update.removeAttribute("hidden");
 
+        $(dataForm.kategori).trigger("change");
         hideLoading();
       })
       .catch((err) => {
