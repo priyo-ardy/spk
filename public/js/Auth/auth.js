@@ -77,6 +77,11 @@ function resetForm() {
   dataForm.user_name.focus();
 }
 
+buttons.auth.addEventListener("click", function () {
+  if (validasi()) {
+    prosesLogin();
+  }
+});
 async function prosesLogin() {
   if (validasi()) {
     try {

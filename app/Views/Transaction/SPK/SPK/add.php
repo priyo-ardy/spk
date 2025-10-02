@@ -128,14 +128,14 @@
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
-                                        <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
+                                        <label class="form-label" id="label_defect" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
-                                        <label class="form-label" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
+                                        <label class="form-label" id="label_sub_defect" for="data_sub_defect">Sub Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_sub_defect" id="data_sub_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
                                         </select>
@@ -160,7 +160,7 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="form-group col-xl-12 col-lg-12 col-md-6 col-sm-12 mb-3 clearfix">
+                                    <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_image">Upload Problem Image <strong class="text-danger">*</strong></label>
                                         <input type="file" multiple class="custom-file-input form-control rounded-0" id="data_image" required name="data_image[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback"></div>

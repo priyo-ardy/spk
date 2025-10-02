@@ -31,6 +31,8 @@ const dataForm = {
   image: document.getElementById("data_image"),
   img_preview: document.getElementById("img_preview"),
   keterangan: document.getElementById("data_keterangan"),
+  label_defect: document.getElementById("label_defect"),
+  label_sub_defect: document.getElementById("label_sub_defect"),
 };
 
 buttons.back.addEventListener("click", (e) => {
@@ -46,10 +48,15 @@ function getMaterialList() {
   )
     .then((result) => {
       if (result.data.length > 0) {
+        let mold_no = "";
         result.data.forEach((item) => {
+          if (dataForm.doc_type.value !== "1") {
+            mold_no = " - " + item.nomor_mesin;
+          }
+
           const option = document.createElement("option");
           option.value = item.id;
-          option.textContent = item.code + " - " + item.name;
+          option.textContent = item.code + " - " + item.name + mold_no;
           dataForm.material.appendChild(option);
         });
       }
@@ -96,11 +103,17 @@ dataForm.doc_type.onchange = () => {
       dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
       dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
       dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
+      dataForm.label_defect.innerText = `Defect&ensp;<strong class="text-danger">*</strong>`;
+      dataForm.label_sub_defect.innerText = `Sub Defect&ensp;<strong class="text-danger">*</strong>`;
     } else {
       if (dataForm.doc_type.value == "1") {
         dataForm.tipe_equipment.setAttribute("disabled", true);
+        dataForm.label_defect.innerHTML = `Defect&ensp;<strong class="text-danger">*</strong>`;
+        dataForm.label_sub_defect.innerHTML = `Sub Defect&ensp;<strong class="text-danger">*</strong>`;
       } else {
         dataForm.tipe_equipment.removeAttribute("disabled");
+        dataForm.label_defect.innerHTML = `Problem&ensp;<strong class="text-danger">*</strong>`;
+        dataForm.label_sub_defect.innerHTML = `Sub Problem&ensp;<strong class="text-danger">*</strong>`;
       }
 
       getMaterialList();
