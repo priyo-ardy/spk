@@ -33,8 +33,8 @@ class SubDefect extends BaseController
         $this->enkripsi = Services::encrypter();
 
         $table = 'vw_sub_defect';
-        $column_order = ['code', 'defect', 'name', 'keterangan'];
-        $column_search = ['code', 'defect', 'name', 'keterangan'];
+        $column_order = ['code', 'nama_defect', 'name', 'keterangan'];
+        $column_search = ['code', 'nama_defect', 'name', 'keterangan'];
         $order = array('code' => 'asc');
 
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
@@ -67,7 +67,7 @@ class SubDefect extends BaseController
 
             $row[] = $no++;
             $row[] = '<a href="#" class="text-primary fw-bolder link-underline-opacity-0 link-underline-opacity-100-hover" onclick="getData(`' . enkripsi($list->id) . '`)">' . $list->code . '</a>';
-            $row[] = $list->defect;
+            $row[] = $list->nama_defect;
             $row[] = $list->name;
             $row[] = $list->keterangan;
             $row[] = '
@@ -80,9 +80,9 @@ class SubDefect extends BaseController
         }
 
         $output = [
-            "draw" => $_POST['draw'],
+            "draw" => $_POST["draw"],
             "recordsTotal" => $this->dataTable->count_all(),
-            "recordsFilter" => $this->dataTable->count_filtered(),
+            "recordsFiltered" => $this->dataTable->count_filtered(),
             "data" => $data
         ];
 

@@ -98,6 +98,7 @@
                                         <thead>
                                             <th class="align-middle bg-body-secondary">No.</th>
                                             <th class="align-middle bg-body-secondary">Code</th>
+                                            <th class="align-middle bg-body-secondary">Category</th>
                                             <th class="align-middle bg-body-secondary">Name</th>
                                             <th class="align-middle bg-body-secondary">Remark</th>
                                             <th class="align-middle bg-body-secondary">#</th>

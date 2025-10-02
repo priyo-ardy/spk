@@ -27,12 +27,12 @@ class Defect extends BaseController
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
 
-        $table = 'm_defect';
-        $column_order = ['code', 'name', 'description'];
-        $column_search = ['code', 'name', 'description'];
+        $table = 'vw_defect';
+        $column_order = ['code', 'nama_kategori', 'name', 'description'];
+        $column_search = ['code', 'nama_kategori', 'name', 'description'];
         $order = array('code' => 'asc');
 
-        $this->dataTable = new DataTableModel(Services::request(), $table, $column_search, $column_order, $order);
+        $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
     }
 
     public function index()
@@ -61,6 +61,7 @@ class Defect extends BaseController
 
             $row[] = $no++;
             $row[] = '<a href="#" class="text-primary fw-bolder link-underline-opacity-0 link-underline-opacity-100-hover" onclick="getData(`' . enkripsi($list->id) . '`)">' . $list->code . '</a>';
+            $row[] = $list->nama_kategori;
             $row[] = $list->name;
             $row[] = $list->description;
             $row[] = '
@@ -73,9 +74,9 @@ class Defect extends BaseController
         }
 
         $output = [
-            "draw" => $_POST['draw'],
+            "draw" => $_POST["draw"],
             "recordsTotal" => $this->dataTable->count_all(),
-            "recordsFilter" => $this->dataTable->count_filtered(),
+            "recordsFiltered" => $this->dataTable->count_filtered(),
             "data" => $data
         ];
 
