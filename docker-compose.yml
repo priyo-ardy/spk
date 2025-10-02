@@ -18,7 +18,8 @@ services:
     # Alternatif yang lebih aman adalah menggunakan 'host.docker.internal'.
     # Jika Anda ingin menggunakan 'host.docker.internal' (direkomendasikan):
     # network_mode: bridge (default)
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
-    network_mode: "host"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # network_mode: "host"
+    network_mode: "bridge"
     restart: always
