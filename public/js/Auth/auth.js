@@ -74,7 +74,15 @@ function resetForm() {
 }
 
 buttons.auth.addEventListener("click", function () {
-  if (validasi()) {
+  if (dataForm.user_name.value === "" || dataForm.user_password.value === "") {
+    if (dataForm.user_name.value == "") {
+      dataForm.user_name.classList.add("is-invalid");
+    }
+
+    if (dataForm.user_password.value == "") {
+      dataForm.user_password.classList.add("is-invalid");
+    }
+  } else {
     prosesLogin();
   }
 });
