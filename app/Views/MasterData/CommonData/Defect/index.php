@@ -36,6 +36,16 @@
                                     <div class="invalid-feedback">This field is required</div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form_label" for="data_kategori">Category <strong class="text-danger">*</strong></label>
+                                    <select name="data_kategori" id="data_kategori" class="form-control select2 select2bs5 rounded-0" required>
+                                        <option value="">-- Choose --</option>
+                                        <option value="1">1. SPK Mold Repair</option> <!-- hanya keluar part no -->
+                                        <option value="2">2. SPK Mesin</option> <!-- hanya keluar mesin & equipment -->
+                                        <option value="3">3. SPK Preventive Maintenance Request</option> <!-- all part no -->
+                                        <option value="4">4. SPK Equipment Request</option> <!-- material custom/input manual -->
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
                                     <label class="form-label" for="data_code">Code <strong class="text-danger">*</strong></label>
                                     <input type="text" name="data_code" id="data_code" class="form-control rounded-0 bg-body-secondary" readonly placeholde="Generate automatically after saving the data">
                                     <div class="invalid-feedback">This field is required</div>
