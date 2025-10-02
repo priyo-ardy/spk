@@ -9,6 +9,7 @@ const buttons = {
 
 const dataForm = {
   token: document.getElementById("data_token"),
+  kategori: document.getElementById("data_kategori"),
   code: document.getElementById("data_code"),
   name: document.getElementById("data_name"),
   remark: document.getElementById("data_remark"),
@@ -99,11 +100,14 @@ function getData(token) {
     fetchData(baseurl + "/defect/get", "POST", JSON.stringify({ token: token }))
       .then((result) => {
         dataForm.token.value = result.data.token;
+        dataForm.kategori.value = result.data.kategori;
         dataForm.code.value = result.data.code;
         dataForm.name.value = result.data.name;
         dataForm.remark.value = result.data.remark;
         buttons.save.setAttribute("hidden", true);
         buttons.update.removeAttribute("hidden");
+
+        $(dataForm.kategori).trigger("change");
 
         hideLoading();
       })
