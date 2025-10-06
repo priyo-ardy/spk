@@ -535,7 +535,7 @@ class SPK extends BaseController
             $defect = trim($this->request->getPost('data_defect'));
             $sub_defect = trim($this->request->getPost('data_sub_defect'));
             $berulang = trim($this->request->getPost('data_berulang'));
-            $posisi = trim($this->request->getPost('data_posisi'));
+            //$posisi = trim($this->request->getPost('data_posisi'));
             $repair = trim($this->request->getPost('data_repair'));
             $images = $this->request->getFileMultiple('data_image');
             $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
@@ -612,12 +612,12 @@ class SPK extends BaseController
                         'required' => "Repeat problem is required"
                     ]
                 ],
-                'data_posisi' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => 'Problem position is required'
-                    ]
-                ],
+                //'data_posisi' => [
+                //    'rules' => 'required',
+                //    'errors' => [
+                //        'required' => 'Problem position is required'
+                //    ]
+                //],
                 'data_repair' => [
                     'rules' => 'required',
                     'errors' => [
