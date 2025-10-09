@@ -1,0 +1,14 @@
+podman run -d \
+  --name spk-ci4-container \
+  -p 8001:80 \
+  -e DB_HOST=192.168.10.69 \
+  #Nama aplikasi
+  -v /home/appserver/ci4-app/spk:/var/www/html:Z \
+  \
+  # --- Pengaturan Batasan Sumber Daya ---
+  --cpus="0.01" \
+  --cpu-shares=768 \
+  --memory="1g" \
+  --memory-reservation="750m" \
+  \
+  spk-ci4
