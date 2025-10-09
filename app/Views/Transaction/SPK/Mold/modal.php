@@ -22,8 +22,8 @@
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="form-group col-12">
-                            <label class="form-label"></label>Reason</label>
-                            <textarea name="reason" id="reason" class="form-control rounded-0" placeholder="Describe the reason here ..."></textarea>
+                            <label class="form-label">Initial Analysis</label>
+                            <textarea name="reason" id="reason" class="form-control rounded-0" placeholder="Describe the initial analysis here ..."></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
                     </div>

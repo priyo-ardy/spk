@@ -43,6 +43,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
     });
 
+    $routes->group('/planer', static function ($routes) {
+        $routes->get('', 'Transaction\SPK\Planner\PlannerSPK::index');
+        $routes->post('table', 'Transaction\SPK\Planner\PlannerSPK::loadTable');
+    });
+
     // Transaction -> SPK -> General
     // $routes->group('/spk_general', static function ($routes) {
     //     $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
