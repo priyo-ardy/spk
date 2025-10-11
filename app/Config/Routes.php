@@ -252,4 +252,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('change_password', 'AppSetup\UserManagement\UserList\UserList::changeUserPassword');
         $routes->post('disable', 'AppSetup\UserManagement\UserList\UserList::disableUser');
     });
+
+    $routes->group('/seeder', static function ($routes) {
+        $routes->get('', 'AppSetup\Seeder\MasterData::index');
+        $routes->post('generate', 'AppSetup\Seeder\MasterData::generateData');
+    });
 });
