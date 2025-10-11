@@ -43,6 +43,11 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
     });
 
+    $routes->group('/planer', static function ($routes) {
+        $routes->get('', 'Transaction\SPK\Planner\PlannerSPK::index');
+        $routes->post('table', 'Transaction\SPK\Planner\PlannerSPK::loadTable');
+    });
+
     // Transaction -> SPK -> General
     // $routes->group('/spk_general', static function ($routes) {
     //     $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
@@ -246,5 +251,10 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('next', 'AppSetup\UserManagement\UserList\UserList::nextData');
         $routes->post('change_password', 'AppSetup\UserManagement\UserList\UserList::changeUserPassword');
         $routes->post('disable', 'AppSetup\UserManagement\UserList\UserList::disableUser');
+    });
+
+    $routes->group('/seeder', static function ($routes) {
+        $routes->get('', 'AppSetup\Seeder\MasterData::index');
+        $routes->post('generate', 'AppSetup\Seeder\MasterData::generateData');
     });
 });

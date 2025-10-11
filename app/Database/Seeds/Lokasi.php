@@ -10,26 +10,26 @@ class Lokasi extends Seeder
     {
         $data = [
             [
-                'id' => '434040cd-2994-44ef-b38b-e46d5c27e51c',
-                'code' => 'LOC-0001',
-                'name' => 'Main Factory',
-                'remark' => null,
-                'created_at' => date("Y-m-d H:i:s"),
-                'created_by' => '0092',
-                'updated_at' => date("Y-m-d H:i:s"),
-                'updated_at' => null,
-                'deleted_at' => null
+                "id" => "434040cd-2994-44ef-b38b-e46d5c27e51c",
+                "code" => "LOC-0001",
+                "name" => "Main Factory",
+                "remark" => null,
+                "created_at" => "2025-09-25 03:41:29",
+                "created_by" => "0092",
+                "updated_at" => null,
+                "updated_by" => null,
+                "deleted_at" => null
             ],
             [
-                'id' => 'b31eff01-3a49-465a-9bc6-2f8d3b5cd358',
-                'code' => 'LOC-0002',
-                'name' => 'Warehose',
-                'remark' => null,
-                'created_at' => date("Y-m-d H:i:s"),
-                'created_by' => '0092',
-                'updated_at' => date("Y-m-d H:i:s"),
-                'updated_at' => null,
-                'deleted_at' => null
+                "id" => "b31eff01-3a49-465a-9bc6-2f8d3b5cd358",
+                "code" => "LOC-0002",
+                "name" => "Warehose",
+                "remark" => null,
+                "created_at" => "2025-09-25 03:41:29",
+                "created_by" => "0092",
+                "updated_at" => null,
+                "updated_by" => null,
+                "deleted_at" => null
             ]
         ];
 

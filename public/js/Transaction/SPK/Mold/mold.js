@@ -48,8 +48,9 @@ function loadTable() {
     deferRender: true,
     columnsDefs: [
       {
-        targets: 0,
+        targets: '_all',
         orderable: false,
+        className: "dt-nowrap",
       },
     ],
   });
@@ -227,16 +228,13 @@ dataKonfirmasi.submit.addEventListener("click", (e) => {
       fetchData(
         baseurl + "/mold_spk/confirm",
         "POST",
-        JSON.stringify({
-          token: dataKonfirmasi.token.value,
-          tgl_selesai: dataKonfirmasi.tgl_selesai.value,
-          keterangan: dataKonfirmasi.keterangan.value,
-        })
+        new FormData(formKonfirmasi)
       )
         .then((result) => {
           pesanSukses(result.message);
-          //   window.location.reload();
+          clearModal();
           refreshTable();
+          hideLoading();
         })
         .catch((err) => {
           pesanError(err.message);

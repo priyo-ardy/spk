@@ -20,4 +20,14 @@ class MoldSpkModel extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
+
+    public function getOpenTransaction()
+    {
+        return $this->from('vw_t_spk_mold')
+            ->where('tgl_lapor <=', now())
+            ->where('status_dokumen', '0')
+            ->orWhere('status_dokumen', null)
+            ->get()
+            ->getResult();
+    }
 }
