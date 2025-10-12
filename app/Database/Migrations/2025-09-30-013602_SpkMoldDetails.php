@@ -13,56 +13,76 @@ class SpkMoldDetails extends Migration
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => false,
-                'primary_key' => true
+                'primary_key' => true,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'urut' => [
                 'type' => "INT",
                 'constraint' => 11,
                 'default' => 1,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'id_header' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'nama_file' => [
                 'type' => "VARCHAR",
                 'constraint' => 250,
                 'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'ukuran_file' => [
                 'type' => "DECIMAL",
                 'constraint' => "11,3",
                 'null' => false,
-                'default' => 0
+                'default' => 0,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'deleted_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ]
         ]);
 

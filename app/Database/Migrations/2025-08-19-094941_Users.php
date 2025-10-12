@@ -14,7 +14,7 @@ class Users extends Migration
                 'constraint' => 50,
                 'null' => false,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'user_name' => [
                 'type' => 'VARCHAR',

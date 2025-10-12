@@ -12,104 +12,144 @@ class MoldSPK extends Migration
             'id' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'code' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'dept' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'report_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'report_date' => [
                 'type' => "DATE",
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'material' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'material_name' => [
                 'type' => "VARCHAR",
                 'constraint' => 150,
-                'null' => true
+                'null' => true,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'material_model' => [
                 'type' => "VARCHAR",
                 'constraint' => 150,
-                'null' => true
+                'null' => true,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'mold_no' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'description' => [
                 'type' => "TEXT",
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'defect' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'sub_defect' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'berulang' => [
                 'type' => "VARCHAR",
                 'constraint' => 1,
                 'null' => false,
-                'default' => '0'
+                'default' => '0',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'position' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
-                'null' => false
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'status' => [
                 'type' => "VARCHAR",
                 'constraint' => 1,
                 'null' => false,
-                'default' => 0
+                'default' => 0,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 20,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 20,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'deleted_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
         ]);
 
