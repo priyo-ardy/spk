@@ -4,7 +4,7 @@ namespace App\Database\Seeds;
 
 use CodeIgniter\Database\Seeder;
 
-class TableRestore extends Seeder
+class Restore extends Seeder
 {
     public function run()
     {

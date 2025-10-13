@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class SpkDetails extends Migration
+class Dept extends Migration
 {
     public function up()
     {
@@ -16,33 +16,23 @@ class SpkDetails extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'urut' => [
-                'type' => "INT",
-                'constraint' => 11,
-                'default' => 1,
-                'null' => false,
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci',
-            ],
-            'id_spk' => [
+            'code' => [
                 'type' => "VARCHAR",
-                'constraint' => 50,
+                'constraint' => 20,
                 'null' => false,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'nama_file' => [
+            'name' => [
                 'type' => "VARCHAR",
-                'constraint' => 250,
+                'constraint' => 150,
                 'null' => false,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'ukuran_file' => [
-                'type' => "DECIMAL",
-                'constraint' => "11,3",
-                'null' => false,
-                'default' => 0,
+            'remark' => [
+                'type' => "text",
+                'null' => true,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
@@ -82,17 +72,18 @@ class SpkDetails extends Migration
                 'default' => null,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
-            ]
+            ],
         ]);
 
-        $this->forge->addKey('id', true, true);
-        $this->forge->addUniqueKey('id_spk', 'id_spk');
+        $this->forge->addKey(['id', 'code'], true, true);
+        $this->forge->addUniqueKey('id', 'id');
+        $this->forge->addUniqueKey('code', 'code');
 
-        $this->forge->createTable('t_spk_details');
+        $this->forge->createTable('m_dept');
     }
 
     public function down()
     {
-        $this->forge->dropTable('t_spk_details');
+        $this->forge->dropTable('m_dept');
     }
 }

@@ -39,6 +39,13 @@ COPY . .
 # Install dependency PHP menggunakan Composer
 RUN composer install --no-dev --optimize-autoloader
 
+# Jalankan php spark migrate
+RUN php spark migrate
+
+# jalankan database seeder bernaka Restore.php
+RUN php spark db:seed Restore
+
+
 # Salin file konfigurasi Nginx dan Supervisor
 COPY config/nginx.conf /etc/nginx/sites-available/default
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

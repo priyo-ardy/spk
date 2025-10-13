@@ -59,6 +59,27 @@ class SPK extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
+            'approve_mold' => [
+                'type' => "DATE",
+                'null' => true,
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
+            'approve_planner' => [
+                'type' => "DATE",
+                'null' => true,
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
+            'approve_qa' => [
+                'type' => "DATE",
+                'null' => true,
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
             'material' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
@@ -119,6 +140,14 @@ class SPK extends Migration
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
+            'tipe_equipment' => [
+                'type' => "VARCHAR",
+                'constraint' => 50,
+                'null' => true,
+                'default' => null,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
@@ -203,8 +232,6 @@ class SPK extends Migration
         $this->forge->addKey(['id', 'code'], true, true);
         $this->forge->addUniqueKey('id', 'id');
         $this->forge->addUniqueKey('code', 'code');
-        $this->forge->addUniqueKey('tgl_lapor', 'tgl_lapor');
-        $this->forge->addUniqueKey('material', 'material');
 
         $this->forge->createTable('t_spk');
     }

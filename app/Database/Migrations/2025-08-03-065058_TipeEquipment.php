@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Lokasi extends Migration
+class TipeEquipment extends Migration
 {
     public function up()
     {
@@ -14,34 +14,33 @@ class Lokasi extends Migration
                 'constraint' => 50,
                 'null' => false,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'code' => [
                 'type' => "VARCHAR",
                 'constraint' => 20,
                 'null' => false,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'name' => [
                 'type' => "VARCHAR",
                 'constraint' => 150,
                 'null' => false,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'remark' => [
-                'type' => "text",
-                'null' => true,
+                'type' => "TEXT",
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_by' => [
                 'type' => "VARCHAR",
@@ -49,14 +48,14 @@ class Lokasi extends Migration
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_at' => [
                 'type' => "DATETIME",
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_by' => [
                 'type' => "VARCHAR",
@@ -64,14 +63,14 @@ class Lokasi extends Migration
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'deleted_at' => [
                 'type' => "DATETIME",
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci'
+                'collation' => 'utf8mb4_unicode_ci',
             ],
         ]);
 
@@ -79,11 +78,11 @@ class Lokasi extends Migration
         $this->forge->addUniqueKey('id', 'id');
         $this->forge->addUniqueKey('code', 'code');
 
-        $this->forge->createTable('m_lokasi');
+        $this->forge->createTable('m_tipe_equipment');
     }
 
     public function down()
     {
-        $this->forge->createTable('m_lokasi');
+        $this->forge->dropTable('m_tipe_equipment');
     }
 }

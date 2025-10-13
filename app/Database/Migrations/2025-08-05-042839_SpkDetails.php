@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class RepairReason extends Migration
+class SpkDetails extends Migration
 {
     public function up()
     {
@@ -16,23 +16,33 @@ class RepairReason extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'code' => [
-                'type' => "VARCHAR",
-                'constraint' => 20,
+            'urut' => [
+                'type' => "INT",
+                'constraint' => 11,
+                'default' => 1,
                 'null' => false,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'name' => [
+            'id_spk' => [
                 'type' => "VARCHAR",
-                'constraint' => 150,
+                'constraint' => 50,
                 'null' => false,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'remark' => [
-                'type' => "text",
-                'null' => true,
+            'nama_file' => [
+                'type' => "VARCHAR",
+                'constraint' => 250,
+                'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
+            'ukuran_file' => [
+                'type' => "DECIMAL",
+                'constraint' => "11,3",
+                'null' => false,
+                'default' => 0,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
@@ -72,18 +82,17 @@ class RepairReason extends Migration
                 'default' => null,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
-            ],
+            ]
         ]);
 
-        $this->forge->addKey(['id', 'code'], true, true);
+        $this->forge->addKey('id', true, true);
         $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
-        $this->forge->createTable('m_repair');
+        $this->forge->createTable('t_spk_details');
     }
 
     public function down()
     {
-        $this->forge->createTable('m_repair');
+        $this->forge->dropTable('t_spk_details');
     }
 }
