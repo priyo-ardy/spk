@@ -31,6 +31,8 @@ dataForm.submit.addEventListener("click", (e) => {
         JSON.stringify({ table_name: dataForm.table_name.value })
       )
         .then((result) => {
+          const serverResult = result;
+          console.log(result.data);
           dataForm.data_result.innerHTML = `<pre>${JSON.stringify(result.data, null, 2)}</pre>`;
           console.log(result);
           hideLoading();

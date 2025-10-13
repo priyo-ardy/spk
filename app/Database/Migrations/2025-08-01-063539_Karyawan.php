@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Tonnage extends Migration
+class Karyawan extends Migration
 {
     public function up()
     {
@@ -13,59 +13,71 @@ class Tonnage extends Migration
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
-            'code' => [
+            'NIK' => [
                 'type' => "VARCHAR",
-                'constraint' => 20,
+                'constraint' => 10,
                 'null' => false,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
-            'name' => [
+            'nama' => [
                 'type' => "VARCHAR",
                 'constraint' => 150,
                 'null' => false,
-            ],
-            'remark' => [
-                'type' => "text",
-                'null' => true
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'created_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'updated_by' => [
                 'type' => "VARCHAR",
                 'constraint' => 50,
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
             'deleted_at' => [
                 'type' => "DATETIME",
                 'null' => true,
-                'default' => null
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ],
         ]);
 
-        $this->forge->addKey(['id', 'code'], true, true);
+        $this->forge->addKey(['id', 'NIK'], true, true);
         $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
+        $this->forge->addUniqueKey('NIK', 'NIK');
 
-        $this->forge->createTable('m_tonnage');
+        $this->forge->createTable('m_karyawan');
     }
 
     public function down()
     {
-        $this->forge->dropTable('m_tonnage');
+        $this->forge->dropTable('m_karyawan');
     }
 }
