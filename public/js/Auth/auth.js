@@ -1,13 +1,17 @@
 const protocol = window.location.protocol;
 const hostname = window.location.hostname;
 const port = window.location.port;
-const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}`;
+const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}/spk`;
+
+console.log(baseurl);
+
 const formAuth = document.getElementById("formAuth");
 const buttons = {
   auth: document.getElementById("btnAuth"),
   cancel: document.getElementById("btnCancel"),
   reset: document.getElementById("btnReset"),
 };
+
 const dataForm = {
   user_name: document.getElementById("username"),
   user_password: document.getElementById("password"),

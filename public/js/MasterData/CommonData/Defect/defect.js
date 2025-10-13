@@ -103,6 +103,7 @@ function getData(token) {
     fetchData(baseurl + "/defect/get", "POST", JSON.stringify({ token: token }))
       .then((result) => {
         dataForm.token.value = result.data.token;
+        dataForm.kategori.value = result.data.kategori;
         dataForm.code.value = result.data.code;
         dataForm.kategori.value = result.data.kategori;
         dataForm.name.value = result.data.name;
@@ -111,6 +112,10 @@ function getData(token) {
         buttons.update.removeAttribute("hidden");
 
         $(dataForm.kategori).trigger("change");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d40778d1dc61d4d743cc9c35970096bc94207f8
         hideLoading();
       })
       .catch((err) => {
