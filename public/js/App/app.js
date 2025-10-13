@@ -1,7 +1,7 @@
 const protocol = window.location.protocol;
 const hostname = window.location.hostname;
 const port = window.location.port;
-const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}`;
+const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}/spk`;
 
 const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
 const Default = {
