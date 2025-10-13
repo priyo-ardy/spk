@@ -72,6 +72,15 @@
                             <button type="button" id="btnPrint" <?= ($header->dokumen_status !== '5') ? 'hidden' : '' ?> class="btn shadow-none rounded-0 btn-light border-0" title="Print">
                                 <i class="bi bi-printer"></i>&ensp;Print
                             </button>
+                            <div class="btn-group" role="group" <?= ($header->dokumen_status !== '2') ? 'hidden' : '' ?>>
+                                <button type="button" id="btnAction" class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Action">
+                                    Action
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                    <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                </ul>
+                            </div>
                             <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" title="Previous Data">
                                 <i class="bi bi-chevron-double-left"></i>&ensp;Prev
                             </button>
