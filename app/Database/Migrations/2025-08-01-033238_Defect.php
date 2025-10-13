@@ -89,7 +89,12 @@ class Defect extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
+
         $this->forge->createTable('m_defect');
+
+        # tambahkan index pada kolom id dan code
+        $this->db->query('ALTER TABLE m_defect ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_defect ADD INDEX (code)');
     }
 
     public function down()

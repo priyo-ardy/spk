@@ -124,3 +124,8 @@ _modules/*
 
 /results/
 /phpunit*.xml
+
+# Hindari git push push untuk direktori public/uploads/spk
+#-------------------------
+public/uploads/spk/*
+#-------------------------

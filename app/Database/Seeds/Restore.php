@@ -9,11 +9,9 @@ class Restore extends Seeder
     public function run()
     {
         $this->call('Users');
-        $this->call('Satuan');
         $this->call('Workshop');
         $this->call('Tonnage');
         $this->call('EquipmentType');
-        $this->call('Satuan');
         $this->call('MaterialCategory');
         $this->call('MaterialList');
         $this->call('Defect');
@@ -25,5 +23,6 @@ class Restore extends Seeder
         $this->call('Lokasi');
         $this->call('Machine');
         $this->call('RepairReason');
+        $this->call('Satuan');
     }
 }

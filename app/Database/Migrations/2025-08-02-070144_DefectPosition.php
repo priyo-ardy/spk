@@ -84,9 +84,11 @@ class DefectPosition extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
+
         $this->forge->createTable('m_posisi_defect');
+
+        $this->db->query('ALTER TABLE m_posisi_defect ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_posisi_defect ADD INDEX (code)');
     }
 
     public function down()

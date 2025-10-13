@@ -76,10 +76,11 @@ class Tonnage extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
         $this->forge->createTable('m_tonnage');
+
+        $this->db->query('ALTER TABLE m_tonnage ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_tonnage ADD INDEX (code)');
     }
 
     public function down()

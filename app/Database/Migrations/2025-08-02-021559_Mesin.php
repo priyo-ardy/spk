@@ -49,7 +49,7 @@ class Mesin extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'spesification' => [
+            'model' => [
                 'type' => "TEXT",
                 'null' => true,
                 'charset' => 'utf8mb4',
@@ -136,10 +136,11 @@ class Mesin extends Migration
         ]);
 
         $this->forge->addKey('id', true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
         $this->forge->createTable('m_mesin');
+
+        $this->db->query('ALTER TABLE m_mesin ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_mesin ADD INDEX (code)');
     }
 
     /**
