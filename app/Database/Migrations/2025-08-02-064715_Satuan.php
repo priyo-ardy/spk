@@ -90,10 +90,12 @@ class Satuan extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
         $this->forge->createTable('m_satuan');
+
+        $this->db->query('ALTER TABLE m_satuan ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_satuan ADD INDEX (code)');
+        $this->db->query('ALTER TABLE m_satuan ADD INDEX (simbol)');
     }
 
     public function down()

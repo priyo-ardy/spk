@@ -76,10 +76,12 @@ class Dept extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
         $this->forge->createTable('m_dept');
+
+        # tambahkan index pada kolom id dan code
+        $this->db->query('ALTER TABLE m_dept ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_dept ADD INDEX (code)');
     }
 
     public function down()

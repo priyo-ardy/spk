@@ -119,7 +119,11 @@ class Users extends Migration
         ]);
 
         $this->forge->addKey(['user_id', 'user_name', 'user_phone', 'user_email'], true, true);
+
         $this->forge->createTable('user_auth');
+
+        $this->db->query('ALTER TABLE user_auth ADD INDEX (user_id)');
+        $this->db->query('ALTER TABLE user_auth ADD INDEX (user_name)');
     }
 
     public function down()

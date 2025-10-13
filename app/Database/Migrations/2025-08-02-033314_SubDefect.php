@@ -90,6 +90,10 @@ class SubDefect extends Migration
 
         $this->forge->addKey(['id', 'code'], true);
         $this->forge->createTable('m_sub_defect');
+
+        $this->db->query('ALTER TABLE m_sub_defect ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_sub_defect ADD INDEX (code)');
+        $this->db->query('ALTER TABLE m_sub_defect ADD INDEX (defect)');
     }
 
     public function down()

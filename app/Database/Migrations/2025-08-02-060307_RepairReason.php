@@ -76,10 +76,11 @@ class RepairReason extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('code', 'code');
 
         $this->forge->createTable('m_repair');
+
+        $this->db->query('ALTER TABLE m_repair ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_repair ADD INDEX (code)');
     }
 
     public function down()

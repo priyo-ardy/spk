@@ -30,6 +30,12 @@ class Leader extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
+            'remark' => [
+                'type' => 'TEXT',
+                'null' => true,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
             'created_at' => [
                 'type' => "DATETIME",
                 'null' => true,
@@ -70,10 +76,11 @@ class Leader extends Migration
         ]);
 
         $this->forge->addKey(['id', 'NIK'], true, true);
-        $this->forge->addUniqueKey('id', 'id');
-        $this->forge->addUniqueKey('NIK', 'NIK');
 
         $this->forge->createTable('m_leader');
+
+        $this->db->query('ALTER TABLE m_leader ADD INDEX (id)');
+        $this->db->query('ALTER TABLE m_leader ADD INDEX (NIK)');
     }
 
     public function down()
