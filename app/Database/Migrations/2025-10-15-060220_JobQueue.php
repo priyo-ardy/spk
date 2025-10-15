@@ -43,6 +43,12 @@ class JobQueue extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
+            'reason' => [
+                'type' => 'TEXT',
+                'null' => true,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
