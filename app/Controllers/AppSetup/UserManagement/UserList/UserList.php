@@ -429,7 +429,7 @@ class UserList extends BaseController
                 'user_name' => $user_name,
                 'full_name' => ucwords($full_name),
                 'user_phone' => enkripsi($user_phone),
-                'phone_hash' => $phone_hash,
+                'phone_hash' => phone_hash($user_phone),
                 'user_email' => enkripsi($user_email),
                 'email_hash' => $email_hash,
                 'user_password' => $password_hash,

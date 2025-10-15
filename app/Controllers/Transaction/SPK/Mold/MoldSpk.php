@@ -152,11 +152,11 @@ class MoldSpk extends BaseController
             $token = $json_data['token'];
             $id_spk = dekripsi($token);
 
-            $get_data = $this->spkModel->where('id', $id_spk)->first();
+            $get_data = $this->spkModel->where('id', $id_spk)->where('kategori', '1')->where('dokumen_status', '2')->first();
             if (!$get_data) {
                 log_action($this->module, $aksi, "error", current_url(), "SPK not found");
                 throw new \Exception("SPK not found");
-                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found or SPK not approved yet");
             }
 
             $data = [

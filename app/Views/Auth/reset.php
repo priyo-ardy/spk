@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.:: User Authentication ::.</title>
+    <title>.:: Change Password ::.</title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url('image/favicon.ico') ?>" type="image/x-icon">
     <link rel="icon" href="<?= base_url('image/favicon.ico') ?>" type="image/png" sizes="32x32">
@@ -25,22 +25,34 @@
             <div class="logo-line"></div>
         </div>
 
-        <form id="formAuth">
+        <form id="formReset">
             <div class="mb-3">
-                <input type="text" class="form-control" name="username" id="username" placeholder="User name" autofocus autocomplete="off">
-                <div class="invalid-feedback">Username is required</div>
+                <p>
+                    Please enter your new password
+                </p>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
-                <div class="invalid-feedback">Password is required</div>
+                <input type="text" name="data_token" id="data_token" class="form-control" hidden readonly value="<?= $token ?>">
+                <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" autofocus autocomplete="off">
+                <div class="invalid-feedback"></div>
             </div>
-            <div class="mb-3 text-danger text-center col-12" id="pesanLogin"></div>
-
             <div class="forgot-password">
-                <a href="<?= base_url('forgot-password') ?>">Forgot password?</a>
+                <a href="<?= base_url() ?>"><i class="bi bi-arrow-left"></i>&ensp;Back to login page</a>
             </div>
 
-            <button type="button" id="btnAuth" class="btn btn-login"><i class="bi bi-box-arrow-in-right"></i>&ensp;Log in</button>
+            <div class="mb-3 text-danger text-center col-12" id="pesanLogin"></div>
+            <div class="mb-3">
+                <p>The new password must meet the following requirements:</p>
+                <ul class="text-gray">
+                    <li id="pswd_length">Must be at least 8 characters long</li>
+                    <li id="pswd_upper">Must contain at least one uppercase letter</li>
+                    <li id="pswd_lower">Must contain at least one lowercase letter</li>
+                    <li id="pswd_number">Must contain at least one number</li>
+                    <li id="pswd_special">Must contain at least and one special character</li>
+                </ul>
+            </div>
+
+            <button type="button" id="btnReset" class="btn btn-login">Change Password</button>
         </form>
 
         <div class="login-footer">
@@ -54,7 +66,8 @@
     <!-- Sweetalert2 plugins -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Authjavascript -->
-    <script src="<?= base_url() . 'js/Auth/auth.js' ?>"></script>
+    <script src="<?= base_url() . 'js/Auth/reset.js' ?>"></script>
+    <script src="<?= base_url() . 'js/App/fetching.js' ?>"></script>
 </body>
 
 </html>

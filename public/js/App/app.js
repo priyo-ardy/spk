@@ -1,7 +1,7 @@
 const protocol = window.location.protocol;
 const hostname = window.location.hostname;
 const port = window.location.port;
-const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}/spk`;
+const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}`;
 
 const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
 const Default = {
@@ -151,7 +151,7 @@ function hapusData(url, token) {
           fetchData(baseurl + url, "POST", JSON.stringify({ token: token }))
             .then((result) => {
               pesanSukses(result.message);
-              if (typeof refreshTable === 'function') {
+              if (typeof refreshTable === "function") {
                 // Jika fungsi ada, panggil
                 refreshTable();
               } else {

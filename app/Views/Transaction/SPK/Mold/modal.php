@@ -12,7 +12,7 @@
                             <input type="text" name="konfirmasi_token" id="konfirmasi_token" class="form-control rounded-0" hidden readonly>
                         </div>
                         <div class="form-group col-12 mb-3">
-                            <label class="form-label">Plan Finish Date <strong class="text-danger">*</strong></label>
+                            <label class="form-label">Reported Date <strong class="text-danger">*</strong></label>
                             <input type="date" name="tgl_lapor" id="tgl_lapor" readonly class="form-control bg-body-secondary rounded-0" required>
                             <div class="invalid-feedback"></div>
                         </div>

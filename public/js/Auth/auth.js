@@ -1,9 +1,7 @@
 const protocol = window.location.protocol;
 const hostname = window.location.hostname;
 const port = window.location.port;
-const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}/spk`;
-
-console.log(baseurl);
+const baseurl = `${protocol}//${hostname}${port ? ":" + port : ""}`;
 
 const formAuth = document.getElementById("formAuth");
 const buttons = {

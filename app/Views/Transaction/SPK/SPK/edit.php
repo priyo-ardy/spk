@@ -73,12 +73,16 @@
                                 <i class="bi bi-printer"></i>&ensp;Print
                             </button>
                             <div class="btn-group" role="group" <?= ($header->dokumen_status !== '2') ? 'hidden' : '' ?>>
-                                <button type="button" id="btnAction" class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Action">
+                                <button type="button" id="btnAction" class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                                    <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="moldConfirm('<?= enkripsi($header->id) ?>')">1. Mold Engineer Confirmation</a></li>
+                                    <li><a class="dropdown-item" href="#">2. ME Confirmation</a></li>
+                                    <li><a class="dropdown-item" href="#">3. Planner Confirmation</a></li>
+                                    <li><a class="dropdown-item" href="#">4. Mold Engineer Completion</a></li>
+                                    <li><a class="dropdown-item" href="#">5. ME Completion</a></li>
+                                    <li><a class="dropdown-item" href="#">6. Quality Confirmation</a></li>
                                 </ul>
                             </div>
                             <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" title="Previous Data">
@@ -287,4 +291,5 @@
         </div>
     </div>
 </main>
+<?= $this->include('Transaction/SPK/Mold/modal') ?>
 <?= $this->endSection(); ?>

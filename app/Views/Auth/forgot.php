@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.:: User Authentication ::.</title>
+    <title>.:: Forgot Password ::.</title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url('image/favicon.ico') ?>" type="image/x-icon">
     <link rel="icon" href="<?= base_url('image/favicon.ico') ?>" type="image/png" sizes="32x32">
@@ -25,22 +25,25 @@
             <div class="logo-line"></div>
         </div>
 
-        <form id="formAuth">
+        <form id="formReset">
             <div class="mb-3">
-                <input type="text" class="form-control" name="username" id="username" placeholder="User name" autofocus autocomplete="off">
-                <div class="invalid-feedback">Username is required</div>
+                <p>
+                    Please enter your email address to receive a password reset link.
+                </p>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
-                <div class="invalid-feedback">Password is required</div>
+                <input type="text" name="data_token" id="data_token" class="form-control" hidden>
+                <input type="text" class="form-control" name="user_email" id="user_email" placeholder="Email address" autofocus autocomplete="off">
+                <div class="invalid-feedback"></div>
             </div>
+
             <div class="mb-3 text-danger text-center col-12" id="pesanLogin"></div>
 
             <div class="forgot-password">
-                <a href="<?= base_url('forgot-password') ?>">Forgot password?</a>
+                <a href="<?= base_url() ?>"><i class="bi bi-arrow-left"></i>&ensp;Back to login</a>
             </div>
 
-            <button type="button" id="btnAuth" class="btn btn-login"><i class="bi bi-box-arrow-in-right"></i>&ensp;Log in</button>
+            <button type="button" id="btnReset" class="btn btn-login"><i class="bi bi-box-arrow-in-right"></i>&ensp;Reset Password</button>
         </form>
 
         <div class="login-footer">
@@ -54,7 +57,8 @@
     <!-- Sweetalert2 plugins -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Authjavascript -->
-    <script src="<?= base_url() . 'js/Auth/auth.js' ?>"></script>
+    <script src="<?= base_url() . 'js/Auth/forgot.js' ?>"></script>
+    <script src="<?= base_url() . 'js/App/fetching.js' ?>"></script>
 </body>
 
 </html>

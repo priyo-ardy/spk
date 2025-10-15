@@ -12,6 +12,9 @@ window.onload = () => {
 };
 
 const formData = document.getElementById("formData");
+const formKonfirmasi = document.getElementById("formKonfirmasi");
+const btnMoldConfirm = formKonfirmasi.querySelector("#btnConfirm");
+
 const buttons = {
   back: document.getElementById("btnBack"),
   save: document.getElementById("btnSave"),
@@ -427,3 +430,67 @@ buttons.next.addEventListener("click", (e) => {
     hideLoading();
   }
 });
+
+function moldConfirm(token) {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/mold_spk/get_data",
+      "POST",
+      JSON.stringify({ token: token })
+    )
+      .then((result) => {
+        const konfirmasi_token =
+          formKonfirmasi.querySelector("#konfirmasi_token");
+        const tgl_lapor = formKonfirmasi.querySelector("#tgl_lapor");
+        tgl_lapor.value = result.data.tgl_lapor;
+        konfirmasi_token.value = token;
+        $("#modalConfirm").modal("show");
+        hideLoading();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+}
+
+btnMoldConfirm.addEventListener("click", (e) => {
+  const plan_selesai = formKonfirmasi.querySelector("#plan_finish_date");
+  const tgl_lapor = formKonfirmasi.querySelector("#tgl_lapor");
+  if (plan_selesai.value == "" || plan_selesai.value < tgl_lapor.value) {
+    plan_selesai.classList.add("is-invalid");
+    plan_selesai.parentElement.querySelector(".invalid-feedback").textContent =
+      "Tanggal selesai harus lebih besar dari tanggal lapor";
+  } else {
+    try {
+      loading();
+      fetchData(
+        baseurl + "/mold_spk/confirm",
+        "POST",
+        new FormData(formKonfirmasi)
+      )
+        .then((result) => {
+          pesanSukses(result.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch((err) => {
+          pesanError(err.message);
+          hideLoading();
+        });
+    } catch (e) {
+      pesanError(e.message);
+      hideLoading();
+    }
+  }
+});
+
+function clearModalMoldConfirm() {
+  formKonfirmasi.reset();
+  $("#modalConfirm").modal("hide");
+}

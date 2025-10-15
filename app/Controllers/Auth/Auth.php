@@ -6,9 +6,19 @@ use App\Controllers\BaseController;
 use App\Models\Auth\AuthModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use App\Services\EmailQueueService;
 
 class Auth extends BaseController
 {
+    protected $authModel;
+    protected $kirimEmail;
+
+    public function __construct()
+    {
+        $this->authModel = new AuthModel();
+        $this->kirimEmail = new EmailQueueService();
+    }
+
     public function index()
     {
         return view('Auth/index');
@@ -125,5 +135,143 @@ class Auth extends BaseController
     {
         session()->destroy();
         return redirect()->to(base_url());
+    }
+
+    function forgotPassword()
+    {
+        return view('Auth/forgot');
+    }
+
+    function resetPassword()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            log_action('Auth', 'reset', 'error', current_url(), "Request method not allowed");
+        }
+
+        $rules = [
+            'user_email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => "Email is required",
+                    'valid_email' => "Email is not valid"
+                ]
+            ]
+        ];
+
+        $validasi = Services::validation();
+        $validasi->setRules($rules);
+
+        if (!$validasi->withRequest($this->request)->run()) {
+            $error_message = implode("<br>", $validasi->getErrors());
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed $error_message");
+        }
+
+        $email = $this->request->getPost('user_email');
+        $encrypt_email = email_hash($email);
+        $get_user_data = $this->authModel->where('email_hash ', $encrypt_email)->first();
+
+        if (!$get_user_data) {
+            return pesan(ResponseInterface::HTTP_NOT_FOUND, "User not found");
+        }
+
+        $token = enkripsi($get_user_data->user_id);
+        $name = $get_user_data->full_name;
+        $email_address = dekripsi($get_user_data->user_email);
+
+        $emailQueue = new EmailQueueService();
+
+        $data = [
+            'token' => $token,
+            'name' => $name,
+            'date' => date('Y-m-d H:i:s'),
+        ];
+
+        $toEmail = $email_address;
+        $subject = "Password Recovery";
+        $body = view('Auth/reset_password', $data);
+
+        $emailQueue->queueEmail($toEmail, $subject, $body);
+
+        return pesan(ResponseInterface::HTTP_OK, "Email sent successfully, please check your inbox or spam folder for the link.");
+    }
+
+    function recoverPassword($token)
+    {
+        return view('Auth/reset', ['token' => $token]);
+    }
+
+    function changePassword()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Request method not allowed");
+        }
+
+        try {
+            $password = $this->request->getPost('new_password');
+            $token = $this->request->getPost('data_token');
+            $user_id = dekripsi($token);
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+            $rules = [
+                'data_token' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Token is required"
+                    ]
+                ],
+                'new_password' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => "Password is required"
+                    ]
+                ]
+            ];
+
+            $validasi = Services::validation();
+            $validasi->setRules($rules);
+
+            if (!$validasi->withRequest($this->request)->run()) {
+                $error_message = implode("<br>", $validasi->getErrors());
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Validation failed $error_message");
+            }
+
+            #make validation rules for new password, the minimum password length is 8 characters, must have at least one uppercase, one number, one lowercase, and one special character
+            $pswd = $this->request->getPost('new_password');
+            $pswd_length = strlen($pswd);
+            $pswd_upper = preg_match('@[A-Z]@', $pswd);
+            $pswd_lower = preg_match('@[a-z]@', $pswd);
+            $pswd_number = preg_match('@[0-9]@', $pswd);
+            $pswd_special = preg_match('@[^\w]@', $pswd);
+
+            if ($pswd_length < 8) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Password must be at least 8 characters long");
+            }
+
+            if (!$pswd_upper) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Password must contain at least one uppercase letter");
+            }
+
+            if (!$pswd_lower) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Password must contain at least one lowercase letter");
+            }
+
+            if (!$pswd_number) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Password must contain at least one number");
+            }
+
+            if (!$pswd_special) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Password must contain at least and one special character");
+            }
+
+            $update = $this->authModel->update($user_id, ['user_password' => $password_hash]);
+            if (!$update) {
+                throw new \Exception("Failed to update password");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Password updated successfully");
+        } catch (\Exception $e) {
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured " . $e->getMessage());
+            log_message('error', "Unexpected error occured " . $e->getMessage());
+        }
     }
 }
