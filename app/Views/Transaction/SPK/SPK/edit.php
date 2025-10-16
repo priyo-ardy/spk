@@ -39,6 +39,23 @@
         </div>
     </div>
 
+    <!-- <div class="app-content-top-area">
+        <!--begin::Container
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div>App Content Top Area</div>
+            </div>
+            <div class="col-md-6 text-end">
+                <button type="submit" class="btn btn-primary" name="save" value="create">
+                    Create Admin
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--end::Container
+    </div> -->
+
     <div class="app-content">
         <div class="container-fluid">
             <form id="formData">
@@ -79,7 +96,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#" onclick="moldConfirm('<?= enkripsi($header->id) ?>')">1. Mold Engineer Confirmation</a></li>
                                     <li><a class="dropdown-item" href="#">2. ME Confirmation</a></li>
-                                    <li><a class="dropdown-item" href="#">3. Planner Confirmation</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="plannerConfirm('<?= enkripsi($header->id) ?>')">3. Planner Confirmation</a></li>
                                     <li><a class="dropdown-item" href="#">4. Mold Engineer Completion</a></li>
                                     <li><a class="dropdown-item" href="#">5. ME Completion</a></li>
                                     <li><a class="dropdown-item" href="#">6. Quality Confirmation</a></li>
@@ -99,11 +116,11 @@
                         <div class="card rounded-0">
                             <div class="card-body">
                                 <div class="row g-2 mb-3">
-                                    <div class="form-group col-9 clearfix">
+                                    <div class="form-group col-9 col-md-7 clearfix">
                                         <label class="form-label">Document No.</label>
                                         <input type="text" name="data_code" id="data_code" class="form-control rounded-0 bg-body-secondary text-primary fw-bolder" readonly value="<?= $code ?>">
                                     </div>
-                                    <div class="form-group col-3 clearfix">
+                                    <div class="form-group col-3 col-md-5 clearfix">
                                         <label class="form-label">Document Status</label>
                                         <input type="text" name="data_status" id="data_status" class="form-control rounded-0 bg-body-secondary text-primary fw-bolder" readonly value="<?= $nama_status ?>">
                                         <input type="hidden" name="status" id="status" class="form-control rounded-0 bg-body-secondary text-primary fw-bolder" readonly value="<?= $status ?>">
@@ -287,9 +304,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-12 clearfix">
+                        <div class="card rounded-0">
+                            <div class="card-header rounded-0">
+                                <h5 class="card-title"><i class="bi bi-clock-history"></i>&ensp;Transaction Flow</h5>
+                            </div>
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 </main>
 <?= $this->include('Transaction/SPK/Mold/modal') ?>
+<?= $this->include('Transaction/SPK/Planner/modal') ?>
 <?= $this->endSection(); ?>

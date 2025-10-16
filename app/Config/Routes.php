@@ -50,6 +50,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->group('/planer', static function ($routes) {
         $routes->get('', 'Transaction\SPK\Planner\PlannerSPK::index');
         $routes->post('table', 'Transaction\SPK\Planner\PlannerSPK::loadTable');
+        $routes->post('get_data', 'Transaction\SPK\Planner\PlannerSPK::getData');
     });
 
     // Transaction -> SPK -> General

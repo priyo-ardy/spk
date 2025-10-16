@@ -13,6 +13,7 @@ window.onload = () => {
 
 const formData = document.getElementById("formData");
 const formKonfirmasi = document.getElementById("formKonfirmasi");
+const formKonfirmasiPlanner = document.getElementById("modalPlannerConfirm");
 const btnMoldConfirm = formKonfirmasi.querySelector("#btnConfirm");
 
 const buttons = {
@@ -50,6 +51,15 @@ const dataForm = {
   img_preview: document.getElementById("img_preview"),
   keterangan: document.getElementById("data_keterangan"),
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  $(".select2bs5").select2({
+    dropdownParent: $("#modalPlannerConfirm"),
+    theme: "bootstrap-5",
+    dropdownCssClass: "rounded-0",
+    selectionCssClass: "rounded-0",
+  });
+});
 
 buttons.back.addEventListener("click", (e) => {
   loading();
@@ -493,4 +503,33 @@ btnMoldConfirm.addEventListener("click", (e) => {
 function clearModalMoldConfirm() {
   formKonfirmasi.reset();
   $("#modalConfirm").modal("hide");
+}
+
+function plannerConfirm(token) {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/planer/get_data",
+      "POST",
+      JSON.stringify({ token: token })
+    )
+      .then((result) => {
+        formKonfirmasiPlanner.parentElement.querySelector(
+          "#konfirmasi_token"
+        ).value = token;
+        formKonfirmasiPlanner.parentElement.querySelector("#tgl_lapor").value =
+          result.data.tgl_lapor;
+
+        hideLoading();
+        $("#modalPlannerConfirm").modal("show");
+        console.log(result.data);
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
 }

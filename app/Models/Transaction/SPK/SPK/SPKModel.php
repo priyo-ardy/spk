@@ -58,4 +58,13 @@ class SPKModel extends Model
             ->limit(1)
             ->first();
     }
+
+    public function getPlannerSpk($id)
+    {
+        return $this->db
+            ->table('vw_t_spk_planer')
+            ->where('id', $id)
+            ->get()
+            ->getRow();
+    }
 }

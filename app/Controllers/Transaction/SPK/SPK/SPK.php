@@ -20,8 +20,10 @@ use App\Models\MasterData\CommonData\SubDefect\SubDefectModel;
 use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
 use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
+use CodeIgniter\HTTP\Response;
 use Config\Services;
 use Config\Database;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\Beta;
 
 use function PHPSTORM_META\map;
 
@@ -479,6 +481,31 @@ class SPK extends BaseController
                 $nama_status = "Close";
                 break;
         }
+
+        switch ($data_header->flow_status) {
+            case 0:
+                $nama_flow_status = "Un-Confirmed";
+                break;
+            case 1:
+                $nama_flow_status = "Confirmed by Mold Engineer";
+                break;
+            case 2:
+                $nama_flow_status = "Confirmed by Planner";
+                break;
+            case 3:
+                $nama_flow_status = "Confirmed by ME";
+                break;
+            case 4:
+                $nama_flow_status = "Finished by Mold Engineer";
+                break;
+            case 5:
+                $nama_flow_status = "Finished by ME";
+                break;
+            case 6:
+                $nama_flow_status = "Confirmed by Quality";
+                break;
+        }
+
         $defect = $this->defectModel->where('kategori', $data_header->kategori)->findAll();
         $sub_defect = $this->subDefectModel->getListByDefect($data_header->defect);
 
@@ -494,7 +521,8 @@ class SPK extends BaseController
             'defect_list' => $defect,
             'sub_defect' => $sub_defect,
             'status' => $data_header->dokumen_status,
-            'nama_status' => $nama_status,
+            'nama_status' => $nama_status . "&ensp;(" . $nama_flow_status . ")",
+            'nama_flow_status' => $nama_flow_status,
             'material_list' => $lists_material,
             'location_list' => $this->lokasiModel->generateList(),
             'dept_list' => $this->deptModel->generateList(),
@@ -535,7 +563,6 @@ class SPK extends BaseController
             $defect = trim($this->request->getPost('data_defect'));
             $sub_defect = trim($this->request->getPost('data_sub_defect'));
             $berulang = trim($this->request->getPost('data_berulang'));
-            //$posisi = trim($this->request->getPost('data_posisi'));
             $repair = trim($this->request->getPost('data_repair'));
             $images = $this->request->getFileMultiple('data_image');
             $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
@@ -612,12 +639,6 @@ class SPK extends BaseController
                         'required' => "Repeat problem is required"
                     ]
                 ],
-                //'data_posisi' => [
-                //    'rules' => 'required',
-                //    'errors' => [
-                //        'required' => 'Problem position is required'
-                //    ]
-                //],
                 'data_repair' => [
                     'rules' => 'required',
                     'errors' => [
@@ -689,7 +710,6 @@ class SPK extends BaseController
                 'defect' => $defect,
                 'sub_defect' => $sub_defect,
                 'berulang' => $berulang,
-                'posisi' => $posisi,
                 'tipe_equipment' => $tipe_equipment,
                 'alasan_repair' => $repair,
                 'deskripsi' => $keterangan,
@@ -1003,6 +1023,11 @@ class SPK extends BaseController
                 'dokumen_status' => '3',
                 'updated_by' => $this->NIK
             ];
+
+            $get_data = $this->spkModel->where('id', $id_spk)->first();
+            if ($get_data->flow_status !== '0') {
+                return pesan(ResponseInterface::HTTP_FOUND, "Failed to un-approve SPK data, the SPK data already processed");
+            }
 
             $update = $this->spkModel->update($id_spk, $data);
             if (!$update) {

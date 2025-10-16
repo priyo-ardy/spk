@@ -159,6 +159,10 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found or SPK not approved yet");
             }
 
+            if ($get_data->flow_status == '1') {
+                return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirmed by mold engineer");
+            }
+
             $data = [
                 'code' => $get_data->code,
                 'tgl_lapor' => $get_data->tgl_lapor,
@@ -329,7 +333,15 @@ class MoldSpk extends BaseController
 
             $insert = $this->moldModel->insert($data);
             if ($insert) {
-                $this->spkModel->update($id_spk, ['flow_status ' => '1']);
+                $update_spk = $this->spkModel->update($id_spk, ['flow_status ' => '1']);
+                if (!$update_spk) {
+                    log_message('error', 'Confirmation error: Update SPK flow status failed ' . $this->spkModel->errors()['message']);
+                    log_action($this->module, $aksi, "error", current_url(), "Update SPK flow status failed " . $this->spkModel->errors()['message'], '', json_encode([
+                        'data' => $this->spkModel->errors()
+                    ]));
+                    return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Update SPK flow status failed " . $this->spkModel->errors()['message']);
+                }
+
                 log_message('info', 'Confirmation success');
                 log_action($this->module, $aksi, "success", current_url(), "Confirmation success    ");
                 return pesan(ResponseInterface::HTTP_OK, "Confirmation success");
