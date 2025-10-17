@@ -51,3 +51,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="moldSelesai" tabindex="-1" role="dialog" aria-labelledby="moldSelesai" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="formMoldSelesai">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation of Mold Repair Completion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3 clearfix">
+                        <label class="form-label" for="plan_finish">Plan Finish Date <strong class="text-danger">*</strong></label>
+                        <input type="date" name="plan_finish" id="id_tanggal" class="form-control rounded-0" value="<?= date("Y-m-d") ?>" required>
+                    </div>
+                    <div class="form-group mb-3 clearfix">
+                        <label class="form-label" for="required_finish">Required Finish Date <strong class="text-danger">*</strong></label>
+                        <input type="date" name="required_finish" id="id_tanggal" class="form-control rounded-0" value="<?= date("Y-m-d") ?>" required>
+                    </div>
+                    <div class="form-group mb-3 clearfix">
+                        <label class="form-label" for="actual_finish">Actual Finish Date <strong class="text-danger">*</strong></label>
+                        <input type="date" name="actual_finish" id="id_tanggal" class="form-control rounded-0" value="<?= date("Y-m-d") ?>" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary rounded-0" id="btnCancel" data-dismiss=" modal"><i class="bi bi-x-circle"></i>&ensp;Cancel</button>
+                    <button type="button" class="btn btn-primary rounded-0" id="btnConfirm"><i class="bi bi-send"></i>&ensp;Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
