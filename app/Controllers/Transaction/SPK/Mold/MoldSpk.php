@@ -333,7 +333,7 @@ class MoldSpk extends BaseController
 
             $insert = $this->moldModel->insert($data);
             if ($insert) {
-                $update_spk = $this->spkModel->update($id_spk, ['flow_status ' => '1']);
+                $update_spk = $this->spkModel->update($id_spk, ['mold_confirm' => date("Y-m-d H:i:s"), 'flow_status ' => '1']);
                 if (!$update_spk) {
                     log_message('error', 'Confirmation error: Update SPK flow status failed ' . $this->spkModel->errors()['message']);
                     log_action($this->module, $aksi, "error", current_url(), "Update SPK flow status failed " . $this->spkModel->errors()['message'], '', json_encode([

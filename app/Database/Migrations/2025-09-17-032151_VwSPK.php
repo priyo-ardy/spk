@@ -29,9 +29,10 @@ class VwSPK extends Migration
                 D.NIK,
                 D.nama as nama_karyawan,
                 A.tgl_lapor,
-                A.approve_mold,
-                A.approve_planner,
-                A.approve_qa,
+                A.mold_confirm,
+                A.planner_confirm,
+                A.mold_finish,
+                A.quality_confirm,
                 A.material,
                 CASE
                     WHEN A.kategori = '1' THEN E_material.code
@@ -58,8 +59,13 @@ class VwSPK extends Migration
                     WHEN A.berulang = '0' THEN 'No'
                     WHEN A.berulang = '1' THEN 'Yes'
                 END AS nama_berulang,
-                A.posisi,
-                I.name AS nama_posisi,
+                A.prioritas,
+                CASE
+                    WHEN A.prioritas = '0' THEN 'Low'
+                    WHEN A.prioritas = '1' THEN 'Normal'
+                    WHEN A.prioritas = '2' THEN 'Urgent'
+                    WHEN A.prioritas = '3' THEN 'Critical'
+                END AS nama_prioritas,
                 A.tipe_equipment,
                 CASE
                     WHEN A.tipe_equipment = '1' THEN 'Machine Equipment'
@@ -74,25 +80,32 @@ class VwSPK extends Migration
                 A.deskripsi,
                 CASE
                     WHEN A.dokumen_status = '0' THEN 'Created'
-                    WHEN A.dokumen_status = '1' THEN 'Waiting Approval'
+                    WHEN A.dokumen_status = '1' THEN 'Submitted'
                     WHEN A.dokumen_status = '2' THEN 'Approve'
-                    WHEN A.dokumen_status = '3' THEN 'Re-Approving'
-                    WHEN A.dokumen_status = '4' THEN 'Hold'
-                    WHEN A.dokumen_status = '5' THEN 'Reject'
-                    WHEN A.dokumen_status = '6' THEN 'Close'
-                    WHEN A.dokumen_status = '7' THEN 'Mold Engineer Confirmation'
-                    WHEN A.dokumen_status = '8' THEN 'Mold Engineer Close'
-                    WHEN A.dokumen_status = '9' THEN 'ME Confirmation'
-                    WHEN A.dokumen_status = '10' THEN 'Me Close'
-                    WHEN A.dokumen_status = '11' THEN 'Planner Confirmation'
-                    WHEN A.dokumen_status = '12' THEN 'Quality Confirmation'
+                    WHEN A.dokumen_status = '3' THEN 'On progress in Mold'
+                    WHEN A.dokumen_status = '4' THEN 'On progress in Planner'
+                    WHEN A.dokumen_status = '5' THEN 'On progress in Quality'
+                    WHEN A.dokumen_status = '6' THEN 'Hold'
+                    WHEN A.dokumen_status = '7' THEN 'Reject'
+                    WHEN A.dokumen_status = '8' THEN 'Close'
+                    WHEN A.dokumen_status = '9' THEN 'Re-Approved'
                 END AS nama_dokumen_status,
+                A.flow_status,
                 CASE
-                	WHEN A.approve_mold IS NULL then 'Waiting for mold egineer confirmation'
-                	WHEN A.approve_planner IS NULL THEN 'Waiting for planner confirmation'
-                	WHEN A.approve_qa  IS NULL THEN 'Waiting for quality confiramtion'
-                	ELSE 'Close'
-                END AS nama_status,
+                	WHEN A.flow_status = '1' THEN 'Mold Enginner Confirm'
+                    WHEN A.flow_status = '2' THEN 'Planner Confirm'
+                    WHEN A.flow_status = '3' THEN 'ME Confirm'
+                    WHEN A.flow_status = '4' THEN 'Mold Engineer Finish'
+                    WHEN A.flow_status = '5' THEN 'ME Finish'
+                    WHEN a.flow_status = '6' THEN 'Quality Confirm'
+                END AS 'nama_flow',
+                A.level_status,
+                CASE
+                	WHEN A.level_status = '0' THEN 'Low'
+                    WHEN A.level_status = '1' THEN 'Normal'
+                    WHEN A.level_status = '2' THEN 'Urgent'
+                    WHEN A.level_status = '3' THEN 'Critical'
+                END AS 'nama_level',
                 A.created_at,
                 A.created_by,
                 A.updated_at,
@@ -107,9 +120,8 @@ class VwSPK extends Migration
             	LEFT JOIN m_leader AS F ON A.leader = F.id
             	LEFT JOIN m_defect AS G ON A.defect = G.id
 	            LEFT JOIN m_sub_defect AS H ON A.sub_defect = H.id
-    	        LEFT JOIN m_posisi_defect AS I ON A.posisi = I.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
-            ORDER BY A.tgl_lapor DESC
+            ORDER BY A.tgl_lapor DESC;
         ");
     }
 

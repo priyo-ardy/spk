@@ -59,21 +59,28 @@ class SPK extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'approve_mold' => [
-                'type' => "DATE",
+            'mold_confirm' => [
+                'type' => "DATETIME",
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'approve_planner' => [
-                'type' => "DATE",
+            'planner_confirm' => [
+                'type' => "DATETIME",
                 'null' => true,
                 'default' => null,
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'approve_qa' => [
+            'mold_finish' => [
+                'type' => "DATETIME",
+                'null' => true,
+                'default' => null,
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+            ],
+            'quality_confirm' => [
                 'type' => "DATE",
                 'null' => true,
                 'default' => null,
@@ -136,10 +143,11 @@ class SPK extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
-            'posisi' => [
+            'prioritas' => [
                 'type' => "VARCHAR",
-                'constraint' => 50,
+                'constraint' => 1,
                 'null' => false,
+                'comment' => '0. Low, 1. Normal, 2. Urgent, 3. Critical',
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],

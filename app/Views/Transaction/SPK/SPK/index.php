@@ -51,6 +51,8 @@
                                         <th class="align-middle bg-body-secondary">Category</th>
                                         <th class="align-middle bg-body-secondary">SPK No.</th>
                                         <th class="align-middle bg-body-secondary">Doc. Status</th>
+                                        <th class="align-middle bg-body-secondary">Critical Level</th>
+                                        <th class="align-middle bg-body-secondary">Status</th>
                                         <th class="align-middle bg-body-secondary">Date</th>
                                         <th class="align-middle bg-body-secondary">Location</th>
                                         <th class="align-middle bg-body-secondary">Requested Dept.</th>
@@ -66,9 +68,8 @@
                                         <th class="align-middle bg-body-secondary">Defect</th>
                                         <th class="align-middle bg-body-secondary">Sub Defect</th>
                                         <th class="align-middle bg-body-secondary">Repeat Problem</th>
-                                        <th class="align-middle bg-body-secondary">Position</th>
                                         <th class="align-middle bg-body-secondary">Team Leader</th>
-                                        <th class="align-middle bg-body-secondary">Status</th>
+
                                     </thead>
                                 </table>
                             </div>

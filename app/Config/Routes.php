@@ -51,6 +51,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Transaction\SPK\Planner\PlannerSPK::index');
         $routes->post('table', 'Transaction\SPK\Planner\PlannerSPK::loadTable');
         $routes->post('get_data', 'Transaction\SPK\Planner\PlannerSPK::getData');
+        $routes->post('confirm', 'Transaction\SPK\Planner\PlannerSPK::konfirmSelesai');
     });
 
     // Transaction -> SPK -> General

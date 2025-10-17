@@ -13,7 +13,7 @@ window.onload = () => {
 
 const formData = document.getElementById("formData");
 const formKonfirmasi = document.getElementById("formKonfirmasi");
-const formKonfirmasiPlanner = document.getElementById("modalPlannerConfirm");
+const formKonfirmasiPlanner = document.getElementById("formKonfirmasiPlanner");
 const btnMoldConfirm = formKonfirmasi.querySelector("#btnConfirm");
 
 const buttons = {
@@ -515,10 +515,21 @@ function plannerConfirm(token) {
     )
       .then((result) => {
         formKonfirmasiPlanner.parentElement.querySelector(
-          "#konfirmasi_token"
+          "#pln_konfirmasi_token"
         ).value = token;
-        formKonfirmasiPlanner.parentElement.querySelector("#tgl_lapor").value =
-          result.data.tgl_lapor;
+        formKonfirmasiPlanner.parentElement.querySelector(
+          "#pln_tgl_lapor"
+        ).value = result.data.tgl_lapor;
+        formKonfirmasiPlanner.parentElement.querySelector(
+          "#pln_plan_finish_date"
+        ).value = result.data.plan_selesai;
+        formKonfirmasiPlanner.parentElement.querySelector(
+          "#pln_required_finish_date"
+        ).value = result.data.plan_selesai;
+        formKonfirmasiPlanner.parentElement.querySelector(
+          "#pln_prioritas"
+        ).value = "1";
+        $("#pln_prioritas").trigger("change");
 
         hideLoading();
         $("#modalPlannerConfirm").modal("show");
@@ -533,3 +544,69 @@ function plannerConfirm(token) {
     hideLoading();
   }
 }
+
+function clearModalPlanner() {
+  $("#pln_konfirmasi_token").value = "";
+  $("#pln_tgl_lapor").value = "";
+  $("#pln_plan_finish_date").value = "";
+  $("#pln_required_finish_date").value = "";
+  $("#pln_prioritas").value = "";
+  $("#pln_prioritas").trigger("change");
+  $("#pln_reason").value = "";
+  $("#modalPlannerConfirm").modal("hide");
+}
+
+const btnPlanConfirm = document.getElementById("btnPlanConfirm");
+
+btnPlanConfirm.onclick = (e) => {
+  const token = formKonfirmasiPlanner.querySelector("#pln_konfirmasi_token");
+  const tgl_lapor = formKonfirmasiPlanner.querySelector("#pln_tgl_lapor");
+  const plan_selesai = formKonfirmasiPlanner.querySelector(
+    "#pln_plan_finish_date"
+  );
+  const required_finish_date = formKonfirmasiPlanner.querySelector(
+    "#pln_required_finish_date"
+  );
+  const remark = formKonfirmasiPlanner.querySelector("pln_reason");
+
+  if (required_finish_date.value < plan_selesai.value) {
+    plan_selesai.classList.add("is-invalid");
+    required_finish_date.classList.add("is-invalid");
+
+    plan_selesai.parentElement.querySelector(".invalid-feedback").textContent =
+      "Invalid date range";
+    required_finish_date.parentElement.querySelector(
+      ".invalid-feedback"
+    ).textContent =
+      "Required finish date must be greater than plan finish date";
+  } else {
+    plan_selesai.classList.remove("is-invalid");
+    required_finish_date.classList.remove("is-invalid");
+    plan_selesai.parentElement.querySelector(".invalid-feedback").textContent =
+      "";
+    required_finish_date.parentElement.querySelector(
+      ".invalid-feedback"
+    ).textContent = "";
+    try {
+      loading();
+      fetchData(
+        baseurl + "/planer/confirm",
+        "POST",
+        new FormData(document.getElementById("formKonfirmasiPlanner"))
+      )
+        .then((result) => {
+          pesanSukses(result.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch((err) => {
+          pesanError(err.message);
+          hideLoading();
+        });
+    } catch (e) {
+      pesanError(e.message);
+      hideLoading();
+    }
+  }
+};

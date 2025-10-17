@@ -110,6 +110,8 @@ class SPK extends BaseController
                     <a href="' . base_url() . 'spk/show/' . enkripsi($item->id) . '" class="link-underline-opacity-100-hover fw-bolder" onlick="loading()">' . $item->code . '</a>
                 ';
             $row[] = $item->nama_dokumen_status;
+            $row[] = $item->nama_prioritas;
+            $row[] = $item->nama_flow;
             $row[] = $item->tgl_lapor;
             $row[] = $item->nama_lokasi;
             $row[] = $item->nama_dept;
@@ -127,10 +129,7 @@ class SPK extends BaseController
             $row[] = $item->nama_defect;
             $row[] = $item->nama_sub_defect;
             $row[] = $item->nama_berulang;
-            $row[] = $item->nama_posisi;
             $row[] = $item->nama_leader;
-            $row[] = $item->nama_status;
-
             $data[] = $row;
         }
 
@@ -174,7 +173,6 @@ class SPK extends BaseController
             'emp_list' => $this->karyawanModel->generateList(),
             'leader_list' => $this->leaderModel->generateList(),
             'defect_list' => $this->defectModel->generateList(),
-            'position_list' => $this->positionModel->generateList(),
             'reason_list' => $this->repairModel->generateList(),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/add.js' . '"></script>'
@@ -528,7 +526,6 @@ class SPK extends BaseController
             'dept_list' => $this->deptModel->generateList(),
             'emp_list' => $this->karyawanModel->generateList(),
             'leader_list' => $this->leaderModel->generateList(),
-            'position_list' => $this->positionModel->generateList(),
             'reason_list' => $this->repairModel->generateList(),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/edit.js' . '"></script>'

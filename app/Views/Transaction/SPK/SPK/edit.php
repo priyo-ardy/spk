@@ -244,16 +244,6 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <!-- <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
-                                        <label class="form-label" for="data_posisi">Problem Position <strong class="text-danger">*</strong></label>
-                                        <select name="data_posisi" id="data_posisi" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
-                                            <option value="">-- Choose --</option>
-                                            <?php foreach ($position_list as $position): ?>
-                                                <option <?= ($header->posisi == $position->id) ? 'selected' : '' ?> value="<?= $position->id; ?>"><?= $position->name ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <div class="invalid-feedback"></div>
-                                    </div> -->
                                     <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_repair">Repair Reason <strong class="text-danger">*</strong></label>
                                         <select name="data_repair" id="data_repair" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
