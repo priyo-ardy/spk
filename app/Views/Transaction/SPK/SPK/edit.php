@@ -193,6 +193,13 @@
                                         <input type="text" name="data_mold" id="data_mold" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Mold No." value="<?= $header->nomor_mesin ?>" <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="data_jig">Mold/Jig Status</label>
+                                        <select name="data_jig" id="data_jig" class="form-control select2 select2bs5" <?= ($header->kategori == '1' || ($header->dokumen_status !== '0' && $header->dokumen_status !== '3')) ? 'disabled' : '' ?>>
+                                            <option <?= ($header->jig_status == '1') ? 'selected' : '' ?> value="1">After SOP</option>
+                                            <option <?= ($header->jig_status == '0') ? 'selected' : '' ?> value="0">Before SOP</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="tipe_equipment">Equipment Type</label>
                                         <select name="tipe_equipment" id="tipe_equipment" <?= ($header->kategori == '1' || ($header->dokumen_status !== '0' && $header->dokumen_status !== '3')) ? 'disabled' : '' ?> class="form-control select2 select2bs5">
                                             <option <?= ($header->tipe_equipment == '') ? 'selected' : '' ?> value="">-- Choose --</option>
@@ -205,7 +212,7 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_leader">Team Leader/Supervisor <strong class="text-danger">*</strong></label>
                                         <select name="data_leader" id="data_leader" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
                                             <option value="">-- Choose --</option>
@@ -215,7 +222,7 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
                                             <option value="">-- Choose --</option>
@@ -253,6 +260,22 @@
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="lokasi_repair">Repair Location <strong class="text-danger">*</strong></label>
+                                        <select name="lokasi_repair" id="lokasi_repair" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
+                                            <option <?= ($header->lokasi_repair == '1') ? 'selected' : '' ?> value="1">Internal Repair</option>
+                                            <option <?= ($header->lokasi_repair == '2') ? 'selected' : '' ?> value="2">External Repair</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="data_supplier">Supplier <strong class="text-danger">*</strong></label>
+                                        <select name="data_supplier" id="data_supplier" class="form-control select2 select2bs5" required <?= ($header->dokumen_status !== '0' && $header->dokumen_status !== '3') ? 'disabled' : '' ?>>
+                                            <option value="">-- Choose --</option>
+                                            <?php foreach ($supplier_list as $supplier): ?>
+                                                <option <?= ($header->supplier == $supplier->id) ? 'selected' : '' ?> value="<?= $supplier->id ?>"><?= $supplier->name ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
                                     </div>
                                     <div class="form-group col-12 clearfix">
                                         <label class="form-label">Image preview :</label>

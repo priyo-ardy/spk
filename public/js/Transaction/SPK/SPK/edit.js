@@ -53,14 +53,14 @@ const dataForm = {
   keterangan: document.getElementById("data_keterangan"),
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  $(".select2bs5").select2({
-    dropdownParent: $("#modalPlannerConfirm"),
-    theme: "bootstrap-5",
-    dropdownCssClass: "rounded-0",
-    selectionCssClass: "rounded-0",
-  });
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   $(".select2bs5").select2({
+//     dropdownParent: $("#modalPlannerConfirm"),
+//     theme: "bootstrap-5",
+//     dropdownCssClass: "rounded-0",
+//     selectionCssClass: "rounded-0",
+//   });
+// });
 
 buttons.back.addEventListener("click", (e) => {
   loading();

@@ -203,7 +203,9 @@ function validasi() {
         isValid = false;
       } else {
         element.classList.remove("is-invalid");
-        feedback.textContent = "";
+        if (feedback) {
+          feedback.textContent = "";
+        }
       }
     });
   }

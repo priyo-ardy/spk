@@ -20,6 +20,7 @@ use App\Models\MasterData\CommonData\SubDefect\SubDefectModel;
 use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
 use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
+use App\Models\MasterData\CommonData\Supplier\SupplierModel;
 use CodeIgniter\HTTP\Response;
 use Config\Services;
 use Config\Database;
@@ -45,6 +46,7 @@ class SPK extends BaseController
     protected $subDefectModel;
     protected $lokasiModel;
     protected $machineModel;
+    protected $supplierModel;
     protected $validasi;
     protected $enkripsi;
 
@@ -64,6 +66,7 @@ class SPK extends BaseController
         $this->positionModel = new ProblemPositionModel();
         $this->lokasiModel = new LokasiModel();
         $this->machineModel = new MachineModel();
+        $this->supplierModel = new SupplierModel();
 
         $this->db = Database::connect();
         $this->validasi = Services::validation();
@@ -174,6 +177,7 @@ class SPK extends BaseController
             'leader_list' => $this->leaderModel->generateList(),
             'defect_list' => $this->defectModel->generateList(),
             'reason_list' => $this->repairModel->generateList(),
+            'supplier_list' => $this->supplierModel->generateList(),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/add.js' . '"></script>'
             ]
@@ -185,6 +189,12 @@ class SPK extends BaseController
     function saveData()
     {
         $aksi =  "save SPK";
+        log_action($this->module, $aksi, "info", current_url(), "Preparing to saving new SPK transcation");
+
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request Not Allowed");
+        }
 
         $this->db->transStart();
 
@@ -207,6 +217,9 @@ class SPK extends BaseController
             $repair = trim($this->request->getPost('data_repair'));
             $images = $this->request->getFileMultiple('data_image');
             $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
+            $lokasi_repair = trim($this->request->getPost('lokasi_repair'));
+            $supplier = trim($this->request->getPost('data_supplier'));
+            $jig_status = trim($this->request->getPost('data_jig'));
             $date = date("Ymd", strtotime($tanggal));
             $error_message = [];
             $success_count = 0;
@@ -352,9 +365,11 @@ class SPK extends BaseController
                 'defect' => $defect,
                 'sub_defect' => $sub_defect,
                 'berulang' => $berulang,
-                'posisi' => $posisi,
                 'tipe_equipment' => $tipe_equipment,
                 'alasan_repair' => $repair,
+                'lokasi_repair' => $lokasi_repair,
+                'supplier' => $supplier,
+                'jig_status' => $jig_status,
                 'deskripsi' => $keterangan,
                 'dokumen_status' => 0,
                 'created_by' => $this->NIK,
@@ -366,7 +381,7 @@ class SPK extends BaseController
                     'data' => $this->spkModel->errors()
                 ]));
 
-                throw new \Exception("Save failed, there was an error during processing your request <br>" . json_encode($data_header));
+                throw new \Exception("Save failed, there was an error during processing your request <br>" . json_encode($this->db->error()));
                 // throw new \Exception(json_encode($this->spkModel->errors()));
             }
 
@@ -527,6 +542,7 @@ class SPK extends BaseController
             'emp_list' => $this->karyawanModel->generateList(),
             'leader_list' => $this->leaderModel->generateList(),
             'reason_list' => $this->repairModel->generateList(),
+            'supplier_list' => $this->supplierModel->generateList(),
             'footer' => [
                 '<script src="' . base_url() . 'js/Transaction/SPK/SPK/edit.js' . '"></script>'
             ]
@@ -540,6 +556,11 @@ class SPK extends BaseController
         $aksi = "update";
 
         log_action($this->module, $aksi, "info", current_url(), "preparing to update SPK data");
+
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Invalid request method");
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Invalid request method");
+        }
 
         $this->db->transStart();
 
@@ -563,6 +584,9 @@ class SPK extends BaseController
             $repair = trim($this->request->getPost('data_repair'));
             $images = $this->request->getFileMultiple('data_image');
             $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
+            $lokasi_repair = trim($this->request->getPost('lokasi_repair'));
+            $supplier = trim($this->request->getPost('data_supplier'));
+            $jig_status = trim($this->request->getPost('data_jig'));
             $date = date("Ymd", strtotime($tanggal));
             $error_message = [];
             $success_count = 0;
@@ -709,6 +733,9 @@ class SPK extends BaseController
                 'berulang' => $berulang,
                 'tipe_equipment' => $tipe_equipment,
                 'alasan_repair' => $repair,
+                'lokasi_repair' => $lokasi_repair,
+                'supplier' => $supplier,
+                'jig_status' => $jig_status,
                 'deskripsi' => $keterangan,
                 'dokumen_status' => 0,
                 'updated_by' => $this->NIK,

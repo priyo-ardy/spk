@@ -106,6 +106,17 @@ class VwSPK extends Migration
                     WHEN A.level_status = '2' THEN 'Urgent'
                     WHEN A.level_status = '3' THEN 'Critical'
                 END AS 'nama_level',
+                case
+                	when A.lokasi_repair = '1' then 'Internal Repair'
+                	when A.lokasi_repair = '2' then 'External Repair'
+                end as nama_lokasi_repair,
+                A.jig_status,
+                CASE
+                    WHEN A.jig_status = '0' THEN 'Before SOP'
+                    WHEN A.jig_status = '1' THEN 'After SOP'
+                END AS nama_jig_status,
+                A.supplier,
+                K.name  as nama_supplier,
                 A.created_at,
                 A.created_by,
                 A.updated_at,
@@ -121,6 +132,7 @@ class VwSPK extends Migration
             	LEFT JOIN m_defect AS G ON A.defect = G.id
 	            LEFT JOIN m_sub_defect AS H ON A.sub_defect = H.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
+	            left join m_supplier as K on A.supplier = K.id
             ORDER BY A.tgl_lapor DESC;
         ");
     }

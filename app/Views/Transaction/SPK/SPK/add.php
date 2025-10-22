@@ -106,7 +106,10 @@
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_jig">Mold/Jig Status</label>
-                                        <input type="text" name="data_jig" id="data_jig" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Mold/Jig Status">
+                                        <select name="data_jig" id="data_jig" class="form-control select2 select2bs5">
+                                            <option value="1">After SOP</option>
+                                            <option value="0">Before SOP</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="tipe_equipment">Equipment Type</label>
@@ -175,6 +178,9 @@
                                         <label class="form-label" for="data_supplier">Supplier <strong class="text-danger">*</strong></label>
                                         <select name="data_supplier" id="data_supplier" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
+                                            <?php foreach ($supplier_list as $supplier): ?>
+                                                <option value="<?= $supplier->id ?>"><?= $supplier->name ?></option>
+                                            <?php endforeach; ?>
                                         </select>
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 clearfix">

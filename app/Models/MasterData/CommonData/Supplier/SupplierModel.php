@@ -38,4 +38,9 @@ class SupplierModel extends Model
 
         return $this->first();
     }
+
+    public function generateList()
+    {
+        return $this->orderBy('name', 'asc')->findAll();
+    }
 }
