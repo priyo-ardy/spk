@@ -181,6 +181,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('supplier') ?>" class="nav-link" onclick="loading()">
+                                <i class="bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Supplier
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-header">APP SETUP</li>

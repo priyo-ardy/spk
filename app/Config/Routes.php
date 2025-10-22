@@ -45,6 +45,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('get_data', 'Transaction\SPK\Mold\MoldSpk::getSpkData');
         $routes->post('confirm', 'Transaction\SPK\Mold\MoldSpk::konfirmSelesai');
         $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
+        $routes->post('get_finish', 'Transaction\SPK\Mold\MoldSpk::getPlannerConfirm');
     });
 
     $routes->group('/planer', static function ($routes) {
@@ -53,36 +54,6 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('get_data', 'Transaction\SPK\Planner\PlannerSPK::getData');
         $routes->post('confirm', 'Transaction\SPK\Planner\PlannerSPK::konfirmSelesai');
     });
-
-    // Transaction -> SPK -> General
-    // $routes->group('/spk_general', static function ($routes) {
-    //     $routes->get('', 'Transaction\SPK\General\GeneralSpk::index');
-    //     $routes->get('add', 'Transaction\SPK\General\GeneralSpk::add');
-    //     $routes->post('save', 'Transaction\SPK\General\GeneralSpk::saveData');
-    //     $routes->post('table', 'Transaction\SPK\General\GeneralSpk::loadTable');
-    //     $routes->get('show/(:any)', 'Transaction\SPK\General\GeneralSpk::showData/$1');
-    //     $routes->post('update', 'Transaction\SPK\General\GeneralSpk::updateData');
-    //     $routes->post('image', 'Transaction\SPK\General\GeneralSpk::showImage');
-    //     $routes->post('delete_image', 'Transaction\SPK\General\GeneralSpk::DeleteImage');
-    //     $routes->get('export', 'Transaction\SPK\General\GeneralSpk::exportData');
-    //     $routes->post('prev', 'Transaction\SPK\General\GeneralSpk::prevData');
-    //     $routes->post('next', 'Transaction\SPK\General\GeneralSpk::nextData');
-    // });
-
-    // $routes->group('/spk_mold', static function ($routes) {
-    //     $routes->get('', 'Transaction\SPK\Mold\MoldSpk::index');
-    //     $routes->get('add', 'Transaction\SPK\Mold\MoldSpk::add');
-    //     $routes->post('save', 'Transaction\SPK\Mold\MoldSpk::saveData');
-    //     $routes->post('table', 'Transaction\SPK\Mold\MoldSpk::loadTable');
-    //     $routes->get('show/(:any)', 'Transaction\SPK\Mold\MoldSpk::showData/$1');
-    //     $routes->post('update', 'Transaction\SPK\Mold\MoldSpk::updateData');
-    //     $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
-    //     $routes->post('prev', 'Transaction\SPK\Mold\MoldSpk::prevData');
-    //     $routes->post('next', 'Transaction\SPK\Mold\MoldSpk::nextData');
-    //     $routes->post('delete_image', 'Transaction\SPK\Mold\MoldSpk::DeleteImage');
-    //     $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
-    //     $routes->get('export', 'Transaction\SPK\Mold\MoldSpk::exportData');
-    // });
 
     // Transaction -> Identification -> mold
     $routes->group('identifikasi_mold', static function ($routes) {
@@ -240,6 +211,19 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('update', 'MasterData\CommonData\Leader\Leader::updateData');
         $routes->post('delete', 'MasterData\CommonData\Leader\Leader::deleteData');
         $routes->post('namaKaryawan', 'MasterData\CommonData\Leader\Leader::getNamaByNIK');
+    });
+
+    $routes->group('/supplier', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\Supplier\Supplier::index');
+        $routes->post('table', 'MasterData\CommonData\Supplier\Supplier::loadTable');
+        $routes->get('add', 'MasterData\CommonData\Supplier\Supplier::addData');
+        $routes->post('save', 'MasterData\CommonData\Supplier\Supplier::saveData');
+        $routes->get('show/(:any)', 'MasterData\CommonData\Supplier\Supplier::showData/$1');
+        $routes->post('update', 'MasterData\CommonData\Supplier\Supplier::updateData');
+        $routes->post('prev', 'MasterData\CommonData\Supplier\Supplier::prevData');
+        $routes->post('next', 'MasterData\CommonData\Supplier\Supplier::nextData');
+        $routes->post('delete', 'MasterData\CommonData\Supplier\Supplier::deleteData');
+        $routes->get('export', 'MasterData\CommonData\Supplier\Supplier::exportData');
     });
 
     // App Setup -> User Management -> User List

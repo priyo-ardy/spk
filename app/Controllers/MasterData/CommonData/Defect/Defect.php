@@ -96,11 +96,7 @@ class Defect extends BaseController
 
         try {
             $id = generate_uuid();
-<<<<<<< HEAD
             $kategori = trim($this->request->getPost('data_kategori'));
-=======
-            $kategori = trim($this->request->getPost('data_kategori');
->>>>>>> 2d40778d1dc61d4d743cc9c35970096bc94207f8
             $code = $this->masterModel->generateCode('m_defect', 'code', 'DFC-', 6);
             $name = ucwords(trim($this->request->getPost('data_name')));
             $remark = trim($this->request->getPost('data_remark'));
@@ -109,11 +105,7 @@ class Defect extends BaseController
                 'data_kategori' => [
                     'rules' => 'required',
                     'errors' => [
-<<<<<<< HEAD
-                        'required' => 'Category is required'
-=======
                         'required' => 'SPK category is required'
->>>>>>> 2d40778d1dc61d4d743cc9c35970096bc94207f8
                     ]
                 ],
                 'data_name' => [

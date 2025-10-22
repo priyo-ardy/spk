@@ -161,6 +161,8 @@ class MoldSpk extends BaseController
 
             if ($get_data->flow_status == '1') {
                 return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirmed by mold engineer");
+            } else if ($get_data->flow_status == '2') {
+                return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirm by planner");
             }
 
             $data = [
@@ -354,6 +356,76 @@ class MoldSpk extends BaseController
                 'trace' => $e->getTraceAsString()
             ]));
             return pesan(ResponseInterface::HTTP_BAD_REQUEST, $e->getMessage());
+        }
+    }
+
+    function getPlannerConfirm()
+    {
+        $aksi = "SPK Confimed by Planner";
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request Not Allowed");
+        }
+
+        try {
+            $json_data = $this->request->getJSON('true');
+
+            if (!is_array($json_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "Invalid JSON data");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Invalid JSON data");
+            }
+
+            if (!isset($json_data['token'])) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK token is missing in JSON input");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+            }
+
+            $token = $json_data['token'];
+            $id_spk = dekripsi($token);
+
+            $get_data = $this->spkModel->where('id', $id_spk)->where('kategori', '1')->where('dokumen_status', '2')->first();
+            if (empty($get_data)) {
+                log_action($this->module, $aksi, "error", current_url(), "SPK not found");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found");
+            }
+
+            if ($get_data->flow_status != '2') {
+                log_action($this->module, $aksi, "error", current_url(), "SPK not found");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not yet confirmed by Planner");
+            }
+
+            switch ($get_data->prioritas) {
+                case 0:
+                    $nama_prioritas = "Low";
+                    break;
+                case 1:
+                    $nama_prioritas = "Normal";
+                    break;
+                case 2:
+                    $nama_prioritas = "Urgent";
+                    break;
+                case 3:
+                    $nama_prioritas = "Critical";
+                    break;
+            }
+
+            $data = [
+                'tgl_lapor' => $get_data->tgl_lapor,
+                'plan_finish' => date("Y-m-d", strtotime($get_data->mold_confirm)),
+                'required_finish' => date("Y-m-d", strtotime($get_data->planner_confirm)),
+                'prioritas' => $nama_prioritas,
+            ];
+
+            return pesan(ResponseInterface::HTTP_OK, "Success", $data);
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
     }
 }

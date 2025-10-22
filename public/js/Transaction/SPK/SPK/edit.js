@@ -15,6 +15,7 @@ const formData = document.getElementById("formData");
 const formKonfirmasi = document.getElementById("formKonfirmasi");
 const formKonfirmasiPlanner = document.getElementById("formKonfirmasiPlanner");
 const btnMoldConfirm = formKonfirmasi.querySelector("#btnConfirm");
+const formMoldSelesai = document.getElementById("formMoldSelesai");
 
 const buttons = {
   back: document.getElementById("btnBack"),
@@ -610,3 +611,38 @@ btnPlanConfirm.onclick = (e) => {
     }
   }
 };
+
+function moldSelesai(token) {
+  formMoldSelesai.parentElement.querySelector("#token_selesai").value = token;
+  try {
+    loading();
+    fetchData(
+      baseurl + "/mold_spk/get_finish",
+      "POST",
+      JSON.stringify({ token: token })
+    )
+      .then((result) => {
+        hideLoading();
+        console.log(result.data);
+        formMoldSelesai.parentElement.querySelector("#plan_finish").value =
+          result.data.plan_finish;
+        formMoldSelesai.parentElement.querySelector("#required_finish").value =
+          result.data.required_finish;
+        formMoldSelesai.parentElement.querySelector("#critical_level").value =
+          result.data.prioritas;
+        $("#moldSelesai").modal("show");
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+}
+
+function clearMoldSelesai() {
+  formMoldSelesai.reset();
+  $("#moldSelesai").modal("hide");
+}

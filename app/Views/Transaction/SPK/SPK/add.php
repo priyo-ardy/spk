@@ -105,6 +105,10 @@
                                         <input type="text" name="data_mold" id="data_mold" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Mold No.">
                                     </div>
                                     <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="data_jig">Mold/Jig Status</label>
+                                        <input type="text" name="data_jig" id="data_jig" class="form-control rounded-0 bg-body-secondary" readonly placeholder="Mold/Jig Status">
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="tipe_equipment">Equipment Type</label>
                                         <select name="tipe_equipment" id="tipe_equipment" class="form-control select2 select2bs5">
                                             <option value="">-- Choose --</option>
@@ -117,7 +121,7 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_leader">Team Leader/Supervisor <strong class="text-danger">*</strong></label>
                                         <select name="data_leader" id="data_leader" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
@@ -127,7 +131,7 @@
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
-                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" id="label_defect" for="data_defect">Defect <strong class="text-danger">*</strong></label>
                                         <select name="data_defect" id="data_defect" class="form-control select2 select2bs5" required>
                                             <option value="">-- Choose --</option>
@@ -159,6 +163,19 @@
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="form-group col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="lokasi_repair">Repair Location <strong class="text-danger">*</strong></label>
+                                        <select name="lokasi_repair" id="lokasi_repair" class="form-control select2 select2bs5" required>
+                                            <option value="1">Internal Repair</option>
+                                            <option value="2">External Repair</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-xl-3 col-lg-3 col-md-6 col-sm-12 mb-3 clearfix">
+                                        <label class="form-label" for="data_supplier">Supplier <strong class="text-danger">*</strong></label>
+                                        <select name="data_supplier" id="data_supplier" class="form-control select2 select2bs5" required>
+                                            <option value="">-- Choose --</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_image">Upload Problem Image <strong class="text-danger">*</strong></label>

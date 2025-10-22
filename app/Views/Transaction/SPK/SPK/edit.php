@@ -97,7 +97,7 @@
                                     <li><a class="dropdown-item" href="#" onclick="moldConfirm('<?= enkripsi($header->id) ?>')">1. Mold Engineer Confirmation</a></li>
                                     <li><a class="dropdown-item" href="#">2. ME Confirmation</a></li>
                                     <li><a class="dropdown-item" href="#" onclick="plannerConfirm('<?= enkripsi($header->id) ?>')">3. Planner Confirmation</a></li>
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#moldSelesai">4. Mold Engineer Completion</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="moldSelesai('<?= enkripsi($header->id) ?>')">4. Mold Engineer Completion</a></li>
                                     <li><a class="dropdown-item" href="#">5. ME Completion</a></li>
                                     <li><a class="dropdown-item" href="#">6. Quality Confirmation</a></li>
                                 </ul>
