@@ -24,6 +24,13 @@ RUN apt-get install -y \
     php8.3-curl \
     php8.3-gd \
     php8.3-zip \
+    php8.3-ldap \
+    php8.3-opcache \
+    php8.3-json \
+    php8.3-bcmath \
+    php8.3-imagick \
+    php8.3-redis \
+    php8.3-memcached \
     unzip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
