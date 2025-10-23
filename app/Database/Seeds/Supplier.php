@@ -6371,7 +6371,7 @@ class Supplier extends Seeder
                 "id" => "21c7869e-b75d-4754-9a2e-798dbd092e8f",
                 "code" => "SUPP-000375",
                 "name" => "",
-                "address" => "Via Campi della Rienza, 21              I-39031 Brunico (BZ)",
+                "address" => "Via Campi della Rienza, 21 I-39031 Brunico (BZ)",
                 "phone_no" => null,
                 "phone_hash" => null,
                 "email_address" => null,
@@ -6488,6 +6488,6 @@ class Supplier extends Seeder
             ]
         ];
 
-        $this->db->table('supplier')->insertBatch($data);
+        $this->db->table('m_supplier')->insertBatch($data);
     }
 }
