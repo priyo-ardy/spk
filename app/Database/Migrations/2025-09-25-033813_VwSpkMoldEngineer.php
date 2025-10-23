@@ -59,8 +59,6 @@ class VwSpkMoldEngineer extends Migration
                     WHEN A.berulang = '0' THEN 'No'
                     WHEN A.berulang = '1' THEN 'Yes'
                 END AS nama_berulang,
-                A.posisi,
-                I.name AS nama_posisi,
                 A.tipe_equipment,
                 CASE
                     WHEN A.tipe_equipment = '1' THEN 'Machine Equipment'
@@ -101,7 +99,6 @@ class VwSpkMoldEngineer extends Migration
             	LEFT JOIN m_leader AS F ON A.leader = F.id
             	LEFT JOIN m_defect AS G ON A.defect = G.id
 	            LEFT JOIN m_sub_defect AS H ON A.sub_defect = H.id
-    	        LEFT JOIN m_posisi_defect AS I ON A.posisi = I.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
             WHERE 
                 A.kategori = '1' AND
