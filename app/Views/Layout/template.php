@@ -112,7 +112,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown user-menu">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" title="Profile">
                             <img
                                 src="<?= base_url() . 'image/' . session('user_image'); ?>"
                                 class="user-image rounded-circle shadow"
@@ -131,10 +131,15 @@
                                 </p>
                             </li>
                             <li class="user-footer">
-                                <a href="<?= base_url() . 'Profile'; ?>" class="btn btn-light rounded-0">Profile</a>
-                                <a href="<?= base_url() . 'logout'; ?>" onclick="loading()" class="btn btn-light rounded-0 float-end">Sign Out</a>
+                                <a href="<?= base_url() . 'Profile'; ?>" class="btn btn-light rounded-0" title="Profile">Profile</a>
+                                <a href="<?= base_url() . 'logout'; ?>" onclick="loading()" class="btn btn-light rounded-0 float-end" title="Sign Out">Sign Out</a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= base_url() . 'setup'; ?>" class="nav-link" title="Setup">
+                            <i class="fas fa-cogs"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
