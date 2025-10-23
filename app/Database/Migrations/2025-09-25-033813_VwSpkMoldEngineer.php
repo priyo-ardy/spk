@@ -29,9 +29,10 @@ class VwSpkMoldEngineer extends Migration
                 D.NIK,
                 D.nama as nama_karyawan,
                 A.tgl_lapor,
-                A.approve_mold,
-                A.approve_planner,
-                A.approve_qa,
+                A.mold_confirm,
+                A.planner_confirm,
+                A.mold_finish,
+                A.quality_confirm,
                 A.material,
                 CASE
                     WHEN A.kategori = '1' THEN E_material.code
