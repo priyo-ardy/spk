@@ -102,9 +102,10 @@ class VwSpkMoldEngineer extends Migration
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
             WHERE 
                 A.kategori = '1' AND
-                A.approve_mold IS NULL AND 
-                A.approve_planner IS NULL AND 
-                A.approve_qa IS NULL AND
+                A.mold_confirm IS NULL AND 
+                A.planner_confirm IS NULL AND 
+                A.mold_finish IS NULL AND
+                A.quality_confirm IS NULL AND
                 A.dokumen_status = '2'
             ORDER BY A.code ASC
         ");
