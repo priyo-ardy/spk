@@ -52,6 +52,7 @@
                                         <option value="13">Leader</option>
                                         <option value="14">List of Employee</option>
                                         <option value="15">Location</option>
+                                        <option value="16">Supplier</option>
                                     </select>
                                 </div>
                                 <div class="invalid-feedback">This field is required</div>

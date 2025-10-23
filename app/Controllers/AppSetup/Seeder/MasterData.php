@@ -20,6 +20,7 @@ use App\Models\MasterData\CommonData\Dept\DeptModel;
 use App\Models\MasterData\CommonData\Leader\LeaderModel;
 use App\Models\MasterData\CommonData\Karyawan\KaryawanModel;
 use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
+use App\Models\MasterData\CommonData\Supplier\SupplierModel;
 
 class MasterData extends BaseController
 {
@@ -38,6 +39,7 @@ class MasterData extends BaseController
     protected $leaderModel;
     protected $karyawanModel;
     protected $lokasiModel;
+    protected $supplierModel;
 
     public function __construct()
     {
@@ -56,6 +58,7 @@ class MasterData extends BaseController
         $this->leaderModel = new LeaderModel();
         $this->karyawanModel = new KaryawanModel();
         $this->lokasiModel = new LokasiModel();
+        $this->supplierModel = new SupplierModel();
     }
 
     public function index()
@@ -132,6 +135,9 @@ class MasterData extends BaseController
                     break;
                 case 15:
                     $lists = $this->lokasiModel->orderBy('code', 'asc')->findAll();
+                    break;
+                case 16:
+                    $lists = $this->supplierModel->orderBy('code', 'asc')->findAll();
                     break;
                 default:
                     $lists = [];
