@@ -97,7 +97,7 @@ class VwSPK extends Migration
                     WHEN A.flow_status = '3' THEN 'ME Confirm'
                     WHEN A.flow_status = '4' THEN 'Mold Engineer Finish'
                     WHEN A.flow_status = '5' THEN 'ME Finish'
-                    WHEN a.flow_status = '6' THEN 'Quality Confirm'
+                    WHEN A.flow_status = '6' THEN 'Quality Confirm'
                 END AS 'nama_flow',
                 A.level_status,
                 CASE
