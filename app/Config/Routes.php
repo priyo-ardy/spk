@@ -247,4 +247,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'AppSetup\Seeder\MasterData::index');
         $routes->post('generate', 'AppSetup\Seeder\MasterData::generateData');
     });
+
+    $routes->group('/setup', static function ($routes) {
+        $routes->get('', 'Admin\Setup\Setup::index');
+    });
 });

@@ -53,12 +53,12 @@
 </div>
 
 <div class="modal fade" id="moldSelesai" tabindex="-1" role="dialog" aria-labelledby="moldSelesai" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <form id="formMoldSelesai">
                 <div class="modal-header">
                     <h5 class="modal-title">Confirmation of Mold Repair Completion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearMoldSelesai()"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearFinishMold()"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3 g-2">
@@ -83,15 +83,71 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="form-group mb-3 col-12 clearfix">
-                            <label class="form-label" for="mold_remark">Remark</label>
-                            <textarea name="mold_remark" id="mold_remark" class="form-control rounded-0 summernote" placeholder="Describe the problem here" rows="5"></textarea>
+                        <div class="col-12">
+                            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="false">Activity</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="remark-tab" data-bs-toggle="tab" data-bs-target="#remark" type="button" role="tab" aria-controls="remark" aria-selected="true">Remark</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-hover table-primary" id="activityTable">
+                                                    <thead>
+                                                        <th class="text-center align-middle bg-secondary-subtle">Activity Content</th>
+                                                        <th class="text-center align-middle bg-secondary-subtle">Operator</th>
+                                                        <th class="text-center align-middle bg-secondary-subtle">Date</th>
+                                                        <th class="text-center align-middle bg-secondary-subtle">Repair Duration</th>
+                                                        <th class="text-center align-middle bg-secondary-subtle">#</th>
+                                                    </thead>
+                                                    <tbody id="activityTableBody">
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="nama_aktifitas[]" class="form-control rounded-0" required maxlength="150" placeholder="Activity Name">
+                                                                <div class="invalid-feedback">This field is required</div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="operator[]" class="form-control rounded-0" required maxlength="50" placeholder="Operator">
+                                                                <div class="invalid-feedback">This field is required</div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" name="tanggal[]" class="form-control rounded-0" required>
+                                                                <div class="invalid-feedback">This field is required</div>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="durasi[]" class="form-control rounded-0" required placeholder="Repair duration">
+                                                                <div class="invalid-feedback">This field is required</div>
+                                                            </td>
+                                                            <td class="text-center align-middle">
+                                                                <button type="button" class="text-success btn shadow-none btn-sm rounded-0" onclick="addRow()">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="remark" role="tabpanel" aria-labelledby="remark-tab">
+                                    <div class="form-group mb-3 col-12 clearfix">
+                                        <label class="form-label" for="mold_remark">Remark</label>
+                                        <textarea name="mold_remark" id="mold_remark" class="form-control rounded-0 summernote" placeholder="Describe the problem here" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary rounded-0" id="btnCancel" onclick="clearMoldSelesai()" data-dismiss=" modal"><i class="bi bi-x-circle"></i>&ensp;Cancel</button>
-                    <button type="button" class="btn btn-primary rounded-0" id="btnConfirm"><i class="bi bi-send"></i>&ensp;Submit</button>
+                    <button type="button" class="btn btn-secondary rounded-0" id="btnCancel" onclick="clearFinishMold()" data-dismiss=" modal"><i class="bi bi-x-circle"></i>&ensp;Cancel</button>
+                    <button type="button" class="btn btn-primary rounded-0" id="btnMoldSelesai"><i class="bi bi-send"></i>&ensp;Submit</button>
                 </div>
             </form>
         </div>

@@ -570,7 +570,7 @@ btnPlanConfirm.onclick = (e) => {
   );
   const remark = formKonfirmasiPlanner.querySelector("pln_reason");
 
-  if (required_finish_date.value < plan_selesai.value) {
+  if (required_finish_date.value < tgl_lapor.value) {
     plan_selesai.classList.add("is-invalid");
     required_finish_date.classList.add("is-invalid");
 
@@ -646,3 +646,77 @@ function clearMoldSelesai() {
   formMoldSelesai.reset();
   $("#moldSelesai").modal("hide");
 }
+
+function addRow() {
+  const row = document.getElementById("activityTableBody");
+  const newRow = `
+    <tr>
+      <td>
+          <input type="text" name="nama_aktifitas[]" class="form-control rounded-0" required maxlength="150" placeholder="Activity Name">
+          <div class="invalid-feedback">This field is required</div>
+      </td>
+      <td>
+          <input type="text" name="operator[]" class="form-control rounded-0" required maxlength="50" placeholder="Operator">
+          <div class="invalid-feedback">This field is required</div>
+      </td>
+      <td>
+          <input type="date" name="tanggal[]" class="form-control rounded-0" required>
+          <div class="invalid-feedback">This field is required</div>
+      </td>
+      <td>
+          <input type="text" name="durasi[]" class="form-control rounded-0" required placeholder="Repair duration">
+          <div class="invalid-feedback">This field is required</div>
+      </td>
+      <td class="text-center align-middle">
+          <button type="button" class="text-success btn shadow-none btn-sm rounded-0" onclick="addRow()">
+              <i class="fas fa-plus-circle"></i>
+          </button>
+          <button type="button" class="text-danger btn shadow-none btn-sm rounded-0" onclick="removeRow()">
+              <i class="fas fa-times-circle"></i>
+          </button>
+      </td>
+    </tr>
+  `;
+
+  row.insertAdjacentHTML("beforeend", newRow);
+}
+
+function removeRow() {
+  const row = document.getElementById("activityTableBody");
+  row.lastElementChild.remove();
+}
+
+function clearFinishMold() {
+  window.location.reload();
+}
+
+function validasiMoldSelesai() {
+  let isValid = true;
+
+  const requiredElement = formMoldSelesai.querySelectorAll("[required]");
+  if (requiredElement.length > 0) {
+    requiredElement.forEach((element) => {
+      if (element.value.trim() === "") {
+        isValid = false;
+        element.classList.add("is-invalid");
+      } else {
+        element.classList.remove("is-invalid");
+      }
+    });
+  }
+
+  return isValid;
+}
+
+const btnMoldSelesai = document.getElementById("btnMoldSelesai");
+btnMoldSelesai.addEventListener("click", (e) => {
+  if (validasiMoldSelesai()) {
+    try {
+    } catch (e) {
+      pesanError(e.message);
+      hideLoading();
+    }
+  } else {
+    pesanWarning("Please fill all required fields");
+  }
+});

@@ -190,7 +190,7 @@ class PlannerSPK extends BaseController
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, $error_message);
             }
 
-            if ($required_finish_date < $plan_finish_date) {
+            if ($required_finish_date < $tgl_lapor) {
                 log_action($this->module, $aksi, "error", current_url(), "Required finish date must be greater than plan finish date");
                 log_message('error', 'Konfirmasi SPK Error: Required finish date must be greater than plan finish date');
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Required finish date must be greater than or equal to plan finish date");
