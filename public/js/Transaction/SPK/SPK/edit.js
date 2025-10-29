@@ -62,6 +62,22 @@ const dataForm = {
 //   });
 // });
 
+$(document).ready(function () {
+  $("#modalPlannerConfirm .select2bs5").select2({
+    dropdownParent: $("#modalPlannerConfirm"),
+    theme: "bootstrap-5",
+    dropdownCssClass: "rounded-0",
+    selectionCssClass: "rounded-0",
+  });
+
+  $("#qualityConfirmModal .select2bs5").select2({
+    dropdownParent: $("#qualityConfirmModal"),
+    theme: "bootstrap-5",
+    dropdownCssClass: "rounded-0",
+    selectionCssClass: "rounded-0",
+  });
+});
+
 buttons.back.addEventListener("click", (e) => {
   loading();
   window.location.replace(baseurl + "/spk");
@@ -712,11 +728,81 @@ const btnMoldSelesai = document.getElementById("btnMoldSelesai");
 btnMoldSelesai.addEventListener("click", (e) => {
   if (validasiMoldSelesai()) {
     try {
+      loading();
+      fetchData(
+        baseurl + "/mold_spk/finish",
+        "POST",
+        new FormData(formMoldSelesai)
+      )
+        .then((result) => {
+          pesanSukses(result.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        })
+        .catch((err) => {
+          pesanError(err.message);
+          hideLoading();
+        });
     } catch (e) {
       pesanError(e.message);
       hideLoading();
     }
-  } else {
-    pesanWarning("Please fill all required fields");
   }
 });
+
+const qa_token = document.getElementById("qa_token");
+const formConfirmQuality = document.getElementById("formConfirmQuality");
+
+function validasiQualityConfirm() {
+  let isValid = true;
+  const requiredElement = formConfirmQuality.querySelectorAll("[required]");
+  if (requiredElement.length > 0) {
+    requiredElement.forEach((element) => {
+      if (element.value.trim() === "") {
+        isValid = false;
+        element.classList.add("is-invalid");
+      } else {
+        element.classList.remove("is-invalid");
+      }
+    });
+  }
+  return isValid;
+}
+
+formConfirmQuality
+  .querySelector("#btnConfirmQuality")
+  .addEventListener("click", (e) => {
+    if (validasiQualityConfirm()) {
+      try {
+        loading();
+        fetchData(
+          baseurl + "/quality/submit",
+          "POST",
+          new FormData(formConfirmQuality)
+        )
+          .then((result) => {
+            pesanSukses(result.message);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          })
+          .catch((err) => {
+            pesanError(err.message);
+            hideLoading();
+          });
+      } catch (e) {
+        pesanError(e.message);
+        hideLoading();
+      }
+    }
+  });
+function qualityConfirm(token) {
+  try {
+    qa_token.value = token;
+    $("#qualityConfirmModal").modal("show");
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+}

@@ -5,23 +5,27 @@ namespace App\Controllers\Transaction\SPK\Mold;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Transaction\SPK\Mold\MoldSpkModel;
+use App\Models\Transaction\SPK\Mold\SpkMoldDetails;
 use App\Models\Transaction\SPK\SPK\SPKModel;
 use App\Models\Transaction\SPK\SPK\SPKDetailsModel;
 use App\Models\Master\MasterModel;
 use App\Models\DataTable\DataTableModel;
 use CodeIgniter\HTTP\Response;
 use Config\Services;
+use Config\Database;
 
 class MoldSpk extends BaseController
 {
     protected $module;
     protected $spkModel;
     protected $moldModel;
+    protected $moldDetail;
     protected $detailsModel;
     protected $masterModel;
     protected $dataTable;
     protected $validasi;
     protected $enkripsi;
+    protected $db;
 
 
     /**
@@ -33,11 +37,13 @@ class MoldSpk extends BaseController
     {
         $this->module = "Mold Confirmation";
         $this->moldModel = new MoldSpkModel();
+        $this->moldDetail = new SpkMoldDetails();
         $this->masterModel = new MasterModel();
         $this->spkModel = new SPKModel();
         $this->detailsModel = new SPKDetailsModel();
         $this->validasi = Services::validation();
         $this->enkripsi = Services::encrypter();
+        $this->db = Database::connect();
 
         $table = 'vw_t_spk_mold';
         $column_order = [];
@@ -159,10 +165,28 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found or SPK not approved yet");
             }
 
-            if ($get_data->flow_status == '1') {
-                return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirmed by mold engineer");
-            } else if ($get_data->flow_status == '2') {
-                return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirm by planner");
+            switch ($get_data->flow_status) {
+                case '1':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirmed by mold engineer");
+                    break;
+                case '2':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirm by planner");
+                    break;
+                case '3':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirm by ME");
+                    break;
+                case '4':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already finish by mold engineer");
+                    break;
+                case '5':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already finish by ME");
+                    break;
+                case '6':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already confirm by quality");
+                    break;
+                case '7':
+                    return pesan(ResponseInterface::HTTP_FOUND, "SPK already closed");
+                    break;
             }
 
             $data = [
@@ -390,9 +414,14 @@ class MoldSpk extends BaseController
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not found");
             }
 
-            if ($get_data->flow_status != '2') {
+            if ($get_data->flow_status == '1') {
                 log_action($this->module, $aksi, "error", current_url(), "SPK not found");
                 return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK not yet confirmed by Planner");
+            }
+
+            if ($get_data->flow_status == '4') {
+                log_action($this->module, $aksi, "error", current_url(), "SPK already finish by mold engineer");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK already finish by mold engineer");
             }
 
             switch ($get_data->prioritas) {
@@ -425,6 +454,151 @@ class MoldSpk extends BaseController
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]));
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
+    }
+
+    function finishTransaction()
+    {
+        $aksi = "Finish Transaction";
+        if ($this->request->getMethod() !== 'POST') {
+            log_action($this->module, $aksi, "error", current_url(), "Request method not allowed");
+            return pesan(ResponseInterface::HTTP_METHOD_NOT_ALLOWED, "Request Not Allowed");
+        }
+
+        $this->db->transStart();
+
+        try {
+            $token = trim($this->request->getPost('token_selesai'));
+            $actual_finish = trim($this->request->getPost('actual_finish'));
+            $nama_aktifitas = $this->request->getPost('nama_aktifitas');
+            $operator = $this->request->getPost('operator');
+            $tanggal = $this->request->getPost('tanggal');
+            $durasi = $this->request->getPost('durasi');
+            $mold_remark = trim($this->request->getPost('mold_remark'));
+
+            $rules = [
+                'token_selesai' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'SPK token is required',
+                    ]
+                ],
+                'actual_finish' => [
+                    'rules' => 'required|valid_date',
+                    'errors' => [
+                        'required' => 'Actual Finish Date is required',
+                        'valid_date' => 'Actual Finish Date is not valid',
+                    ]
+                ],
+                'nama_aktifitas.*' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Activity Name is required',
+                    ]
+                ],
+                'operator.*' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Operator is required',
+                    ]
+                ],
+                'tanggal.*' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Date is required',
+                    ]
+                ],
+                'durasi.*' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Duration is required',
+                    ]
+                ],
+            ];
+
+            $this->validasi->setRules($rules);
+            if (!$this->validasi->withRequest($this->request)->run()) {
+                log_action($this->module, $aksi, "error", current_url(), $this->validasi->getErrors());
+                $error_message = implode('<br>', $this->validasi->getErrors());
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, $error_message);
+            }
+
+            $id = dekripsi($token);
+            $data_header = [
+                'mold_finish' => $actual_finish,
+                'flow_status' => '4', //SPK telah selesai dikerjakan oleh mold engineer
+            ];
+
+            $update_header = $this->spkModel->update($id, $data_header);
+            if (!$update_header) {
+                log_action($this->module, $aksi, "error", current_url(), "Failed to update header");
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to update header data");
+            }
+
+            // Getting mold spk
+            $get_mold_spk = $this->moldModel->where('id_spk', $id)->first();
+            if (!$get_mold_spk) {
+                log_action($this->module, $aksi, "error", current_url(), "Confirmed Mold SPK not found");
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Confirmed Mold SPK not found");
+            }
+
+            // Update t_spk_mold
+            $data_mold = [
+                'aktual_selesai' => $actual_finish,
+                'keterangan_selesai' => $mold_remark
+            ];
+
+            $update_mold = $this->moldModel->updateMoldFinish($id, $data_mold);
+            if (!$update_mold) {
+                log_action($this->module, $aksi, "error", current_url(), "Failed to update mold finish date");
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to update mold finish date");
+            }
+
+            // Looping for mold activity
+            $urut = 1;
+            $data_mold_detail = [];
+            for ($i = 0; $i < count($nama_aktifitas); $i++) {
+                if ($nama_aktifitas[$i] === '' || $operator[$i] === '' || $tanggal[$i] === '' || $durasi[$i] === '') {
+                    return pesan(ResponseInterface::HTTP_BAD_REQUEST, "All fields are required");
+                }
+
+                $data_mold_detail[] = [
+                    'id' => generate_uuid(),
+                    'urut' => $urut,
+                    'id_header' => $get_mold_spk->id,
+                    'aktifitas' => $nama_aktifitas[$i],
+                    'operator' => $operator[$i],
+                    'tanggal' => $tanggal[$i],
+                    'durasi' => $durasi[$i],
+                    'created_by' => $this->NIK
+                ];
+                $urut++;
+            }
+
+            $insert_mold_details = $this->moldDetail->insertBatch($data_mold_detail);
+            $this->db->transComplete();
+
+            if (!$insert_mold_details) {
+                log_action($this->module, $aksi, "error", current_url(), "Failed to insert mold details");
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to insert mold details");
+            }
+
+            if ($this->db->transStatus() === false) {
+                $this->db->transRollback();
+                log_action($this->module, $aksi, "error", current_url(), "Failed to insert mold details");
+                return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Failed to insert mold details");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "SPK selesai berhasil dikonfirmasi");
+        } catch (\Exception $e) {
+            log_action($this->module, $aksi, "error", current_url(), $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage());
         }
     }

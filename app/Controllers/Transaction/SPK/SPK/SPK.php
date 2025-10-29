@@ -485,13 +485,22 @@ class SPK extends BaseController
                 $nama_status = "Approved";
                 break;
             case 3:
-                $nama_status = "Re-Approve";
+                $nama_status = " On progress in Mold";
                 break;
             case 4:
-                $nama_status = "Reject";
+                $nama_status = " On progress in Planner";
                 break;
             case 5:
-                $nama_status = "Close";
+                $nama_status = "On progress in Quality ";
+                break;
+            case 6:
+                $nama_status = 'Hold';
+                break;
+            case 7:
+                $nama_status = 'Reject';
+                break;
+            case 8:
+                $nama_status = 'Close';
                 break;
         }
 
@@ -516,6 +525,9 @@ class SPK extends BaseController
                 break;
             case 6:
                 $nama_flow_status = "Confirmed by Quality";
+                break;
+            case 7:
+                $nama_flow_status = "Close";
                 break;
         }
 

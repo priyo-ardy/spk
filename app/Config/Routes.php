@@ -46,6 +46,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('confirm', 'Transaction\SPK\Mold\MoldSpk::konfirmSelesai');
         $routes->post('image', 'Transaction\SPK\Mold\MoldSpk::showImage');
         $routes->post('get_finish', 'Transaction\SPK\Mold\MoldSpk::getPlannerConfirm');
+        $routes->post('finish', 'Transaction\SPK\Mold\MoldSpk::finishTransaction');
     });
 
     $routes->group('/planer', static function ($routes) {
@@ -53,6 +54,12 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('table', 'Transaction\SPK\Planner\PlannerSPK::loadTable');
         $routes->post('get_data', 'Transaction\SPK\Planner\PlannerSPK::getData');
         $routes->post('confirm', 'Transaction\SPK\Planner\PlannerSPK::konfirmSelesai');
+    });
+
+    $routes->group('/quality', static function ($routes) {
+        $routes->get('', 'Transaction\SPK\Quality\QualitySPK::index');
+        $routes->post('get_data', 'Transaction\SPK\Quality\QualitySPK::getQualityData');
+        $routes->post('submit', 'Transaction\SPK\Quality\QualitySPK::submitData');
     });
 
     // Transaction -> Identification -> mold

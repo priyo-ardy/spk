@@ -99,7 +99,7 @@
                                     <li><a class="dropdown-item" href="#" onclick="plannerConfirm('<?= enkripsi($header->id) ?>')">3. Planner Confirmation</a></li>
                                     <li><a class="dropdown-item" href="#" onclick="moldSelesai('<?= enkripsi($header->id) ?>')">4. Mold Engineer Completion</a></li>
                                     <li><a class="dropdown-item" href="#">5. ME Completion</a></li>
-                                    <li><a class="dropdown-item" href="#">6. Quality Confirmation</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="qualityConfirm('<?= enkripsi($header->id) ?>')">6. Quality Confirmation</a></li>
                                 </ul>
                             </div>
                             <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" title="Previous Data">
@@ -333,4 +333,5 @@
 </main>
 <?= $this->include('Transaction/SPK/Mold/modal') ?>
 <?= $this->include('Transaction/SPK/Planner/modal') ?>
+<?= $this->include('Transaction/SPK/quality/modal') ?>
 <?= $this->endSection(); ?>

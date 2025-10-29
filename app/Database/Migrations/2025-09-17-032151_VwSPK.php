@@ -27,7 +27,7 @@ class VwSPK extends Migration
                 C.name AS nama_dept,
                 A.pelapor,
                 D.NIK,
-                D.nama as nama_karyawan,
+                D.nama AS nama_karyawan,
                 A.tgl_lapor,
                 A.mold_confirm,
                 A.planner_confirm,
@@ -92,12 +92,14 @@ class VwSPK extends Migration
                 END AS nama_dokumen_status,
                 A.flow_status,
                 CASE
-                	WHEN A.flow_status = '1' THEN 'Mold Enginner Confirm'
-                    WHEN A.flow_status = '2' THEN 'Planner Confirm'
+                    WHEN A.flow_status = '0' THEN 'Waiting mold confirm'
+                	WHEN A.flow_status = '1' THEN 'Waiting planner confirm'
+                    WHEN A.flow_status = '2' THEN 'Waiting mold engineer finish'
                     WHEN A.flow_status = '3' THEN 'ME Confirm'
-                    WHEN A.flow_status = '4' THEN 'Mold Engineer Finish'
+                    WHEN A.flow_status = '4' THEN 'Waiting quality confirm'
                     WHEN A.flow_status = '5' THEN 'ME Finish'
                     WHEN A.flow_status = '6' THEN 'Quality Confirm'
+                    WHEN A.flow_status = '7' THEN 'Close'
                 END AS 'nama_flow',
                 A.level_status,
                 CASE
@@ -106,17 +108,35 @@ class VwSPK extends Migration
                     WHEN A.level_status = '2' THEN 'Urgent'
                     WHEN A.level_status = '3' THEN 'Critical'
                 END AS 'nama_level',
-                case
-                	when A.lokasi_repair = '1' then 'Internal Repair'
-                	when A.lokasi_repair = '2' then 'External Repair'
-                end as nama_lokasi_repair,
+                CASE
+                	WHEN A.lokasi_repair = '1' then 'Internal Repair'
+                	WHEN A.lokasi_repair = '2' then 'External Repair'
+                END AS nama_lokasi_repair,
                 A.jig_status,
                 CASE
                     WHEN A.jig_status = '0' THEN 'Before SOP'
                     WHEN A.jig_status = '1' THEN 'After SOP'
                 END AS nama_jig_status,
                 A.supplier,
-                K.name  as nama_supplier,
+                K.name  AS nama_supplier,
+                A.appearance,
+                CASE
+                	WHEN A.appearance = 0 then 'NG'
+                	WHEN A.appearance = 1 then 'OK'
+                	WHEN A.appearance = 2 then 'No Check'
+                END AS nama_appearance,
+                A.dimension,
+                CASE
+                	WHEN A.dimension = 0 then 'NG'
+                	WHEN A.dimension = 1 then 'OK'
+                	WHEN A.dimension = 2 then 'No Check'
+                END AS nama_dimension,
+                A.performance,
+                CASE 
+                	WHEN A.performance = 0 then 'NG'
+                	WHEN A.performance = 1 then 'OK'
+                	WHEN A.performance = 2 then 'No Check'
+                END AS nama_performance,
                 A.created_at,
                 A.created_by,
                 A.updated_at,
@@ -132,7 +152,7 @@ class VwSPK extends Migration
             	LEFT JOIN m_defect AS G ON A.defect = G.id
 	            LEFT JOIN m_sub_defect AS H ON A.sub_defect = H.id
 	            LEFT JOIN m_repair AS J ON A.alasan_repair = J.id
-	            left join m_supplier as K on A.supplier = K.id
+	            left join m_supplier AS K on A.supplier = K.id
             ORDER BY A.tgl_lapor DESC;
         ");
     }

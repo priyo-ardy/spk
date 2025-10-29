@@ -63,7 +63,7 @@
                 <div class="modal-body">
                     <div class="row mb-3 g-2">
                         <div class="form-group col-12 clearfix">
-                            <input type="text" name="token_selesai" id="token_selesai" class="form-control rounded-0 bg-secondary-subtle" hidden readonly>
+                            <input type="text" name="token_selesai" id="token_selesai" class="form-control rounded-0 bg-secondary-subtle" readonly>
                         </div>
                         <div class="form-group mb-3 col-xl-6 col-lg-6 col-md-12 col-sm-12 clearfix">
                             <label class="form-label" for="plan_finish">Plan Finish Date <strong class="text-danger">*</strong></label>

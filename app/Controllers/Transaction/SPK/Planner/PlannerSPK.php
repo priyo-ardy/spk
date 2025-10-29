@@ -217,11 +217,7 @@ class PlannerSPK extends BaseController
                 'planner_comment' => $reason,
             ];
 
-            $where_mold = [
-                'id_spk' => $id_spk
-            ];
-
-            $update_mold = $this->moldModel->update($where_mold, $data_mold);
+            $update_mold = $this->moldModel->updatePlannerConfirm($id_spk, $data_mold);
             if (!$update_mold) {
                 log_action($this->module, $aksi, "error", current_url(), "Failed to update SPK mold data");
                 log_message('error', 'Konfirmasi SPK Error: Failed to update SPK mold data');

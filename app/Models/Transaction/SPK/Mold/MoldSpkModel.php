@@ -30,4 +30,18 @@ class MoldSpkModel extends Model
             ->get()
             ->getResult();
     }
+
+    public function updatePlannerConfirm($id_spk, $data)
+    {
+        return $this->db->table('t_spk_mold')
+            ->where('id_spk', $id_spk)
+            ->update($data);
+    }
+
+    public function updateMoldFinish($id_spk, $data)
+    {
+        return $this->db->table('t_spk_mold')
+            ->where('id_spk', $id_spk)
+            ->update($data);
+    }
 }
