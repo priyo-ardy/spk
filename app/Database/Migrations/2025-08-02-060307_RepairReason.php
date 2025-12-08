@@ -77,7 +77,7 @@ class RepairReason extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_repair');
+        $this->forge->createTable('m_repair', true);
 
         $this->db->query('ALTER TABLE m_repair ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_repair ADD INDEX (code)');
@@ -85,6 +85,6 @@ class RepairReason extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_repair');
+        $this->forge->dropTable('m_repair', true);
     }
 }

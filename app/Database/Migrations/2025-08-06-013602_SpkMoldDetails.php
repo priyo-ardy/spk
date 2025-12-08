@@ -87,11 +87,11 @@ class SpkMoldDetails extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('t_spk_mold_details');
+        $this->forge->createTable('t_spk_mold_details', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('t_spk_mold_details');
+        $this->forge->dropTable('t_spk_mold_details', true);
     }
 }

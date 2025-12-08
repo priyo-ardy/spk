@@ -85,7 +85,7 @@ class DefectPosition extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_posisi_defect');
+        $this->forge->createTable('m_posisi_defect', true);
 
         $this->db->query('ALTER TABLE m_posisi_defect ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_posisi_defect ADD INDEX (code)');
@@ -93,6 +93,6 @@ class DefectPosition extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_posisi_defect');
+        $this->forge->dropTable('m_posisi_defect', true);
     }
 }

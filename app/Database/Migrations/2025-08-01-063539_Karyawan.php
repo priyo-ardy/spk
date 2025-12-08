@@ -72,7 +72,7 @@ class Karyawan extends Migration
         $this->forge->addKey(['id', 'NIK'], true, true);
 
 
-        $this->forge->createTable('m_karyawan');
+        $this->forge->createTable('m_karyawan', true);
 
         $this->db->query('ALTER TABLE m_karyawan ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_karyawan ADD INDEX (NIK)');
@@ -80,6 +80,6 @@ class Karyawan extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_karyawan');
+        $this->forge->dropTable('m_karyawan', true);
     }
 }

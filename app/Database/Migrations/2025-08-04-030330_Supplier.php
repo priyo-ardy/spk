@@ -126,7 +126,7 @@ class Supplier extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true, true);
-        $this->forge->createTable('m_supplier');
+        $this->forge->createTable('m_supplier', true);
 
         $this->db->query('ALTER TABLE m_supplier ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_supplier ADD INDEX (code)');
@@ -136,6 +136,6 @@ class Supplier extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_supplier');
+        $this->forge->dropTable('m_supplier', true);
     }
 }

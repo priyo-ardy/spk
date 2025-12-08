@@ -89,7 +89,7 @@ class SubDefect extends Migration
         ]);
 
         $this->forge->addKey(['id', 'code'], true);
-        $this->forge->createTable('m_sub_defect');
+        $this->forge->createTable('m_sub_defect', true);
 
         $this->db->query('ALTER TABLE m_sub_defect ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_sub_defect ADD INDEX (code)');
@@ -98,6 +98,6 @@ class SubDefect extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_sub_defect');
+        $this->forge->dropTable('m_sub_defect', true);
     }
 }

@@ -77,7 +77,7 @@ class Dept extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_dept');
+        $this->forge->createTable('m_dept', true);
 
         # tambahkan index pada kolom id dan code
         $this->db->query('ALTER TABLE m_dept ADD INDEX (id)');
@@ -86,6 +86,6 @@ class Dept extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_dept');
+        $this->forge->dropTable('m_dept', true);
     }
 }

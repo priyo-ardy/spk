@@ -77,7 +77,7 @@ class Leader extends Migration
 
         $this->forge->addKey(['id', 'NIK'], true, true);
 
-        $this->forge->createTable('m_leader');
+        $this->forge->createTable('m_leader', true);
 
         $this->db->query('ALTER TABLE m_leader ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_leader ADD INDEX (NIK)');
@@ -85,6 +85,6 @@ class Leader extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_leader');
+        $this->forge->dropTable('m_leader', true);
     }
 }

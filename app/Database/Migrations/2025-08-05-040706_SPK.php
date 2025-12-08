@@ -293,11 +293,11 @@ class SPK extends Migration
         $this->forge->addUniqueKey('id', 'id');
         $this->forge->addUniqueKey('code', 'code');
 
-        $this->forge->createTable('t_spk');
+        $this->forge->createTable('t_spk', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('t_spk');
+        $this->forge->dropTable('t_spk', true);
     }
 }

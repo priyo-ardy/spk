@@ -91,7 +91,7 @@ class Satuan extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_satuan');
+        $this->forge->createTable('m_satuan', true);
 
         $this->db->query('ALTER TABLE m_satuan ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_satuan ADD INDEX (code)');
@@ -100,6 +100,6 @@ class Satuan extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_satuan');
+        $this->forge->dropTable('m_satuan', true);
     }
 }

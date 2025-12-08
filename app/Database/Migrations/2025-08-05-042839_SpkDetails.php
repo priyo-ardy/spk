@@ -88,11 +88,11 @@ class SpkDetails extends Migration
         $this->forge->addKey('id', true, true);
         $this->forge->addUniqueKey('id', 'id');
 
-        $this->forge->createTable('t_spk_details');
+        $this->forge->createTable('t_spk_details', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('t_spk_details');
+        $this->forge->dropTable('t_spk_details', true);
     }
 }

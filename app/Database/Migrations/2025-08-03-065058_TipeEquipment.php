@@ -76,7 +76,7 @@ class TipeEquipment extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_tipe_equipment');
+        $this->forge->createTable('m_tipe_equipment', true);
 
         $this->db->query('ALTER TABLE m_tipe_equipment ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_tipe_equipment ADD INDEX (code)');
@@ -84,6 +84,6 @@ class TipeEquipment extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_tipe_equipment');
+        $this->forge->dropTable('m_tipe_equipment', true);
     }
 }

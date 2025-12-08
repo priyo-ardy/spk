@@ -84,7 +84,7 @@ class MaterialCategory extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_material_category');
+        $this->forge->createTable('m_material_category', true);
 
         $this->db->query('ALTER TABLE m_material_category ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_material_category ADD INDEX (code)');
@@ -92,6 +92,6 @@ class MaterialCategory extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_material_category');
+        $this->forge->dropTable('m_material_category', true);
     }
 }

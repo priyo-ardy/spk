@@ -137,7 +137,7 @@ class Mesin extends Migration
 
         $this->forge->addKey('id', true, true);
 
-        $this->forge->createTable('m_mesin');
+        $this->forge->createTable('m_mesin', true);
 
         $this->db->query('ALTER TABLE m_mesin ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_mesin ADD INDEX (code)');
@@ -148,6 +148,6 @@ class Mesin extends Migration
      */
     public function down()
     {
-        $this->forge->dropTable('m_mesin');
+        $this->forge->dropTable('m_mesin', true);
     }
 }

@@ -77,7 +77,7 @@ class Lokasi extends Migration
 
         $this->forge->addKey(['id', 'code'], true, true);
 
-        $this->forge->createTable('m_lokasi');
+        $this->forge->createTable('m_lokasi', true);
 
         $this->db->query('ALTER TABLE m_lokasi ADD INDEX (id)');
         $this->db->query('ALTER TABLE m_lokasi ADD INDEX (code)');
@@ -85,6 +85,6 @@ class Lokasi extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('m_lokasi');
+        $this->forge->dropTable('m_lokasi', true);
     }
 }
