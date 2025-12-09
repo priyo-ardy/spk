@@ -42,6 +42,12 @@
     <link
         rel="stylesheet"
         href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+        <!-- <link
+            rel="stylesheet"
+            href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
+        <link
+            rel="stylesheet"
+            href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css"> -->
     <!-- AdminLTE CSS -->
     <link
         rel="stylesheet"
@@ -210,6 +216,10 @@
     <!-- Datatable -->
     <script
         src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <!-- <script
+        src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
+    <script
+        src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script> -->
     <!-- AdminLTE JS -->
     <script
         src="<?= base_url() . 'dist/js/adminlte.js'; ?>"></script>

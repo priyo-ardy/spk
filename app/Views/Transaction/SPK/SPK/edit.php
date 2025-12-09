@@ -94,12 +94,12 @@
                                     Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onclick="moldConfirm('<?= enkripsi($header->id) ?>')">1. Mold Engineer Confirmation</a></li>
-                                    <li><a class="dropdown-item" href="#">2. ME Confirmation</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="plannerConfirm('<?= enkripsi($header->id) ?>')">3. Planner Confirmation</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="moldSelesai('<?= enkripsi($header->id) ?>')">4. Mold Engineer Completion</a></li>
-                                    <li><a class="dropdown-item" href="#">5. ME Completion</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="qualityConfirm('<?= enkripsi($header->id) ?>')">6. Quality Confirmation</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '1') ? '' : 'hidden' ?> href="#" onclick="moldConfirm('<?= enkripsi($header->id) ?>')">1. Mold Engineer Confirmation</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '2') ? '' : 'hidden' ?> href="#">2. ME Confirmation</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '1') ? '' : 'hidden' ?> href="#" onclick="plannerConfirm('<?= enkripsi($header->id) ?>')">3. Planner Confirmation</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '1') ? '' : 'hidden' ?> href="#" onclick="moldSelesai('<?= enkripsi($header->id) ?>')">4. Mold Engineer Completion</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '2') ? '' : 'hidden' ?> href="#">5. ME Completion</a></li>
+                                    <li><a class="dropdown-item" <?= ($header->kategori == '1') ? '' : 'hidden' ?> href="#" onclick="qualityConfirm('<?= enkripsi($header->id) ?>')">6. Quality Confirmation</a></li>
                                 </ul>
                             </div>
                             <button type="button" id="btnPrev" class="btn shadow-none rounded-0 btn-light border-0" title="Previous Data">

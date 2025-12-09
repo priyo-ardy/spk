@@ -80,7 +80,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-gear"></i>
                         <p>
-                            Common Data
+                            APQP Setup
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
@@ -89,7 +89,7 @@
                             <a href="<?= base_url('workshop') ?>" class="nav-link" onclick="loading()">
                                 <i class="bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Workshop
+                                    APQP Level
                                 </p>
                             </a>
                         </li>
@@ -97,7 +97,7 @@
                             <a href="<?= base_url('tonnage') ?>" class="nav-link" onclick="loading()">
                                 <i class="bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Tonnage
+                                    APQP Doocument
                                 </p>
                             </a>
                         </li>
