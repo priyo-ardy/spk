@@ -62,8 +62,10 @@ class UserList extends BaseController
                     <a href="' . base_url() . 'users/show/' . enkripsi($item->user_id) . '" class="text-primary fw-bolder link-underline-opacity-0 link-underline-opacity-100-hover" title="Click to edit">' . $item->user_name . '</a>
                 ';
                 $row[] = $item->full_name;
-                $row[] = ($item->user_phone) ? substr_replace(dekripsi($item->user_phone), '******', -6) : '';
-                $row[] = ($item->user_email) ? sensor_email(dekripsi($item->user_email)) : '';
+		$row[] ='';
+		$row[] = '';
+                //$row[] = ($item->user_phone) ? substr_replace(dekripsi($item->user_phone), '******', -6) : '';
+                //$row[] = ($item->user_email) ? sensor_email(dekripsi($item->user_email)) : '';
                 $row[] = $item->nama_level;
                 $row[] = $item->nama_status;
                 $row[] = ($item->last_login) ? date("d/M/Y H:i:s", strtotime($item->last_login)) : '';
