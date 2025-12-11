@@ -38,6 +38,38 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Mold Engineer
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    ME Engineer
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Planner
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Quality
+                                </p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-header">MASTER DATA</li>
@@ -80,27 +112,11 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-gear"></i>
                         <p>
-                            APQP Setup
+                            Common Data
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('workshop') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
-                                <p>
-                                    APQP Level
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('tonnage') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
-                                <p>
-                                    APQP Doocument
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('machine') ?>" class="nav-link" onclick="loading()">
                                 <i class="bi bi-arrow-right-circle"></i>

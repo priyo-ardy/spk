@@ -112,10 +112,6 @@ function getData(token) {
         buttons.update.removeAttribute("hidden");
 
         $(dataForm.kategori).trigger("change");
-<<<<<<< HEAD
-=======
-
->>>>>>> 2d40778d1dc61d4d743cc9c35970096bc94207f8
         hideLoading();
       })
       .catch((err) => {

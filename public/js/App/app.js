@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     theme: "bootstrap-5",
     dropdownCssClass: "rounded-0",
     selectionCssClass: "rounded-0",
+    width: "resolve",
   });
 });
 

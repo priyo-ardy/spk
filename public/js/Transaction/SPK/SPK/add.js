@@ -103,8 +103,8 @@ dataForm.doc_type.onchange = () => {
       dataForm.material.innerHTML = '<option value="">-- Choose --</option>';
       dataForm.defect.innerHTML = '<option value="">-- Choose --</option>';
       dataForm.sub_defect.innerHTML = '<option value="">-- Choose --</option>';
-      dataForm.label_defect.innerText = `Defect&ensp;<strong class="text-danger">*</strong>`;
-      dataForm.label_sub_defect.innerText = `Sub Defect&ensp;<strong class="text-danger">*</strong>`;
+      dataForm.label_defect.innerHTML = `Defect&ensp;<strong class="text-danger">*</strong>`;
+      dataForm.label_sub_defect.innerHTML = `Sub Defect&ensp;<strong class="text-danger">*</strong>`;
     } else {
       if (dataForm.doc_type.value == "1") {
         dataForm.tipe_equipment.setAttribute("disabled", true);

@@ -42,7 +42,7 @@
     <link
         rel="stylesheet"
         href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
-        <!-- <link
+    <!-- <link
             rel="stylesheet"
             href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
         <link
@@ -51,7 +51,7 @@
     <!-- AdminLTE CSS -->
     <link
         rel="stylesheet"
-        href="<?= base_url() . 'dist/css/adminlte.css'; ?>" />
+        href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc6/dist/css/adminlte.min.css" />
     <!-- Fontawesome -->
     <link
         rel="stylesheet"
@@ -222,7 +222,7 @@
         src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script> -->
     <!-- AdminLTE JS -->
     <script
-        src="<?= base_url() . 'dist/js/adminlte.js'; ?>"></script>
+        src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc6/dist/js/adminlte.min.js"></script>
     <!-- Fancybox for image preview -->
     <script
         src="<?= base_url() . 'lightbox/src/js/lightbox.js' ?>"></script>
