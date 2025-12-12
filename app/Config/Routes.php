@@ -67,6 +67,16 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->get('', 'Transaction\Identification\Mold\IdentificationMold::index');
     });
 
+    // SPK Identification
+    $routes->group('identification', static function ($routes) {
+        $routes->get('', 'Transaction\Identification\Identification::index');
+    });
+
+    // SPK Verification
+    $routes->group('verification', static function ($routes) {
+        $routes->get('', 'Transaction\Verification\Verification::index');
+    });
+
     // Master Data -> Material Management -> Material Category
     $routes->group('/material_category', static function ($routes) {
         $routes->get('', 'MasterData\MaterialManagement\MaterialCategory\MaterialCategory::index');

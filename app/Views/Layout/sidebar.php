@@ -13,7 +13,7 @@
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">DASHBOARD</li>
                 <li class="nav-item">
-                    <a href="<?= base_url() . 'dashboard' ?>" class="nav-link">
+                    <a href="<?= base_url() . 'dashboard' ?>" class="nav-link" onclick="loading()">
                         <i class="nav-icon bi bi-speedometer2"></i>
                         <p>
                             Dashboard
@@ -31,7 +31,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                            <a href="<?= base_url() . 'spk' ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     List of SPK
@@ -50,7 +50,7 @@
                     </a>
                     <ul class="nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<?= base_url() . 'identification' ?>" class="nav-link" onclick="loading();">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     SPK Identification
@@ -69,7 +69,7 @@
                     </a>
                     <ul class="nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="<?= base_url() . 'verification' ?>" class="nav-link" onclick="loading();">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     SPK Verification
@@ -89,7 +89,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('tonnage') ?>" class="nav-link">
+                            <a href="<?= base_url('tonnage') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Tonnage
@@ -97,7 +97,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('workshop') ?>" class="nav-link">
+                            <a href="<?= base_url('workshop') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Workshop
@@ -258,70 +258,8 @@
                         </li>
                     </ul>
                 </li>
-                <!-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="bi bi-pen nav-icon"></i>
-                        <p>
-                            Approval Setup
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('approval_flow') ?>" class="nav-link" onclick="loading();">
-                                <i class="nav-icon bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Approval Flow
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-folder"></i>
-                        <p>
-                            Doc. Management
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-item bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Document Category
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-item bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Document Type
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= base_url('periode') ?>" class="nav-link" onclick="loading();">
-                        <i class="nav-icon bi bi-calendar-day"></i>
-                        <p>
-                            Period Setup
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= base_url('logs') ?>" class="nav-link">
-                        <i class="nav-icon bi bi-journal-text"></i>
-                        <p>
-                            Logs
-                        </p>
-                    </a>
-                </li> -->
-                <li class="nav-item">
-                    <a href="<?= base_url() . 'logout' ?>" class="nav-link">
+                    <a href="<?= base_url() . 'logout' ?>" class="nav-link" onclick="loading()">
                         <i class="nav-icon bi bi-box-arrow-left"></i>
                         <p>
                             Log Out
