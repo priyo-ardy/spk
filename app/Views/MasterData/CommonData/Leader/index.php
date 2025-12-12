@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label" for="data_NIK">Karyawan <strong class="text-danger">*</strong></label>
-                                    <select name="data_NIK" id="id_NIK" class="form-control select2 select2bs4 rounded-0" required>
+                                    <select name="data_NIK" id="id_NIK" class="form-control select2 select2bs5 rounded-0" required>
                                         <option value="">--Choose--</option>
                                         <?php foreach ($karyawan as $k): ?>
                                             <option value="<?= $k->NIK ?>"><?= $k->nama ?></option>

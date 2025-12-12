@@ -38,35 +38,41 @@
                                 </p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-folder2-open"></i>
+                        <p>
+                            Idenfication
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Mold Engineer
+                                    SPK Identification
                                 </p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-folder2-open"></i>
+                        <p>
+                            Varification
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    ME Engineer
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
-                                <i class="nav-icon bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Planner
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url() . 'spk' ?>" class="nav-link">
-                                <i class="nav-icon bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Quality
+                                    SPK Verification
                                 </p>
                             </a>
                         </li>
@@ -75,13 +81,37 @@
                 <li class="nav-header">MASTER DATA</li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-box-seam"></i>
+                        <i class="nav-icon bi bi-gear"></i>
                         <p>
-                            Material Management
+                            Common Data
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('tonnage') ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Tonnage
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('workshop') ?>" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Workshop
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= base_url('satuan') ?>" class="nav-link" onclick="loading()">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    UoM (Unit of Measure)
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('material_category') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
@@ -99,6 +129,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="<?= base_url('machine') ?>" class="nav-link" onclick="loading()">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Machine
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<?= base_url('equipment_type') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
@@ -106,44 +144,25 @@
                                 </p>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-gear"></i>
-                        <p>
-                            Common Data
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('machine') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Machine
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('defect') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Defect
+                                    Defect/Problem
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('sub_defect') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Sub Defect
+                                    Sub Defect/Problem
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('posisi_defect') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Defect Position
                                 </p>
@@ -151,47 +170,40 @@
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('repair_reason') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Repair Reason
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('satuan') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
-                                <p>
-                                    Unit
-                                </p>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="<?= base_url('departemen') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Department
+                                    list of Department
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('leader') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Leader
+                                    Leader/Supervisor
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('karyawan') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Employee
+                                    List of Employee
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('lokasi') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
                                     Location
                                 </p>
@@ -199,9 +211,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="<?= base_url('supplier') ?>" class="nav-link" onclick="loading()">
-                                <i class="bi bi-arrow-right-circle"></i>
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
                                 <p>
-                                    Supplier
+                                    List of Supplier
                                 </p>
                             </a>
                         </li>

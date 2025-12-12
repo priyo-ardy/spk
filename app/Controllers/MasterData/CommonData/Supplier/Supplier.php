@@ -143,24 +143,6 @@ class Supplier extends BaseController
                         'max_length' => 'The maximum character of supplier name is {param} character'
                     ]
                 ],
-                'data_alamat' => [
-                    'rules' => 'trim|htmlspecialchars',
-                ],
-                'data_phone' => [
-                    'rules' => 'trim|htmlspecialchars',
-                ],
-                'data_email' => [
-                    'rules' => 'trim|valid_email',
-                    'errors' => [
-                        'valid_email' => 'Invalid email address format'
-                    ]
-                ],
-                'data_contact' => [
-                    'rules' => 'trim|htmlspecialchars',
-                ],
-                'data_remark' => [
-                    'rules' => 'trim|htmlspecialchars',
-                ],
             ];
 
             $this->validasi->setRules($rules);
