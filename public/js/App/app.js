@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  hideLoading();
-
   $(".select2bs5").select2({
     theme: "bootstrap-5",
     dropdownCssClass: "rounded-0",
     selectionCssClass: "rounded-0",
     width: "resolve",
   });
+
+  hideLoading();
 });
 
 function pesanSukses(message) {
@@ -82,7 +82,7 @@ toastTriggerList.forEach((btn) => {
     toastBootstrap.show();
   });
 });
-// end::Bootstrap Tooltip
+// end::Bootstrap Toast
 
 function loading() {
   const loadingOverlay = document.getElementById("loading-overlay");

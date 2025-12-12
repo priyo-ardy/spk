@@ -38,6 +38,9 @@
                         <button type="button" id="btnExport" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Export">
                             <i class="bi bi-download"></i>&ensp;Export
                         </button>
+                        <button type="button" id="btnGenerate" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Identification Document">
+                            <i class="bi bi-gear"></i>&ensp;Generate Identification
+                        </button>
                     </div>
                 </div>
             </div>
@@ -48,6 +51,9 @@
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered" id="dataTable">
                                     <thead class="text-center">
+                                        <th class="align-middle bg-body-secondary">
+                                            <input type="checkbox" id="select-all" class="form-check-input rounded-0 border-1 border-primary">
+                                        </th>
                                         <th class="align-middle bg-body-secondary">Category</th>
                                         <th class="align-middle bg-body-secondary">SPK No.</th>
                                         <th class="align-middle bg-body-secondary">Doc. Status</th>
@@ -81,4 +87,5 @@
     </div>
 </main>
 <?= $this->include('Transaction/SPK/Mold/modal') ?>
+<?= $this->include('Transaction/SPK/SPK/modal_generate') ?>
 <?= $this->endSection(); ?>

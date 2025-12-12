@@ -91,8 +91,8 @@ class SPK extends BaseController
                 break;
         }
 
-        $column_order = [];
-        $column_search = [];
+        $column_order = ['code'];
+        $column_search = ['code'];
         $order = array('tgl_lapor' => 'desc');
 
         $this->dataTable = new DataTableModel(Services::request(), $table, $column_order, $column_search, $order);
@@ -108,6 +108,8 @@ class SPK extends BaseController
 
         foreach ($lists as $item) {
             $row = [];
+
+            $row[] = enkripsi($item->id);
             $row[] = $item->nama_kategori;
             $row[] = '
                     <a href="' . base_url() . 'spk/show/' . enkripsi($item->id) . '" class="link-underline-opacity-100-hover fw-bolder" onlick="loading()">' . $item->code . '</a>

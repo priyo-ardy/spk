@@ -70,6 +70,7 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // SPK Identification
     $routes->group('identification', static function ($routes) {
         $routes->get('', 'Transaction\Identification\Identification::index');
+        $routes->post('generate-from-spk', 'Transaction\Identification\Identification::generateFromSpk');
     });
 
     // SPK Verification

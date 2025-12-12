@@ -1,13 +1,93 @@
 window.onload = () => {
   loadTable();
+
+  $("#select-all").on("click", function () {
+    var isChecked = this.checked;
+    $(".row-checkbox").prop("checked", isChecked);
+  });
+
+  $("#dataTable tbody").on("click", ".row-checkbox", function () {
+    var totalCheckbox = $(".row-checkbox").length;
+    var totalChecked = $(".row-checkbox:checked").length;
+
+    if (totalCheckbox == totalChecked) {
+      $("#select-all").prop("checked", true);
+    } else {
+      $("#select-all").prop("checked", false);
+    }
+  });
 };
+
+const formGenerate = document.getElementById("form-generate");
 
 const buttons = {
   add: document.getElementById("btnAdd"),
   filter: document.getElementById("btnFilter"),
   refresh: document.getElementById("btnRefresh"),
   export: document.getElementById("btnExport"),
+  generate: document.getElementById("btnGenerate"),
+  modal_generate: document.getElementById("btnModalGenerate"),
 };
+
+buttons.generate.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // Ambil semua elemen checkbox yang dicentang
+  var checkedBoxes = $(".row-checkbox:checked");
+  var isAnyCheckboxChecked = checkedBoxes.length > 0;
+
+  // Cek Kondisi
+  if (!isAnyCheckboxChecked) {
+    pesanWarning("No Data Selected");
+    return;
+  } else {
+    var selectedData = checkedBoxes
+      .map(function () {
+        return $(this).val();
+      })
+      .get(); // Mengubah object jQuery menjadi Array standar
+
+    // const selectedDataJSON = JSON.stringify(selectedData);
+    // const selectedDataArray = Array.from(JSON.parse(selectedDataJSON));
+    selectedData.forEach((item) => {
+      const inputForm = document.createElement("input");
+      const inputGroup = document.createElement("div");
+      inputForm.type = "hidden";
+      inputForm.name = "spk[]";
+      inputForm.classList.add("form-control");
+      inputForm.classList.add("rounded-0");
+      inputForm.setAttribute("readonly", true);
+      inputForm.value = item;
+
+      inputGroup.classList.add("input-group", "mb-3");
+      inputGroup.appendChild(inputForm);
+
+      formGenerate.appendChild(inputGroup);
+    });
+    $("#modal-generate").modal("show");
+  }
+});
+
+buttons.modal_generate.addEventListener("click", (e) => {
+  try {
+    loading();
+    fetchData(
+      baseurl + "/identification/generate-from-spk",
+      "POST",
+      new FormData(formGenerate)
+    )
+      .then((result) => {
+        hideLoading();
+      })
+      .catch((err) => {
+        pesanError(err.message);
+        hideLoading();
+      });
+  } catch (e) {
+    pesanError(e.message);
+    hideLoading();
+  }
+});
 
 buttons.add.addEventListener("click", (e) => {
   loading();
@@ -15,7 +95,7 @@ buttons.add.addEventListener("click", (e) => {
 });
 
 function loadTable() {
-  $("#dataTable").DataTable({
+  table = $("#dataTable").DataTable({
     processing: true,
     serverSide: true,
     responsive: false,
@@ -29,19 +109,33 @@ function loadTable() {
     ajax: {
       url: baseurl + "/spk/table",
       type: "POST",
-      data: "raw",
-      action: "calls",
+      data: function (d) {},
     },
     error: function (xhr, error, thrown) {
-      pesanError(error.message);
+      if (typeof pesanError === "function") {
+        pesanError(xhr.responseJSON ? xhr.responseJSON.message : error);
+      } else {
+        console.error("Error:", error);
+      }
     },
     deferRender: true,
-    columnsDefs: [
+    columnDefs: [
       {
         targets: 0,
         orderable: false,
+        className: "text-center align-middle",
+        render: function (data, type, row) {
+          return (
+            '<input type="checkbox" class="row-checkbox form-check-input border-1 rounded-0 border-primary" name="token[]" value="' +
+            data +
+            '">'
+          );
+        },
       },
     ],
+    drawCallback: function (settings) {
+      $("#select-all").prop("checked", false);
+    },
   });
 }
 
@@ -143,4 +237,8 @@ function clearModal() {
   $("#modalImage").modal("hide");
   document.getElementById("imageData").textContent = "";
   document.getElementById("modalTitle").textContent = "";
+}
+
+function clearModalGenerate() {
+  formGenerate.innerHTML = "";
 }

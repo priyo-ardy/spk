@@ -41,13 +41,7 @@
     <!-- Datatable CSS -->
     <link
         rel="stylesheet"
-        href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
-    <!-- <link
-            rel="stylesheet"
-            href="https://cdn.datatables.net/fixedheader/3.2.0/css/fixedHeader.dataTables.min.css">
-        <link
-            rel="stylesheet"
-            href="https://cdn.datatables.net/fixedcolumns/4.3.0/css/fixedColumns.dataTables.min.css"> -->
+        href="https://cdn.datatables.net/2.3.5/css/dataTables.bootstrap5.min.css" />
     <!-- AdminLTE CSS -->
     <link
         rel="stylesheet"
@@ -215,11 +209,9 @@
         src="<?= base_url() . 'SweetAlert/sweetalert2.min.js'; ?>"></script>
     <!-- Datatable -->
     <script
-        src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    <!-- <script
-        src="https://cdn.datatables.net/fixedheader/3.2.0/js/dataTables.fixedHeader.min.js"></script>
+        src="https://cdn.datatables.net/2.3.5/js/dataTables.min.js"></script>
     <script
-        src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script> -->
+        src="https://cdn.datatables.net/2.3.5/js/dataTables.bootstrap5.min.js"></script>
     <!-- AdminLTE JS -->
     <script
         src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc6/dist/js/adminlte.min.js"></script>
