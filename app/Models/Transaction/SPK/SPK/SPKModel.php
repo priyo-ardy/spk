@@ -67,4 +67,16 @@ class SPKModel extends Model
             ->get()
             ->getRow();
     }
+
+    public function cekDokumenStatus($id_spk)
+    {
+        return $this->whereIn('id', $id_spk)->get()->getResultObject();
+    }
+
+    function updateIdentifikasi($id_spk)
+    {
+        return $this->whereIn('id', $id_spk)
+            ->set(['identifikasi' => '1'])
+            ->update();
+    }
 }

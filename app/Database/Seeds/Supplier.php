@@ -8,6 +8,8 @@ class Supplier extends Seeder
 {
     public function run()
     {
+        $this->db->table('m_supplier')->truncate();
+
         $data = [
             [
                 "id" => "ba66db05-6b8f-4c8f-aaed-8bb8b3060ea2",

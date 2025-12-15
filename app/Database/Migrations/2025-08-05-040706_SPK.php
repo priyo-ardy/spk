@@ -205,6 +205,20 @@ class SPK extends Migration
                 'charset' => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
             ],
+            'identifikasi' => [
+                'type' => "VARCHAR",
+                'constraint' => 1,
+                'null' => false,
+                'default' => '0',
+                'comment' => '0 -> Belum Ada Identifikasi, 1 -> Sudah Ada Identifikasi',
+            ],
+            'verifikasi' => [
+                'type' => "VARCHAR",
+                'constraint' => 1,
+                'null' => false,
+                'default' => '0',
+                'comment' => '0 -> Belum Ada Verifikasi, 1 -> Sudah Ada Verifikasi',
+            ],
             'level_status' => [
                 'type' => "VARCHAR",
                 'constraint' => 1,

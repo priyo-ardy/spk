@@ -1,6 +1,6 @@
 <div class="modal fade" id="modal-generate" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <div class="modal-header">
                 <h5 class="modal-title">Generate SPK Identification Document</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearModalGenerate()"></button>
@@ -9,11 +9,11 @@
                 <div class="row">
                     <div class="col-12">
                         <p>
-                            Are you sure you want to generate the SPK Identification Document from the selected data?
+                            Are you sure you want to create an Identification document from the SPK document you selected? Once you press the generate button, the process cannot be canceled.
                         </p>
                     </div>
                     <div class="col-12">
-                        <form id="form-generate" hidden></form>
+                        <form id="form-generate"></form>
                     </div>
                 </div>
             </div>

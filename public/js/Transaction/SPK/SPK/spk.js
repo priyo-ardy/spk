@@ -45,14 +45,12 @@ buttons.generate.addEventListener("click", (e) => {
       .map(function () {
         return $(this).val();
       })
-      .get(); // Mengubah object jQuery menjadi Array standar
+      .get();
 
-    // const selectedDataJSON = JSON.stringify(selectedData);
-    // const selectedDataArray = Array.from(JSON.parse(selectedDataJSON));
     selectedData.forEach((item) => {
       const inputForm = document.createElement("input");
       const inputGroup = document.createElement("div");
-      inputForm.type = "hidden";
+      inputForm.type = "text";
       inputForm.name = "spk[]";
       inputForm.classList.add("form-control");
       inputForm.classList.add("rounded-0");
@@ -64,6 +62,7 @@ buttons.generate.addEventListener("click", (e) => {
 
       formGenerate.appendChild(inputGroup);
     });
+
     $("#modal-generate").modal("show");
   }
 });
@@ -78,9 +77,42 @@ buttons.modal_generate.addEventListener("click", (e) => {
     )
       .then((result) => {
         hideLoading();
+        pesanSukses(result.message);
+
+        const dataList = result.data;
+        const totalData = dataList.length;
+
+        dataList.forEach((item, index) => {
+          const targetUrl = baseurl + "/identification/show/" + item.token;
+
+          if (index == totalData - 1) {
+            window.location.replace(targetUrl);
+          } else {
+            window.open(targetUrl, "_blank");
+          }
+        });
       })
       .catch((err) => {
-        pesanError(err.message);
+        $("#modal-generate").modal("hide");
+        const errorMessage = document.getElementById("errorMessage");
+        const errorList = document.getElementById("errorList");
+        errorList.innerHTML = "";
+        let number = 1;
+        const dataList = err.data;
+
+        errorMessage.textContent = err.message;
+        dataList.forEach((item) => {
+          const row = `
+            <tr>
+              <td class="text-danger text-right">${number++}</td>
+              <td class="text-danger">${item.message}</td>
+            </tr>
+          `;
+
+          errorList.insertAdjacentHTML("beforeend", row);
+        });
+
+        $("#modal-error").modal("show");
         hideLoading();
       });
   } catch (e) {
@@ -88,6 +120,17 @@ buttons.modal_generate.addEventListener("click", (e) => {
     hideLoading();
   }
 });
+
+function closeModalError() {
+  const errorMessage = document.getElementById("errorMessage");
+  const errorList = document.getElementById("errorList");
+
+  errorMessage.textContent = "";
+  errorList.innerHTML = "";
+  formGenerate.innerHTML = "";
+
+  $("#modal-error").modal("hide");
+}
 
 buttons.add.addEventListener("click", (e) => {
   loading();
@@ -241,4 +284,5 @@ function clearModal() {
 
 function clearModalGenerate() {
   formGenerate.innerHTML = "";
+  $("#modal-generate").modal("hide");
 }

@@ -1,10 +1,8 @@
-// const csrfToken = document.querySelector('input[name="app_token"]').value;
-
 async function fetchData(url, method, body = null) {
   let options = {
     method: method,
     headers: {
-      // "X-CSRF-TOKEN": csrfToken,
+      "x-requested-with": "XMLHttpRequest",
     },
   };
 
@@ -23,9 +21,8 @@ async function fetchData(url, method, body = null) {
     const response = await fetch(url, options);
     const contentType = response.headers.get("Content-Type");
 
-    // Cek apakah respons tidak ok
     if (!response.ok) {
-      const responseText = await response.text(); // Ambil teks respons
+      const responseText = await response.text();
       if (contentType && contentType.includes("application/json")) {
         const errorData = JSON.parse(responseText);
         throw errorData;
@@ -40,13 +37,12 @@ async function fetchData(url, method, body = null) {
       }
     }
 
-    // Jika respons ok, ambil data JSON
     if (contentType && contentType.includes("application/json")) {
       return await response.json(); // Mengembalikan data JSON
     } else {
       return await response.text(); // Mengembalikan teks jika bukan JSON
     }
   } catch (error) {
-    throw error; // Melempar error untuk ditangani di tempat lain
+    throw error;
   }
 }

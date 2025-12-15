@@ -269,4 +269,9 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->group('/setup', static function ($routes) {
         $routes->get('', 'Admin\Setup\Setup::index');
     });
+
+    // Identification
+    $routes->group('/identification', static function ($routes) {
+        $routes->get('show/(:any)', 'Transaction\Identification\Identification::showData/$1');
+    });
 });

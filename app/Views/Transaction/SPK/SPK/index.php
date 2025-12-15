@@ -88,4 +88,5 @@
 </main>
 <?= $this->include('Transaction/SPK/Mold/modal') ?>
 <?= $this->include('Transaction/SPK/SPK/modal_generate') ?>
+<?= $this->include('Transaction/SPK/SPK/modal_error') ?>
 <?= $this->endSection(); ?>
