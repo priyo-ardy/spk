@@ -29,4 +29,16 @@ class IdentificationModel extends Model
 
         return $this->db->query($query)->getResultObject();
     }
+
+    public function getIdentificationById($id_identification)
+    {
+        return $this->where('t_identification.id', $id_identification)
+            ->select('
+                t_identification.*, 
+                t_spk.code as kode_spk,
+                t_spk.tgl_lapor as tgl_lapor
+            ')
+            ->join('t_spk', 't_identification.id_spk = t_spk.id', 'left')
+            ->first();
+    }
 }

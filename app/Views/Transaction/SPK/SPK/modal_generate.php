@@ -13,7 +13,7 @@
                         </p>
                     </div>
                     <div class="col-12">
-                        <form id="form-generate"></form>
+                        <form id="form-generate" style="display: none;"></form>
                     </div>
                 </div>
             </div>

@@ -13,6 +13,10 @@ $routes->post('change', 'Auth\Auth::changePassword');
 $routes->get('logout', 'Auth\Auth::logOut');
 $routes->get('recover-password/(:any)', 'Auth\Auth::recoverPassword/$1');
 
+$routes->set404Override(function () {
+    return view('errors/html/custom_error_404');
+});
+
 $routes->group('', ['filter' => 'auth'], static function ($routes) {
     // Dashboard
     $routes->group('/dashboard', static function ($routes) {
@@ -259,6 +263,18 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('next', 'AppSetup\UserManagement\UserList\UserList::nextData');
         $routes->post('change_password', 'AppSetup\UserManagement\UserList\UserList::changeUserPassword');
         $routes->post('disable', 'AppSetup\UserManagement\UserList\UserList::disableUser');
+    });
+
+    // Master data problem category
+    $routes->group('/problem_category', static function ($routes) {
+        $routes->get('', 'MasterData\CommonData\ProblemCategory\ProblemCategory::index');
+        $routes->post('table', 'MasterData\CommonData\ProblemCategory\ProblemCategory::loadTable');
+        $routes->post('save', 'MasterData\CommonData\ProblemCategory\ProblemCategory::saveData');
+        $routes->get('get/(:any)', 'MasterData\CommonData\ProblemCategory\ProblemCategory::getData/$1');
+        $routes->post('update', 'MasterData\CommonData\ProblemCategory\ProblemCategory::updateData');
+        $routes->post('delete', 'MasterData\CommonData\ProblemCategory\ProblemCategory::deleteData');
+        $routes->get('export', 'MasterData\CommonData\ProblemCategory\ProblemCategory::exportData');
+        $routes->get('seeder', 'MasterData\CommonData\ProblemCategory\ProblemCategory::seederData');
     });
 
     $routes->group('/seeder', static function ($routes) {

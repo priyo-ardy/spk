@@ -39,7 +39,10 @@
                             <i class="bi bi-download"></i>&ensp;Export
                         </button>
                         <button type="button" id="btnGenerate" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Identification Document">
-                            <i class="bi bi-gear"></i>&ensp;Generate Identification
+                            <i class="bi bi-gear"></i>&ensp;Generate
+                        </button>
+                        <button type="button" id="btnGenerate" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Identification Document">
+                            <i class="bi bi-gear"></i>&ensp;Associate Query
                         </button>
                     </div>
                 </div>

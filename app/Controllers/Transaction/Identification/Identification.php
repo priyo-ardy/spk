@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Transaction\Identification\IdentificationModel;
 use App\Models\Transaction\SPK\SPK\SPKModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Response;
 use Config\Database;
 use Config\Services;
@@ -70,7 +71,7 @@ class Identification extends BaseController
             foreach ($status_spk as $row) {
                 if ($row->dokumen_status     == '2') {
                     if ($row->identifikasi == '1') {
-                        $qualified_document[] = [
+                        $unqualified_document[] = [
                             'message' => "SPK document <strong>$row->code</strong> already generated identification data, failed to generate identification data",
                         ];
                     } else {
@@ -107,8 +108,8 @@ class Identification extends BaseController
             }
 
             // Generate data
-            for ($i = 0; $i < count($spk); $i++) {
-                $id_spk = dekripsi($spk[$i]);
+            for ($i = 0; $i < count($qualified_document); $i++) {
+                $id_spk = $qualified_document[$i];
                 $id = generate_uuid();
 
                 $data[] = [
@@ -145,12 +146,28 @@ class Identification extends BaseController
             return pesan(ResponseInterface::HTTP_OK, "Success generate identification document data", $data_token);
         } catch (\Exception $e) {
             log_action($this->module, "generate from spk", "error", current_url(), $e->getMessage());
-            return pesan(ResponseInterface::HTTP_BAD_REQUEST, $e->getMessage());
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, $e->getMessage() . $e->getFile() . $e->getLine());
         }
     }
 
     function showData($token)
     {
-        echo dekripsi($token);
+        $id_identification = dekripsi($token);
+        // echo $id_identification;
+        $getData = $this->identifikasiModel->getIdentificationById($id_identification);
+        if (!$getData) {
+            throw PageNotFoundException::forPageNotFound('SPK Identification data not found');
+        }
+
+        $data = [
+            'page_title' => 'SPK Identification View',
+            'title' => 'SPK Identification View',
+            'data' => $getData,
+            'footer' => [
+                '<script src="' . base_url() . 'js/Transaction/Identification/edit.js' . '"></script>"'
+            ],
+        ];
+
+        return view('Transaction/Identification/show', $data);
     }
 }

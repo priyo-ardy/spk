@@ -24,5 +24,6 @@ class Restore extends Seeder
         $this->call('Machine');
         $this->call('RepairReason');
         $this->call('Satuan');
+        $this->call('ProblemCategoryData');
     }
 }

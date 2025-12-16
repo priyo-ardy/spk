@@ -7,7 +7,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title; ?></title>
+    <title>404 Not Found</title>
     <meta name="title" content="Schlemmer Automotive Indonesia WebApp" />
     <meta name="author" content="Ardy Priyo Sudiyantoko" />
 
@@ -172,7 +172,6 @@
             <!--begin::To the end-->
             <div class="float-end d-none d-sm-inline">
                 Schlemmer Automotive Indonesia<br>
-                App Ver <?= $app_ver ?>
             </div>
             <!--end::To the end-->
             <!--begin::Copyright-->
@@ -181,7 +180,6 @@
                 <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
             </strong>
             All rights reserved.<br>
-            <?= $app_name; ?>
             <!--end::Copyright-->
         </footer>
         <!--end::Footer-->
@@ -208,9 +206,6 @@
     <script
         src="<?= base_url() . 'SweetAlert/sweetalert2.min.js'; ?>"></script>
     <!-- Datatable -->
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js">
-    </script>
     <script
         src="https://cdn.datatables.net/2.3.5/js/dataTables.min.js"></script>
     <script

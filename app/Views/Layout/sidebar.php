@@ -176,7 +176,14 @@
                                 </p>
                             </a>
                         </li>
-
+                        <li class="nav-item">
+                            <a href="<?= base_url() . 'problem_category' ?>" onclick="loading();" class="nav-link">
+                                <i class="nav-icon bi bi-arrow-right-circle"></i>
+                                <p>
+                                    Problem Category
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<?= base_url('departemen') ?>" class="nav-link" onclick="loading()">
                                 <i class="nav-icon bi bi-arrow-right-circle"></i>
