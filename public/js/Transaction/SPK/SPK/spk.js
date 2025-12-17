@@ -27,6 +27,7 @@ const buttons = {
   export: document.getElementById("btnExport"),
   generate: document.getElementById("btnGenerate"),
   modal_generate: document.getElementById("btnModalGenerate"),
+  delete: document.getElementById("btnDelete"),
 };
 
 buttons.generate.addEventListener("click", (e) => {
@@ -285,4 +286,136 @@ function clearModal() {
 function clearModalGenerate() {
   formGenerate.innerHTML = "";
   $("#modal-generate").modal("hide");
+}
+
+function targetDocument(e) {
+  if (e) e.preventDefault();
+  var checkedBoxes = $(".row-checkbox:checked");
+  var isAnyCheckboxChecked = checkedBoxes.length > 0;
+
+  if (!isAnyCheckboxChecked) {
+    pesanWarning("No Data Selected");
+    return;
+  } else if (checkedBoxes.length > 1) {
+    pesanWarning("Select Only One Data");
+    return;
+  } else {
+    var selectedData = checkedBoxes
+      .map(function () {
+        return $(this).val();
+      })
+      .get();
+
+    try {
+      loading();
+      fetchData(
+        baseurl + "/spk/target_document/",
+        "POST",
+        JSON.stringify({ data: selectedData[0].toString() })
+      )
+        .then((result) => {
+          window.location.replace(
+            baseurl + "/identification/show/" + result.data.token
+          );
+        })
+        .catch((err) => {
+          pesanError(err.message);
+          hideLoading();
+        });
+    } catch (e) {
+      pesanError(e.message);
+      hideLoading();
+    }
+  }
+}
+
+buttons.delete.addEventListener("click", () => {
+  var checkedBoxes = $(".row-checkbox:checked");
+  var isAnyCheckboxChecked = checkedBoxes.length > 0;
+
+  if (!isAnyCheckboxChecked) {
+    pesanWarning("No Data Selected");
+    return;
+  } else {
+    var selectedData = checkedBoxes
+      .map(function () {
+        return $(this).val();
+      })
+      .get();
+
+    try {
+      deleteSpk(selectedData);
+    } catch (e) {
+      pesanError(e.message);
+    }
+  }
+});
+
+function deleteSpk(data) {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-primary rounded-0",
+      cancelButton: "btn btn-secondary rounded-0",
+    },
+  });
+
+  swalWithBootstrapButtons
+    .fire({
+      title: "Warning !",
+      text: "Deleted data cannot be recovered",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: '<i class="bi bi-check"></i>&ensp;Yes',
+      cancelButtonText: '<i class="bi bi-x"></i>&ensp;Cancel',
+      reverseButtons: true,
+    })
+    .then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Please wait...",
+          timerProgressBar: true,
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            swal.showLoading();
+          },
+        }).then(
+          fetchData(
+            baseurl + "/spk/delete",
+            "POST",
+            JSON.stringify({ token: data })
+          )
+            .then((result) => {
+              if (result.data.length > 0) {
+                const errorList = document.getElementById("errorList");
+                errorList.innerHTML = "";
+                let number = 1;
+                const dataList = result.data;
+                Swal.close();
+
+                dataList.forEach((item) => {
+                  const row = `
+                    <tr>
+                      <td class="text-danger text-right align-right">${number}</td>
+                      <td class="text-danger">${item}</td>
+                    </tr>
+                  `;
+
+                  number++;
+                  errorList.insertAdjacentHTML("beforeend", row);
+                });
+                $("#modal-error").modal("show");
+              } else {
+                pesanSukses(result.message);
+              }
+
+              refreshTable();
+            })
+            .catch((err) => {
+              pesanError(err.message);
+            })
+        );
+      }
+    });
 }

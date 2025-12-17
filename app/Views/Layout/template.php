@@ -209,9 +209,6 @@
         src="<?= base_url() . 'SweetAlert/sweetalert2.min.js'; ?>"></script>
     <!-- Datatable -->
     <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js">
-    </script>
-    <script
         src="https://cdn.datatables.net/2.3.5/js/dataTables.min.js"></script>
     <script
         src="https://cdn.datatables.net/2.3.5/js/dataTables.bootstrap5.min.js"></script>

@@ -40,6 +40,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
         $routes->post('next', 'Transaction\SPK\SPK\SPK::nextData');
         $routes->get('export', 'Transaction\SPK\SPK\SPK::exportData');
         $routes->get('image/(:any)', 'Transaction\SPK\SPK\SPK::showImage/$1');
+        $routes->post('target_document', 'Transaction\SPK\SPK\SPK::getTargetDocument');
+        $routes->post('delete', 'Transaction\SPK\SPK\SPK::deleteData');
     });
 
     // Routes SPK for mold engineer

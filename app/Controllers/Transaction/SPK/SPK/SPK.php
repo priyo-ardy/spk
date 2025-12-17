@@ -21,6 +21,7 @@ use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
 use App\Models\MasterData\CommonData\Lokasi\LokasiModel;
 use App\Models\MasterData\CommonData\Supplier\SupplierModel;
+use App\Models\Transaction\Identification\IdentificationModel;
 use CodeIgniter\HTTP\Response;
 use Config\Services;
 use Config\Database;
@@ -49,6 +50,7 @@ class SPK extends BaseController
     protected $supplierModel;
     protected $validasi;
     protected $enkripsi;
+    protected $identifikasiModel;
 
     public function __construct()
     {
@@ -67,6 +69,7 @@ class SPK extends BaseController
         $this->lokasiModel = new LokasiModel();
         $this->machineModel = new MachineModel();
         $this->supplierModel = new SupplierModel();
+        $this->identifikasiModel = new IdentificationModel();
 
         $this->db = Database::connect();
         $this->validasi = Services::validation();
@@ -1198,10 +1201,10 @@ class SPK extends BaseController
 
         try {
             $fileName = "SPK_list_" . date("Y-m-d H:i:s") . ".xlsx";
-            $headers = ['SPK Category', 'SPK No', 'Doc. Status', 'Date', 'Location', 'Requested Dept.', 'Reported By', 'Part/Machine No.', 'Part/Machine Name', 'Part/Machine Model', 'Mold/Jig No.', 'Equipment Type', 'Repair Reason', 'Problem Description', 'Defect', 'Sub Defect', 'Repeat Problem', 'Problem Position', 'Team Leader/Supervisor', 'Status'];
+            $headers = ['SPK Category', 'SPK No', 'Doc. Status', 'Date', 'Location', 'Requested Dept.', 'Reported By', 'Part/Machine No.', 'Part/Machine Name', 'Part/Machine Model', 'Mold/Jig No.', 'Equipment Type', 'Repair Reason', 'Problem Description', 'Defect', 'Sub Defect', 'Repeat Problem', 'Team Leader/Supervisor', 'Status'];
 
             $dataCallBack = function ($offset, $limit) {
-                $column = 'nama_kategori, code, nama_dokumen_status, tgl_lapor, nama_lokasi, nama_dept nama_karyawan, kode_material, nama_material, model_material, nomor_mesin, nama_tipe_equipment,nama_alasan_repair, deskripsi, nama_defect, nama_sub_defect, nama_berulang, nama_posisi, nama_leader, nama_status';
+                $column = 'nama_kategori, code, nama_dokumen_status, tgl_lapor, nama_lokasi, nama_dept nama_karyawan, kode_material, nama_material, model_material, nomor_mesin, nama_tipe_equipment,nama_alasan_repair, deskripsi, nama_defect, nama_sub_defect, nama_berulang, nama_leader, nama_status';
                 return $this->masterModel->getChunkedData('vw_t_spk', $offset, $limit, 'tgl_lapor', $column);
             };
 
@@ -1253,6 +1256,118 @@ class SPK extends BaseController
             ]));
 
             return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured : " . $e->getMessage());
+        }
+    }
+
+    function getTargetDocument()
+    {
+        if ($this->request->getMethod() !== 'POST') {
+            if ($this->request->isAJAX()) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Invalid request method");
+            } else {
+                return view('errors/html/error_405');
+            }
+        }
+
+        try {
+            $json_data = $this->request->getJSON(true);
+
+            if (!is_array($json_data)) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+            }
+
+            if (!isset($json_data['data'])) {
+                return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Data is missing in JSON input");
+            }
+
+            $token = $json_data['data'];
+            $id_spk = dekripsi($token);
+
+            $get_identification = $this->identifikasiModel->getIdentificationBySpk($id_spk);
+            if (!$get_identification) {
+                return pesan(ResponseInterface::HTTP_NOT_FOUND, "No target document available");
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Target document available", [
+                'token' => enkripsi($get_identification->id)
+            ]);
+        } catch (\Exception $e) {
+            log_action($this->module, 'Target Document', "error", current_url(), "Unexpected error occured : " . $e->getMessage(), '', json_encode([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]));
+
+            return pesan(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR, "Unexpected error occured : " . $e->getMessage());
+        }
+    }
+
+    function deleteData()
+    {
+        $json_data = $this->request->getJSON(true);
+
+        if (!is_array($json_data)) {
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "Input is not a valid JSON object");
+        }
+
+        if (!isset($json_data['token'])) {
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "SPK token is missing in JSON input");
+        }
+
+        $token = $json_data['token'];
+        $error = [];
+        $success = [];
+
+        if (session()->get('level') > 2) {
+            return pesan(ResponseInterface::HTTP_UNAUTHORIZED, "You don't have permission to delete SPK data");
+        }
+
+        if (count($token) > 0) {
+            for ($i = 0; $i < count($token); $i++) {
+                $id = dekripsi($token[$i]);
+
+                $cek_identifikasi = $this->identifikasiModel->getIdentificationBySpk($id);
+                if ($cek_identifikasi) {
+                    $error[] = [
+                        "Failed to delete SPK document with no. <strong>$cek_identifikasi->code</strong>, the SPK document already associated with identification document"
+                    ];
+                    log_action(
+                        $this->module,
+                        'delete',
+                        'error',
+                        current_url(),
+                        "Failed to delete SPK data with SPK No. $cek_identifikasi->code",
+                    );
+                    continue;
+                }
+
+                $this->db->transStart();
+                $this->spkModel->delete($id);
+                $getData = $this->spkModel->getDataById($id);
+                $this->db->transComplete();
+
+                if ($this->db->transStatus() === false) {
+                    $error[] = "Internal server error, Failed to delete SPK data with SPK No. <strong>>$getData->code</strong";
+                    log_action(
+                        $this->module,
+                        'delete',
+                        'error',
+                        current_url(),
+                        "Failed to delete SPK data with SPK No. $getData->code",
+                    );
+                } else {
+                    $success[] = "Deleted ID: $id";
+                }
+            }
+
+            if (count($error) > 0) {
+                return pesan(ResponseInterface::HTTP_OK, "SPK data deleted with some error ", $error);
+            }
+
+            return pesan(ResponseInterface::HTTP_OK, "Successfully deleted SPK data");
+        } else {
+            return pesan(ResponseInterface::HTTP_BAD_REQUEST, "No data submitted");
         }
     }
 }

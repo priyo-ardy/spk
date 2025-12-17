@@ -41,4 +41,12 @@ class IdentificationModel extends Model
             ->join('t_spk', 't_identification.id_spk = t_spk.id', 'left')
             ->first();
     }
+
+    public function getIdentificationBySpk($id_spk)
+    {
+        return $this->where('id_spk', $id_spk)
+            ->select('t_identification.*, t_spk.code')
+            ->join('t_spk', 't_identification.id_spk = t_spk.id', 'left')
+            ->first();
+    }
 }

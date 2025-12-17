@@ -35,15 +35,51 @@
                         <button type="button" id="btnRefresh" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh">
                             <i class="bi bi-arrow-repeat"></i>&ensp;Refresh
                         </button>
-                        <button type="button" id="btnExport" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Export">
-                            <i class="bi bi-download"></i>&ensp;Export
-                        </button>
                         <button type="button" id="btnGenerate" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Identification Document">
                             <i class="bi bi-gear"></i>&ensp;Generate
                         </button>
-                        <button type="button" id="btnGenerate" class="btn shadow-none rounded-0 btn-light border-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Identification Document">
-                            <i class="bi bi-gear"></i>&ensp;Associate Query
-                        </button>
+                        <div class="btn-group" role="group">
+                            <button
+                                type="button"
+                                id="btnAssociate"
+                                class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                data-bs-auto-close="true">
+                                <i class="bi bi-file-code"></i>&ensp;Associate Query
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item disabled" href="#" id="associateLink1">
+                                        <i class="bi bi-arrow-left-square"></i>&ensp;Source Document
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="targetDocument(event)" id="associateLink2">
+                                        <i class="bi bi-arrow-right-square"></i>&ensp;Target Document
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button
+                                type="button"
+                                id="btnOptions"
+                                class="btn shadow-none rounded-0 btn-light border-0 dropdown-toggle"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                data-bs-auto-close="true">
+                                <i class="bi bi-list-task"></i>&ensp;Options
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="#" class="dropdown-item" id="btnExport"><i class="bi bi-download"></i>&ensp;Export Data</a>
+                                </li>
+                                <li>
+                                    <a href=" #" class="dropdown-item" id="btnDelete"><i class="bi bi-trash"></i>&ensp;Delete Data</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
