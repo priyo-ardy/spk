@@ -1201,10 +1201,58 @@ class SPK extends BaseController
 
         try {
             $fileName = "SPK_list_" . date("Y-m-d H:i:s") . ".xlsx";
-            $headers = ['SPK Category', 'SPK No', 'Doc. Status', 'Date', 'Location', 'Requested Dept.', 'Reported By', 'Part/Machine No.', 'Part/Machine Name', 'Part/Machine Model', 'Mold/Jig No.', 'Equipment Type', 'Repair Reason', 'Problem Description', 'Defect', 'Sub Defect', 'Repeat Problem', 'Team Leader/Supervisor', 'Status'];
+            $headers = [
+                'SPK Category',
+                'SPK No',
+                'Doc. Status',
+                'Critical Level',
+                'Status',
+                'Reported Date',
+                'Location',
+                'Requested Dept.',
+                'Reported By',
+                'Part/Machine No.',
+                'Part/Machine Name',
+                'Part/Machine Model',
+                'Mold/Jig No.',
+                'Equipment Type',
+                'Repair Reason',
+                'Problem Description',
+                'Defect',
+                'Sub Defect',
+                'Repeat Problem',
+                'Jig Status',
+                'Repair Location',
+                'Supplier',
+                'Team Leader/Supervisor',
+            ];
 
             $dataCallBack = function ($offset, $limit) {
-                $column = 'nama_kategori, code, nama_dokumen_status, tgl_lapor, nama_lokasi, nama_dept nama_karyawan, kode_material, nama_material, model_material, nomor_mesin, nama_tipe_equipment,nama_alasan_repair, deskripsi, nama_defect, nama_sub_defect, nama_berulang, nama_leader, nama_status';
+                $column = '
+                        nama_kategori,
+                        code,
+                        nama_dokumen_status,
+                        nama_prioritas,
+                        nama_flow,
+                        tgl_lapor,
+                        nama_lokasi,
+                        nama_dept,
+                        nama_karyawan,
+                        kode_material,
+                        nama_material,
+                        model_material,
+                        nomor_mesin,
+                        nama_tipe_equipment,
+                        nama_alasan_repair,
+                        deskripsi,
+                        nama_defect,
+                        nama_sub_defect,
+                        nama_berulang,
+                        nama_jig_status,
+                        nama_lokasi_repair,
+                        nama_supplier,
+                        nama_leader
+                    ';
                 return $this->masterModel->getChunkedData('vw_t_spk', $offset, $limit, 'tgl_lapor', $column);
             };
 

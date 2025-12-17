@@ -31,6 +31,7 @@ class MasterModel extends Model
     public function getChunkedData($table, $offset, $limit, $order, $field)
     {
         return $this->db->table($table)
+            ->where('deleted_at', null)
             ->select($field)
             ->limit($limit, $offset)
             ->orderBy($order, 'ASC')

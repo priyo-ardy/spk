@@ -220,8 +220,8 @@
         src="<?= base_url() . 'lightbox/src/js/lightbox.js' ?>"></script>
     <!-- Summernote -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.1/dist/summernote.min.js"></script>
-    <!-- <script
-        src="<?= base_url() . '/plugins/summernote/summernote.min.js' ?>"></script> -->
+    <!-- Moment JS -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 
     <!-- My App Custom JS -->
     <script src="<?= base_url() . 'js/App/app.js' ?>"></script>
