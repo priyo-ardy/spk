@@ -27,8 +27,6 @@ use Config\Services;
 use Config\Database;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\Beta;
 
-use function PHPSTORM_META\map;
-
 class SPK extends BaseController
 {
     protected $db;
@@ -247,8 +245,7 @@ class SPK extends BaseController
 
             $uploadPath = FCPATH . '/uploads/spk/';
             if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-                chmod($uploadPath, 0777);
+                mkdir($uploadPath, 0755, true);
             }
 
             $rules = [
@@ -611,8 +608,7 @@ class SPK extends BaseController
 
             $uploadPath = FCPATH . '/uploads/spk/';
             if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-                chmod($uploadPath, 0777);
+                mkdir($uploadPath, 055, true);
             }
 
             $rules = [
