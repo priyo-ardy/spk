@@ -9,5 +9,5 @@ window.onload = () => {
     maxHeight: null, // set maximum height of editor
   });
 
-  $(".summernote").summernote("disable");
+  // $(".summernote").summernote("disable");
 };

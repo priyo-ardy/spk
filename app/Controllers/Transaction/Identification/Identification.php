@@ -6,8 +6,18 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Transaction\Identification\IdentificationModel;
 use App\Models\Transaction\SPK\SPK\SPKModel;
+use App\Models\MasterData\CommonData\Dept\DeptModel;
+use App\Models\MasterData\CommonData\Karyawan\KaryawanModel;
+use App\Models\MasterData\MaterialManagement\Material\MaterialModel;
+use App\Models\MasterData\MaterialManagement\EquipmentType\EquipmentTypeModel;
+use App\Models\MasterData\CommonData\RepairReason\RepairReasonModel;
+use App\Models\MasterData\CommonData\Defect\DefectModel;
+use App\Models\MasterData\CommonData\SubDefect\SubDefectModel;
+use App\Models\MasterData\CommonData\ProblemCategory\ProblemCategoryModel;
+use App\Models\MasterData\CommonData\Supplier\SupplierModel;
+use App\Models\MasterData\CommonData\Leader\LeaderModel;
+use App\Models\MasterData\CommonData\ProblemPosition\ProblemPositionModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use CodeIgniter\HTTP\Response;
 use Config\Database;
 use Config\Services;
 
@@ -16,14 +26,38 @@ class Identification extends BaseController
     protected $module;
     protected $identifikasiModel;
     protected $spkModel;
+    protected $deptModel;
+    protected $karyawanModel;
+    protected $materialModel;
+    protected $equipmentTypeModel;
+    protected $repairModel;
+    protected $defectModel;
+    protected $subDefectModel;
+    protected $problemModel;
+    protected $supplierModel;
+    protected $leaderModel;
+    protected $posisiModel;
     protected $db;
+    protected $validasi;
 
     public function __construct()
     {
         $this->module = "Identification";
         $this->identifikasiModel = new IdentificationModel();
         $this->spkModel = new SPKModel();
+        $this->deptModel = new DeptModel();
+        $this->karyawanModel = new KaryawanModel();
+        $this->materialModel = new MaterialModel();
+        $this->equipmentTypeModel = new EquipmentTypeModel();
+        $this->repairModel = new RepairReasonModel();
+        $this->defectModel = new DefectModel();
+        $this->subDefectModel = new SubDefectModel();
+        $this->problemModel = new ProblemCategoryModel();
+        $this->supplierModel = new SupplierModel();
+        $this->leaderModel = new LeaderModel();
+        $this->posisiModel = new ProblemPositionModel();
         $this->db = Database::connect();
+        $this->validasi = Services::validation();
     }
 
     public function index()
@@ -162,9 +196,19 @@ class Identification extends BaseController
         $data = [
             'page_title' => 'SPK Identification View',
             'title' => 'SPK Identification View',
+            'dept' => $this->deptModel->generateList(),
+            'karyawan' => $this->karyawanModel->generateList(),
+            'material' => $this->materialModel->getMaterialByCategory($getData->kategori),
+            'repair' => $this->repairModel->generateList(),
+            'defect' => $this->defectModel->generateList(),
+            'sub_defect' => $this->subDefectModel->getListByDefect($getData->defect),
+            'posisi' => $this->posisiModel->generateList(),
+            'problem_category' => $this->problemModel->generateList(),
+            'supplier' => $this->supplierModel->generateList(),
+            'leader' => $this->leaderModel->generateList(),
             'data' => $getData,
             'footer' => [
-                '<script src="' . base_url() . 'js/Transaction/Identification/edit.js' . '"></script>"'
+                '<script src="' . base_url() . 'js/Transaction/Identification/edit.js' . '"></script>',
             ],
         ];
 

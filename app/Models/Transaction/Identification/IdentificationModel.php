@@ -36,7 +36,19 @@ class IdentificationModel extends Model
             ->select('
                 t_identification.*, 
                 t_spk.code as kode_spk,
-                t_spk.tgl_lapor as tgl_lapor
+                t_spk.tgl_lapor as tgl_lapor,
+                t_spk.kategori,
+                t_spk.defect,
+                t_spk.dept,
+                t_spk.pelapor,
+                t_spk.material,
+                t_spk.material_model,
+                t_spk.alasan_repair,
+                t_spk.sub_defect,
+                t_spk.berulang,
+                t_spk.lokasi_repair,
+                t_spk.supplier,
+                t_spk.leader
             ')
             ->join('t_spk', 't_identification.id_spk = t_spk.id', 'left')
             ->first();

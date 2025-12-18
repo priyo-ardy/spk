@@ -83,4 +83,16 @@ class MaterialModel extends Model
 
         return $generated_code;
     }
+
+    function getMaterialByCategory($category)
+    {
+        switch ($category) {
+            case 1:
+                return $this->orderBy('code', 'asc')->findAll();
+                break;
+            case 2:
+                return $this->db->table('m_mesin')->where('deleted_at', null)->orderBy('code', 'ASC')->get()->getResultObject();
+                break;
+        }
+    }
 }

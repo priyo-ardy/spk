@@ -27,4 +27,9 @@ class ProblemCategoryModel extends Model
             ->select('id, category, code, name, remark')
             ->first();
     }
+
+    public function generateList()
+    {
+        return $this->orderBy('code', 'asc')->findAll();
+    }
 }
