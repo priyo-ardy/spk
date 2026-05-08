@@ -216,7 +216,7 @@ class SPK extends BaseController
             $defect = trim($this->request->getPost('data_defect'));
             $sub_defect = trim($this->request->getPost('data_sub_defect'));
             $berulang = trim($this->request->getPost('data_berulang'));
-            $posisi = trim($this->request->getPost('data_posisi'));
+            // $posisi = trim($this->request->getPost('data_posisi'));
             $repair = trim($this->request->getPost('data_repair'));
             $images = $this->request->getFileMultiple('data_image');
             $keterangan = strip_tags(trim($this->request->getPost('data_keterangan')));
@@ -227,21 +227,19 @@ class SPK extends BaseController
             $error_message = [];
             $success_count = 0;
             $baris = 1;
+            $prefix = '';
+            $mold = '';
 
             switch ($doc_type) {
                 case 1:
                     $prefix = 'SLMMJ';
                     $mold = $mold_no;
-                    // $doc_no = $this->spkModel->generateDocNo('SLMMJ', $date, $mold_no);
                     break;
                 case 2:
                     $prefix = 'SLMMA';
                     $mold = str_replace('#', '', $mold_no);
-                    // $doc_no = $this->spkModel->generateDocNo('SLMMA', $date,);
                     break;
             }
-
-            $doc_no = $this->spkModel->generateDocNo($prefix, $date, $mold);
 
             $uploadPath = FCPATH . '/uploads/spk/';
             if (!is_dir($uploadPath)) {
@@ -317,7 +315,8 @@ class SPK extends BaseController
                     ]
                 ],
                 'data_image' => [
-                    'rules' => 'uploaded[data_image]|max_size[data_image,51200]|is_image[data_image]|mime_in[data_image,image/jpg,image/jpeg,image/png]|ext_in[data_image,jpg,jpeg,png]',
+                    // 'rules' => 'uploaded[data_image]|max_size[data_image,51200]|is_image[data_image]|mime_in[data_image,image/jpg,image/jpeg,image/png]|ext_in[data_image,jpg,jpeg,png]',
+                    'rules' => 'max_size[data_image,51200]|is_image[data_image]|mime_in[data_image,image/jpg,image/jpeg,image/png]|ext_in[data_image,jpg,jpeg,png]',
                     'errors' => [
                         'uploaded' => 'Problem position photo is required',
                         'max_size' => 'Problem position photo maximum size is 50MB',
@@ -354,7 +353,7 @@ class SPK extends BaseController
             $data_header = [
                 'id' => $id_header,
                 'kategori' => $doc_type,
-                'code' => $doc_no,
+                'code' => $this->spkModel->generateDocNo($prefix, $date, $mold),
                 'lokasi' => $lokasi,
                 'dept' => $dept,
                 'pelapor' => $pelapor,
@@ -383,36 +382,38 @@ class SPK extends BaseController
                     'data' => $this->spkModel->errors()
                 ]));
 
-                throw new \Exception("Save failed, there was an error during processing your request <br>" . json_encode($this->db->error()));
+                throw new \Exception("Save failed, there was an error during processing your request <br>" . json_encode($this->spkModel->errors()));
                 // throw new \Exception(json_encode($this->spkModel->errors()));
             }
 
-            foreach ($images as $image) {
-                if ($image->isValid() && !$image->hasMoved()) {
-                    $fileName = "$doc_no-$baris." . $image->getExtension();
-                    $image->move($uploadPath, $fileName, true);
-                    $data_details = [
-                        'id' => generate_uuid(),
-                        'urut' => $baris,
-                        'id_spk' => $id_header,
-                        'nama_file' => $fileName,
-                        'ukuran_file' => $image->getSize(),
-                        'created_by' => $this->NIK,
-                    ];
+            if ($images) {
+                foreach ($images as $image) {
+                    if ($image->isValid() && !$image->hasMoved()) {
+                        $fileName = $data_header['doc_no'] . "-$baris." . $image->getExtension();
+                        $image->move($uploadPath, $fileName, true);
+                        $data_details = [
+                            'id' => generate_uuid(),
+                            'urut' => $baris,
+                            'id_spk' => $id_header,
+                            'nama_file' => $fileName,
+                            'ukuran_file' => $image->getSize(),
+                            'created_by' => $this->NIK,
+                        ];
 
-                    $insert_details = $this->detailModel->insert($data_details);
-                    if (!$insert_details) {
-                        $error_message[] = "Failed to insert image $fileName on row $baris. Error: " . json_encode($this->detailModel->errors());
+                        $insert_details = $this->detailModel->insert($data_details);
+                        if (!$insert_details) {
+                            $error_message[] = "Failed to insert image $fileName on row $baris. Error: " . json_encode($this->detailModel->errors());
 
-                        if (file_exists($uploadPath . $fileName)) {
-                            unlink($uploadPath . $fileName);
+                            if (file_exists($uploadPath . $fileName)) {
+                                unlink($uploadPath . $fileName);
+                            }
+                        } else {
+                            $success_count++;
+                            $baris++;
                         }
                     } else {
-                        $success_count++;
-                        $baris++;
+                        $error_message[] = "Invalid file: " . $image->getName();
                     }
-                } else {
-                    $error_message[] = "Invalid file: " . $image->getName();
                 }
             }
 
@@ -432,17 +433,17 @@ class SPK extends BaseController
                     'data' => $error_message
                 ]));
 
-                return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with some error with details: <br>" . implode("<br>", $error_message));
+                return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with some error with details: <br>" . implode("<br>", $error_message), ['token' => enkripsi($id_header)]);
             }
 
-            log_action($this->module, $aksi, "success", current_url(), "Successfully saved SPK data with document No. <strong>$doc_no</strong>", '', json_encode([
+            log_action($this->module, $aksi, "success", current_url(), "Successfully saved SPK data with document No. <strong>" . $data_header['doc_no'] . "</strong>", '', json_encode([
                 'data' => [
                     'header' => $data_header,
                     'details' => $data_details
                 ]
             ]));
 
-            return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with document No. : $doc_no", [
+            return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with document No. : " . $data_header['doc_no'], [
                 'token' => enkripsi($id_header)
             ]);
         } catch (\Exception $e) {

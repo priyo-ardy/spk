@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="form-group col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 clearfix">
                                         <label class="form-label" for="data_image">Upload Problem Image <strong class="text-danger">*</strong></label>
-                                        <input type="file" multiple class="custom-file-input form-control rounded-0" id="data_image" required name="data_image[]" accept="image/jpeg, image/png, image/gif, image/webp">
+                                        <input type="file" multiple class="custom-file-input form-control rounded-0" id="data_image" name="data_image[]" accept="image/jpeg, image/png, image/gif, image/webp">
                                         <div class="invalid-feedback"></div>
                                     </div>
                                 </div>

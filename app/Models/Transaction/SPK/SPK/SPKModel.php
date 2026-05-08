@@ -23,20 +23,32 @@ class SPKModel extends Model
 
     function generateDocNo(string $prefix, string $tanggal, string $mold_no)
     {
-        $query = $this->select("RIGHT(code, 8) as kode", true)
-            ->orderBy('code', 'desc')
-            ->limit(1)
-            ->first();
+        $this->db->transStart();
 
-        if ($query) {
-            $kode = (int) $query->kode + 1;
-        } else {
-            $kode = 1;
+        try {
+            $sql = "SELECT RIGHT(code, 8) as kode_angka 
+                FROM " . $this->table . " 
+                ORDER BY CAST(RIGHT(code, 8) AS UNSIGNED) DESC 
+                LIMIT 1 
+                FOR UPDATE";
+
+            $query = $this->db->query($sql)->getRow();
+
+            $next_number = ($query) ? (int)$query->kode_angka + 1 : 1;
+            $generated_code = "$prefix-$tanggal-$mold_no-" . str_pad($next_number, 8, '0', STR_PAD_LEFT);
+
+            $this->db->transComplete();
+
+            // return $generated_code;
+            if ($this->db->transStatus() === false) {
+                return null; // Gagal karena masalah database
+            }
+
+            return $generated_code;
+        } catch (\Exception $e) {
+            $this->db->transRollback();
+            throw $e;
         }
-
-        $generated_code = "$prefix-$tanggal-$mold_no-" . str_pad($kode, 8, '0', STR_PAD_LEFT);
-
-        return $generated_code;
     }
 
     function getPrevData($code)
