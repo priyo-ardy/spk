@@ -149,6 +149,7 @@ function validasiUpdate() {
   return isValid;
 }
 
+
 buttons.update.addEventListener("click", (e) => {
   if (validasiUpdate()) {
     try {
@@ -170,6 +171,7 @@ buttons.update.addEventListener("click", (e) => {
     }
   }
 });
+
 
 function deleteData(token) {
   try {

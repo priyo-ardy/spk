@@ -389,7 +389,7 @@ class SPK extends BaseController
             if ($images) {
                 foreach ($images as $image) {
                     if ($image->isValid() && !$image->hasMoved()) {
-                        $fileName = $data_header['doc_no'] . "-$baris." . $image->getExtension();
+                        $fileName = $data_header['code'] . "-$baris." . $image->getExtension();
                         $image->move($uploadPath, $fileName, true);
                         $data_details = [
                             'id' => generate_uuid(),
@@ -436,14 +436,14 @@ class SPK extends BaseController
                 return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with some error with details: <br>" . implode("<br>", $error_message), ['token' => enkripsi($id_header)]);
             }
 
-            log_action($this->module, $aksi, "success", current_url(), "Successfully saved SPK data with document No. <strong>" . $data_header['doc_no'] . "</strong>", '', json_encode([
+            log_action($this->module, $aksi, "success", current_url(), "Successfully saved SPK data with document No. <strong>" . $data_header['code'] . "</strong>", '', json_encode([
                 'data' => [
                     'header' => $data_header,
                     'details' => $data_details
                 ]
             ]));
 
-            return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with document No. : " . $data_header['doc_no'], [
+            return pesan(ResponseInterface::HTTP_OK, "Successfully saved SPK data with document No. : " . $data_header['code'], [
                 'token' => enkripsi($id_header)
             ]);
         } catch (\Exception $e) {
